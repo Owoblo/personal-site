@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin - John Owolabi</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="stylesheet" href="styles.css">
     <style>
         .admin-container {
@@ -141,9 +142,52 @@
             background-color: rgba(40, 167, 69, 0.1);
             border-color: #28a745;
         }
+
+        .login-container {
+            max-width: 400px;
+            margin: 100px auto;
+            padding: 40px;
+            border: 1px solid var(--colors--text);
+            background-color: var(--colors--background);
+        }
+
+        .login-container h1 {
+            margin-top: 0;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .login-error {
+            color: #dc3545;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        #admin-content {
+            display: none;
+        }
+
+        #admin-content.authenticated {
+            display: block;
+        }
     </style>
 </head>
 <body>
+    <!-- Login Screen -->
+    <div class="login-container" id="login-screen">
+        <h1>Admin Login</h1>
+        <div id="login-error" class="login-error" style="display: none;"></div>
+        <form id="login-form">
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" required autofocus>
+            </div>
+            <button type="submit" class="btn btn-primary" style="width: 100%;">Login</button>
+        </form>
+    </div>
+
+    <!-- Admin Content (Hidden until authenticated) -->
+    <div id="admin-content">
     <div class="admin-container">
         <div class="admin-header">
             <h1>Blog Admin</h1>
@@ -416,8 +460,62 @@
             header.appendChild(downloadBtn);
         });
 
-        // Initialize
-        loadPosts();
+        // Login authentication
+        const ADMIN_PASSWORD = 'StarMovers2024!'; // Change this to your desired password
+
+        // Check if already logged in
+        function checkAuth() {
+            const isAuthenticated = sessionStorage.getItem('admin-authenticated') === 'true';
+            if (isAuthenticated) {
+                showAdminPanel();
+            }
+        }
+
+        // Handle login
+        document.getElementById('login-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const password = document.getElementById('password').value;
+            const errorDiv = document.getElementById('login-error');
+
+            if (password === ADMIN_PASSWORD) {
+                sessionStorage.setItem('admin-authenticated', 'true');
+                showAdminPanel();
+            } else {
+                errorDiv.textContent = 'Invalid password. Please try again.';
+                errorDiv.style.display = 'block';
+                document.getElementById('password').value = '';
+            }
+        });
+
+        // Show admin panel
+        function showAdminPanel() {
+            document.getElementById('login-screen').style.display = 'none';
+            document.getElementById('admin-content').classList.add('authenticated');
+            loadPosts();
+        }
+
+        // Logout function
+        function logout() {
+            sessionStorage.removeItem('admin-authenticated');
+            location.reload();
+        }
+
+        // Add logout button
+        window.addEventListener('load', function() {
+            const header = document.querySelector('.admin-header');
+            if (header) {
+                const logoutBtn = document.createElement('button');
+                logoutBtn.className = 'btn';
+                logoutBtn.textContent = 'Logout';
+                logoutBtn.onclick = logout;
+                logoutBtn.style.marginLeft = '10px';
+                header.appendChild(logoutBtn);
+            }
+        });
+
+        // Check authentication on page load
+        checkAuth();
     </script>
+    </div><!-- End admin-content -->
 </body>
 </html>

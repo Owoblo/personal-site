@@ -100,9 +100,6 @@
         // Render post
         container.innerHTML = `
             <article>
-                <div style="margin-bottom: 30px;">
-                    <a href="index.html" style="text-decoration: none; border: none; opacity: 0.7; font-size: 0.95em;">← Back</a>
-                </div>
                 <header>
                     <h1>${escapeHtml(post.title)}</h1>
                     <p class="post-date" style="opacity: 0.7; font-style: italic; margin-top: 10px;">${formattedDate}</p>
