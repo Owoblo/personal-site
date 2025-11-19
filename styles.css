@@ -234,8 +234,8 @@ h1, h2, h3, h4 {
 }
 
 h1 {
-    font-size: 1.75em;
-    font-weight: 500;
+    font-size: 1.85em;
+    font-weight: 600;
     letter-spacing: -0.03em;
 }
 
@@ -577,9 +577,10 @@ dialog.modal::backdrop {
     }
 
     .site-header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 20px;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        gap: 0;
     }
 
     .post-header {
