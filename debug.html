@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog System Debug</title>
+    <style>
+        body {
+            font-family: monospace;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .section {
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #ccc;
+            background: #f5f5f5;
+        }
+        h2 {
+            margin-top: 0;
+        }
+        pre {
+            background: white;
+            padding: 10px;
+            overflow-x: auto;
+            border: 1px solid #ddd;
+        }
+        .success {
+            color: green;
+            font-weight: bold;
+        }
+        .error {
+            color: red;
+            font-weight: bold;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Blog System Diagnostic</h1>
+
+    <div class="section">
+        <h2>1. LocalStorage Status</h2>
+        <div id="localStorage-status"></div>
+        <button onclick="viewLocalStorage()">Refresh</button>
+        <button onclick="clearLocalStorage()">Clear LocalStorage</button>
+    </div>
+
+    <div class="section">
+        <h2>2. Posts.json File</h2>
+        <div id="json-status"></div>
+        <button onclick="loadJsonFile()">Load posts.json</button>
+    </div>
+
+    <div class="section">
+        <h2>3. Test Blog Rendering</h2>
+        <div id="test-render">
+            <ul id="blog-posts">
+                <li>Test container ready...</li>
+            </ul>
+        </div>
+        <button onclick="testRender()">Test Render</button>
+    </div>
+
+    <div class="section">
+        <h2>4. Actions</h2>
+        <button onclick="syncJsonToLocalStorage()">Sync posts.json → localStorage</button>
+        <button onclick="window.location.href='admin.html'">Go to Admin</button>
+        <button onclick="window.location.href='index.html'">Go to Home</button>
+    </div>
+
+    <script>
+        function viewLocalStorage() {
+            const stored = localStorage.getItem('blog-posts');
+            const container = document.getElementById('localStorage-status');
+
+            if (stored) {
+                try {
+                    const posts = JSON.parse(stored);
+                    container.innerHTML = `
+                        <p class="success">✓ Found ${posts.length} post(s) in localStorage</p>
+                        <pre>${JSON.stringify(posts, null, 2)}</pre>
+                    `;
+                } catch (e) {
+                    container.innerHTML = `<p class="error">✗ Error parsing localStorage: ${e.message}</p>`;
+                }
+            } else {
+                container.innerHTML = `<p class="error">✗ No posts found in localStorage</p>`;
+            }
+        }
+
+        function clearLocalStorage() {
+            if (confirm('Clear all posts from localStorage?')) {
+                localStorage.removeItem('blog-posts');
+                viewLocalStorage();
+                alert('LocalStorage cleared!');
+            }
+        }
+
+        async function loadJsonFile() {
+            const container = document.getElementById('json-status');
+            try {
+                const response = await fetch('posts.json');
+                const data = await response.json();
+                container.innerHTML = `
+                    <p class="success">✓ Successfully loaded posts.json</p>
+                    <pre>${JSON.stringify(data, null, 2)}</pre>
+                `;
+            } catch (e) {
+                container.innerHTML = `
+                    <p class="error">✗ Error loading posts.json: ${e.message}</p>
+                    <p>Note: If you're opening this with file://, you may need a local server.</p>
+                `;
+            }
+        }
+
+        async function syncJsonToLocalStorage() {
+            try {
+                const response = await fetch('posts.json');
+                const data = await response.json();
+                const posts = data.posts || [];
+
+                localStorage.setItem('blog-posts', JSON.stringify(posts));
+                alert(`Synced ${posts.length} posts to localStorage!`);
+                viewLocalStorage();
+            } catch (e) {
+                alert('Error: ' + e.message);
+            }
+        }
+
+        async function testRender() {
+            const stored = localStorage.getItem('blog-posts');
+            let posts = [];
+
+            if (stored) {
+                posts = JSON.parse(stored);
+            } else {
+                try {
+                    const response = await fetch('posts.json');
+                    const data = await response.json();
+                    posts = data.posts || [];
+                } catch (e) {
+                    alert('No posts found in localStorage or posts.json');
+                    return;
+                }
+            }
+
+            const container = document.getElementById('blog-posts');
+            if (posts.length === 0) {
+                container.innerHTML = '<li>No posts to display</li>';
+                return;
+            }
+
+            container.innerHTML = posts.map(post => {
+                const date = new Date(post.date);
+                const formattedDate = date.toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'short'
+                });
+                return `<li><a href="post.html?slug=${post.slug}">${post.title}</a> (${formattedDate})</li>`;
+            }).join('');
+
+            alert('Render test complete! Check the "Test Blog Rendering" section above.');
+        }
+
+        // Auto-run on load
+        window.addEventListener('load', function() {
+            viewLocalStorage();
+            loadJsonFile();
+        });
+    </script>
+</body>
+</html>

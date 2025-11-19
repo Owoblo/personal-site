@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>John Owolabi</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <meta name="description" content="Personal website of John Owolabi">
+</head>
+<body>
+    <div class="container">
+        <header class="site-header">
+            <h1>John Owolabi</h1>
+            <!-- Dark/Light Mode Toggle -->
+            <div class="theme-toggle-wrapper">
+                <i class="ph ph-sun theme-icon" id="sun-icon"></i>
+                <label class="toggle-switch" for="theme-toggle" aria-label="Toggle dark mode">
+                    <input type="checkbox" id="theme-toggle" class="toggle-checkbox">
+                    <span class="toggle-label has-transition"></span>
+                </label>
+                <i class="ph ph-moon theme-icon" id="moon-icon"></i>
+            </div>
+        </header>
+
+        <section class="bio">
+            <p>
+                John Owolabi runs Saturn Star Movers in Canada and builds software projects on the side whenever something isn't working as it should. His work spans logistics, real estate data, automation, and tools that help people make faster, clearer decisions. <a href="#" id="bio-more-toggle" onclick="toggleBio(event)">More</a>
+            </p>
+            <div id="bio-extended" style="display: none;">
+                <p>
+                    He focuses on systems, not noise, and prefers solving real problems over talking about them.
+                </p>
+                <p>
+                    John writes often. Teaching and sharing what he learns is part of how he thinks. His blog is where he breaks down ideas, experiments, failures, and whatever he's curious about. Curiosity drives most of his work — whether it's AI, markets, travel, design, or understanding how people operate.
+                </p>
+                <p>
+                    He grew up learning to figure things out quickly, and that habit never left. He moves fast, asks direct questions, and takes work seriously. He likes meeting people, but he also keeps his distance. The mix is intentional.
+                </p>
+                <p>
+                    Most of his projects start from the same place:<br>
+                    see the gap, build the system, let the results speak.
+                </p>
+            </div>
+        </section>
+
+        <section>
+            <h2>Thoughts</h2>
+            <ul id="blog-posts">
+                <!-- Posts will be loaded dynamically -->
+                <li style="opacity: 0.7;">Loading posts...</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Built / Building</h2>
+            <ul>
+                <li><a href="https://starmovers.ca" target="_blank">Saturn Star Movers</a> — Moving company serving Canada, providing residential and commercial moving solutions.</li>
+                <li><a href="https://sold2move.com" target="_blank">Sold2Move</a> — Real estate data platform that tracks property listings, sales, and market trends to help movers and agents act fast.</li>
+                <li><a href="https://movsense.com" target="_blank">MovSense</a> — Logistics and operational automation software designed to optimize moving processes and business efficiency.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Ideas I Want to See</h2>
+            <ul>
+                <li>Better tools for small business operations</li>
+                <li>Transparent pricing in the moving industry</li>
+                <li>Smarter scheduling systems that actually work</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Links</h2>
+            <p>
+                <a href="https://twitter.com/johnowolabi_" target="_blank">Twitter</a> •
+                <a href="https://instagram.com/johnowolabi_" target="_blank">Instagram</a> •
+                <a href="mailto:johnowolabi80@gmail.com">Email</a>
+            </p>
+        </section>
+    </div>
+
+    <!-- Fathom Analytics -->
+    <script src="https://cdn.usefathom.com/script.js" data-site="DARIOAMODEI" defer></script>
+
+    <!-- Blog Posts Loader -->
+    <script src="blog.js"></script>
+
+    <script>
+        // Expandable bio functionality
+        function toggleBio(event) {
+            event.preventDefault();
+            const extended = document.getElementById('bio-extended');
+            const toggle = document.getElementById('bio-more-toggle');
+
+            if (extended.style.display === 'none') {
+                extended.style.display = 'block';
+                toggle.textContent = 'Less';
+            } else {
+                extended.style.display = 'none';
+                toggle.textContent = 'More';
+            }
+        }
+
+        // Dark/Light mode toggle functionality
+        (function() {
+            const toggleCheckbox = document.getElementById('theme-toggle');
+            const body = document.body;
+            const sunIcon = document.getElementById('sun-icon');
+            const moonIcon = document.getElementById('moon-icon');
+
+            // Update icon states based on theme
+            function updateIcons(isDark) {
+                if (isDark) {
+                    sunIcon.classList.add('hidden');
+                    moonIcon.classList.remove('hidden');
+                } else {
+                    sunIcon.classList.remove('hidden');
+                    moonIcon.classList.add('hidden');
+                }
+            }
+
+            // Check for saved user preference, otherwise check system preference
+            const currentTheme = localStorage.getItem('theme');
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+            // Set initial theme
+            if (currentTheme === 'dark' || (!currentTheme && prefersDark)) {
+                body.classList.add('u-mode-invert');
+                toggleCheckbox.checked = true;
+                updateIcons(true);
+            } else {
+                updateIcons(false);
+            }
+
+            // Toggle theme on checkbox change
+            toggleCheckbox.addEventListener('change', function() {
+                if (this.checked) {
+                    body.classList.add('u-mode-invert');
+                    localStorage.setItem('theme', 'dark');
+                    updateIcons(true);
+                } else {
+                    body.classList.remove('u-mode-invert');
+                    localStorage.setItem('theme', 'light');
+                    updateIcons(false);
+                }
+            });
+
+            // Listen for system theme changes
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e) {
+                if (!localStorage.getItem('theme')) {
+                    if (e.matches) {
+                        body.classList.add('u-mode-invert');
+                        toggleCheckbox.checked = true;
+                        updateIcons(true);
+                    } else {
+                        body.classList.remove('u-mode-invert');
+                        toggleCheckbox.checked = false;
+                        updateIcons(false);
+                    }
+                }
+            });
+        })();
+    </script>
+</body>
+</html>

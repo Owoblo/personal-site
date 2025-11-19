@@ -1,0 +1,627 @@
+/* ============================================
+   Phosphor Icon Font
+   ============================================ */
+@font-face {
+  font-family: "Phosphor";
+  src:
+    url("./fonts/Phosphor.woff2") format("woff2"),
+    url("./fonts/Phosphor.woff") format("woff"),
+    url("./fonts/Phosphor.ttf") format("truetype"),
+    url("./fonts/Phosphor.svg#Phosphor") format("svg");
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+
+.ph {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: "Phosphor" !important;
+  speak: never;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Enable Ligatures ================ */
+  letter-spacing: 0;
+  -webkit-font-feature-settings: "liga";
+  -moz-font-feature-settings: "liga=1";
+  -moz-font-feature-settings: "liga";
+  -ms-font-feature-settings: "liga" 1;
+  font-feature-settings: "liga";
+  -webkit-font-variant-ligatures: discretionary-ligatures;
+  font-variant-ligatures: discretionary-ligatures;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Phosphor Icon Classes */
+.ph.ph-moon:before { content: "\e330"; }
+.ph.ph-sun:before { content: "\e472"; }
+.ph.ph-heart:before { content: "\e2a8"; }
+.ph.ph-star:before { content: "\e46a"; }
+.ph.ph-user:before { content: "\e4c2"; }
+.ph.ph-check:before { content: "\e182"; }
+.ph.ph-x:before { content: "\e4f6"; }
+.ph.ph-arrow-right:before { content: "\e06c"; }
+.ph.ph-arrow-left:before { content: "\e058"; }
+.ph.ph-arrow-up:before { content: "\e08e"; }
+.ph.ph-arrow-down:before { content: "\e03e"; }
+.ph.ph-envelope:before { content: "\e214"; }
+.ph.ph-github-logo:before { content: "\e576"; }
+.ph.ph-linkedin-logo:before { content: "\e2ee"; }
+.ph.ph-twitter-logo:before { content: "\e4ba"; }
+.ph.ph-link:before { content: "\e2e2"; }
+.ph.ph-calendar:before { content: "\e108"; }
+.ph.ph-clock:before { content: "\e19a"; }
+.ph.ph-map-pin:before { content: "\e316"; }
+.ph.ph-book:before { content: "\e0e2"; }
+.ph.ph-code:before { content: "\e1bc"; }
+.ph.ph-file:before { content: "\e230"; }
+.ph.ph-folder:before { content: "\e24a"; }
+.ph.ph-list:before { content: "\e2f0"; }
+.ph.ph-magnifying-glass:before { content: "\e30c"; }
+.ph.ph-download:before { content: "\e20a"; }
+.ph.ph-upload:before { content: "\e4be"; }
+.ph.ph-gear:before { content: "\e270"; }
+.ph.ph-warning:before { content: "\e4e0"; }
+.ph.ph-info:before { content: "\e2ce"; }
+.ph.ph-question:before { content: "\e3e8"; }
+.ph.ph-plus:before { content: "\e3d4"; }
+.ph.ph-minus:before { content: "\e32a"; }
+.ph.ph-pencil:before { content: "\e3ae"; }
+.ph.ph-trash:before { content: "\e4a6"; }
+.ph.ph-chat:before { content: "\e15c"; }
+.ph.ph-bell:before { content: "\e0ce"; }
+.ph.ph-house:before { content: "\e2c2"; }
+.ph.ph-briefcase:before { content: "\e0ee"; }
+.ph.ph-graduation-cap:before { content: "\e62c"; }
+
+/* Add more Phosphor icons as needed - the full set contains 1000+ icons */
+
+/* ============================================
+   CSS Custom Properties (CSS Variables)
+   ============================================ */
+:root {
+    --colors--background: #F0EEE6;
+    --colors--text: #2c2c2c;
+    --colors--link: #3d3d3d;
+    --colors--link-visited: #5a5a5a;
+    --colors--link-active: #1a1a1a;
+    --colors--link-hover: #1a1a1a;
+    --colors--primary-accent: #0064ff;
+    --colors--footnote-background: rgba(0, 100, 255, 0.1);
+    --_layout---grid--gap-md: 2rem;
+    --_layout---grid--gap-sm: 1rem;
+}
+
+/* Dark mode color scheme */
+.u-mode-invert {
+    --colors--background: #1a1a1a;
+    --colors--text: #e0e0e0;
+    --colors--link: #d4d4d4;
+    --colors--link-visited: #b8b8b8;
+    --colors--link-active: #ffffff;
+    --colors--link-hover: #ffffff;
+    --colors--footnote-background: rgba(107, 158, 255, 0.1);
+}
+
+/* ============================================
+   Global Resets & Base Styles
+   ============================================ */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Lora", "Georgia", "Times New Roman", serif;
+    font-weight: 400;
+    line-height: 1.7;
+    color: var(--colors--text);
+    background-color: var(--colors--background);
+    margin: 0;
+    padding: 20px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Reset apple form styles */
+input, textarea, select, button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border-radius: 0;
+    background-image: none;
+}
+
+/* Change selection color */
+::selection {
+    background-color: rgba(0, 100, 255, 0.26);
+    color: inherit;
+}
+
+::-moz-selection {
+    background-color: rgba(0, 100, 255, 0.26);
+    color: inherit;
+}
+
+/* Adjust input autofill to brand colors */
+input:-webkit-autofill,
+input:-webkit-autofill:focus {
+    background-color: var(--colors--background) !important;
+    color: var(--colors--text) !important;
+    border-color: var(--colors--text) !important;
+    -webkit-box-shadow: 0 0 0 50px var(--colors--background) inset;
+    -webkit-text-fill-color: var(--colors--text);
+}
+
+/* ============================================
+   Layout
+   ============================================ */
+.container {
+    max-width: 680px;
+    margin: 0 auto;
+    padding-top: 60px;
+    position: relative;
+}
+
+/* Row/col gap modifiers */
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 -1rem;
+}
+
+.row.row-gap-0 .col {
+    margin: 0;
+    padding: 0;
+}
+
+.row.row-gap-md .col {
+    padding-left: calc(var(--_layout---grid--gap-md) / 2);
+    padding-right: calc(var(--_layout---grid--gap-md) / 2);
+}
+
+.row.row-gap-sm .col {
+    padding-left: calc(var(--_layout---grid--gap-sm) / 2);
+    padding-right: calc(var(--_layout---grid--gap-sm) / 2);
+}
+
+.col {
+    flex: 1;
+    padding: 0 1rem;
+}
+
+/* ============================================
+   Header
+   ============================================ */
+.site-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.site-header h1 {
+    margin: 0;
+}
+
+/* ============================================
+   Typography
+   ============================================ */
+h1, h2, h3, h4 {
+    text-wrap: balance;
+}
+
+h1 {
+    font-size: 1.75em;
+    font-weight: 500;
+    letter-spacing: -0.03em;
+}
+
+h2 {
+    font-size: 1.25em;
+    font-weight: 500;
+    margin-top: 50px;
+    margin-bottom: 15px;
+    letter-spacing: -0.01em;
+}
+
+h3 {
+    font-size: 1.1em;
+    font-weight: 500;
+    margin-top: 30px;
+    margin-bottom: 10px;
+}
+
+h4 {
+    font-size: 1em;
+    font-weight: 500;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+p {
+    margin-bottom: 15px;
+    font-size: 1rem;
+    font-weight: 300;
+}
+
+.bio p {
+    margin-bottom: 10px;
+    font-weight: 400;
+}
+
+/* Rich text modifiers */
+.w-richtext > :first-child,
+.rich-text > :first-child {
+    margin-top: 0;
+}
+
+.w-richtext > :last-child,
+.w-richtext ol li:last-child,
+.w-richtext ul li:last-child,
+.rich-text > :last-child,
+.rich-text ol li:last-child,
+.rich-text ul li:last-child {
+    margin-bottom: 0;
+}
+
+/* Line clamp modifiers */
+.u-text-clamp-1 {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.u-text-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.u-text-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* ============================================
+   Sections
+   ============================================ */
+section {
+    margin-bottom: 35px;
+}
+
+section:last-child {
+    margin-bottom: 60px;
+}
+
+/* ============================================
+   Lists
+   ============================================ */
+ul {
+    list-style-type: disc;
+    padding-left: 25px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+ol {
+    padding-left: 25px;
+    margin-top: 10px;
+}
+
+li {
+    margin-bottom: 8px;
+    font-size: 1rem;
+    font-weight: 300;
+    line-height: 1.7;
+}
+
+/* Custom bullet list */
+.bullet-list {
+    list-style: none;
+    padding-left: 0;
+}
+
+.bullet-list_item::before {
+    content: "•";
+    font-size: 1em;
+    margin-right: 0.3em;
+    margin-left: -0.7em;
+    display: inline-block;
+}
+
+/* ============================================
+   Links
+   ============================================ */
+a {
+    color: var(--colors--link);
+    text-decoration: none;
+    border-bottom: 1px solid var(--colors--link);
+    transition: all 0.2s ease;
+    padding-bottom: 1px;
+}
+
+a:visited {
+    color: var(--colors--link-visited);
+    border-bottom-color: var(--colors--link-visited);
+}
+
+a:hover {
+    color: var(--colors--link-hover);
+    border-bottom-color: var(--colors--link-hover);
+    border-bottom-width: 2px;
+    padding-bottom: 0px;
+}
+
+a:active {
+    color: var(--colors--link-active);
+}
+
+/* ============================================
+   Dark/Light Mode Toggle
+   ============================================ */
+.theme-toggle-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 40px;
+    height: 20px;
+    border: none;
+    outline: none;
+}
+
+.toggle-checkbox {
+    opacity: 0;
+    width: 0;
+    height: 0;
+    position: absolute;
+}
+
+.toggle-label {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--colors--text);
+    border-radius: 20px;
+    transition: background-color 0.3s;
+}
+
+.toggle-label:before {
+    position: absolute;
+    content: "";
+    height: 14px;
+    width: 14px;
+    left: 3px;
+    bottom: 3px;
+    background-color: var(--colors--background);
+    transition: 0.2s;
+    border-radius: 50%;
+}
+
+.toggle-label.has-transition:before {
+    transition: 0.2s;
+}
+
+.toggle-checkbox:checked + .toggle-label {
+    background-color: var(--colors--text);
+}
+
+.toggle-checkbox:checked + .toggle-label:before {
+    transform: translateX(20px);
+}
+
+.toggle-switch:focus-within {
+    outline: none;
+}
+
+.toggle-checkbox:focus {
+    outline: none;
+}
+
+.toggle-checkbox:focus-visible + .toggle-label {
+    outline: none;
+}
+
+/* Theme toggle icons */
+.theme-icon {
+    font-size: 1.2em;
+    color: var(--colors--text);
+    transition: opacity 0.3s ease;
+}
+
+.theme-icon.hidden {
+    opacity: 0.3;
+}
+
+/* ============================================
+   Custom Elements
+   ============================================ */
+/* Custom hr */
+hr {
+    border: none;
+    height: auto;
+    margin: 2em 0;
+}
+
+hr::after {
+    content: "\2042";
+    display: block;
+    font-family: serif;
+    font-weight: 200;
+    font-size: 1.5em;
+    margin: 0 auto;
+    text-align: center;
+    color: var(--colors--text);
+}
+
+/* ============================================
+   Modal Dialogs
+   ============================================ */
+dialog.modal {
+    border: 1px solid var(--colors--text);
+    background-color: var(--colors--background);
+    color: var(--colors--text);
+    border-radius: 8px;
+    padding: 2rem;
+    max-width: 600px;
+}
+
+dialog.modal[open] {
+    animation: fadein 400ms ease-out forwards;
+}
+
+dialog.modal::backdrop {
+    background: color-mix(in srgb, var(--colors--text) 80%, transparent);
+}
+
+@keyframes fadein {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+/* ============================================
+   Footnotes
+   ============================================ */
+[data-footnotes="body"] h1 sup:not(:has(.footnote-ref)) {
+    top: -2em;
+}
+
+[data-footnotes="body"] h1 .footnote-tooltip sup {
+    top: -0.5em;
+}
+
+[data-footnotes="body"] sup:not(:has(.footnote-ref)) {
+    z-index: 1;
+    background-color: var(--colors--footnote-background);
+    border-radius: 4px;
+    margin-left: 2px;
+    margin-right: 2px;
+    padding: 3px 3px 1px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-decoration: none;
+    position: relative;
+}
+
+[data-footnotes="body"] .footnote-tooltip sup {
+    background-color: transparent;
+    border-radius: 0;
+    margin: 0;
+    padding: 0;
+    font-size: 0.75rem;
+    top: -0.5em;
+}
+
+/* ============================================
+   Responsive Design
+   ============================================ */
+/* TOC Container Width Mods on Desktop */
+@media screen and (min-width: 1230px) and (max-width: 1330px) {
+    .toc-container {
+        width: 25%;
+    }
+}
+
+@media screen and (min-width: 992px) and (max-width: 1229px) {
+    .toc-container {
+        width: 20%;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    body {
+        padding: 15px;
+        font-size: 16px;
+    }
+
+    .container {
+        padding-top: 30px;
+        max-width: 100%;
+    }
+
+    .site-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
+    }
+
+    h1 {
+        font-size: 1.5em;
+    }
+
+    h2 {
+        font-size: 1.15em;
+    }
+
+    h3 {
+        font-size: 1.05em;
+    }
+
+    p, li {
+        font-size: 1em;
+        line-height: 1.7;
+    }
+
+    ul, ol {
+        padding-left: 20px;
+    }
+
+    .toggle-switch {
+        width: 36px;
+        height: 18px;
+    }
+
+    .toggle-label:before {
+        height: 12px;
+        width: 12px;
+    }
+
+    .toggle-checkbox:checked + .toggle-label:before {
+        transform: translateX(18px);
+    }
+
+    .theme-icon {
+        font-size: 1em;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    body {
+        padding: 10px;
+    }
+
+    .container {
+        padding-top: 20px;
+    }
+
+    h1 {
+        font-size: 1.35em;
+    }
+
+    h2 {
+        font-size: 1.1em;
+        margin-top: 30px;
+    }
+
+    p, li {
+        font-size: 0.95em;
+    }
+}

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post - John Owolabi</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <meta name="description" content="Personal website of John Owolabi">
+</head>
+<body>
+    <div class="container">
+        <!-- Dark/Light Mode Toggle -->
+        <div class="theme-toggle-wrapper">
+            <i class="ph ph-sun theme-icon" id="sun-icon"></i>
+            <label class="toggle-switch" for="theme-toggle" aria-label="Toggle dark mode">
+                <input type="checkbox" id="theme-toggle" class="toggle-checkbox">
+                <span class="toggle-label has-transition"></span>
+            </label>
+            <i class="ph ph-moon theme-icon" id="moon-icon"></i>
+        </div>
+
+        <div id="post-content">
+            <!-- Post content will be loaded here -->
+            <p>Loading post...</p>
+        </div>
+    </div>
+
+    <!-- Fathom Analytics -->
+    <script src="https://cdn.usefathom.com/script.js" data-site="DARIOAMODEI" defer></script>
+
+    <!-- Blog Posts Loader -->
+    <script src="blog.js"></script>
+
+    <script>
+        // Dark/Light mode toggle functionality
+        (function() {
+            const toggleCheckbox = document.getElementById('theme-toggle');
+            const body = document.body;
+            const sunIcon = document.getElementById('sun-icon');
+            const moonIcon = document.getElementById('moon-icon');
+
+            // Update icon states based on theme
+            function updateIcons(isDark) {
+                if (isDark) {
+                    sunIcon.classList.add('hidden');
+                    moonIcon.classList.remove('hidden');
+                } else {
+                    sunIcon.classList.remove('hidden');
+                    moonIcon.classList.add('hidden');
+                }
+            }
+
+            // Check for saved user preference, otherwise check system preference
+            const currentTheme = localStorage.getItem('theme');
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+            // Set initial theme
+            if (currentTheme === 'dark' || (!currentTheme && prefersDark)) {
+                body.classList.add('u-mode-invert');
+                toggleCheckbox.checked = true;
+                updateIcons(true);
+            } else {
+                updateIcons(false);
+            }
+
+            // Toggle theme on checkbox change
+            toggleCheckbox.addEventListener('change', function() {
+                if (this.checked) {
+                    body.classList.add('u-mode-invert');
+                    localStorage.setItem('theme', 'dark');
+                    updateIcons(true);
+                } else {
+                    body.classList.remove('u-mode-invert');
+                    localStorage.setItem('theme', 'light');
+                    updateIcons(false);
+                }
+            });
+
+            // Listen for system theme changes
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e) {
+                if (!localStorage.getItem('theme')) {
+                    if (e.matches) {
+                        body.classList.add('u-mode-invert');
+                        toggleCheckbox.checked = true;
+                        updateIcons(true);
+                    } else {
+                        body.classList.remove('u-mode-invert');
+                        toggleCheckbox.checked = false;
+                        updateIcons(false);
+                    }
+                }
+            });
+        })();
+    </script>
+</body>
+</html>
