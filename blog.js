@@ -97,6 +97,31 @@
         // Update page title
         document.title = `${post.title} - John Owolabi`;
 
+        // Get recent posts (excluding current post)
+        const recentPosts = posts
+            .filter(p => p.slug !== slug)
+            .sort((a, b) => new Date(b.date) - new Date(a.date))
+            .slice(0, 4);
+
+        const recentPostsHtml = recentPosts.length > 0 ? `
+            <div class="more-to-read" style="margin-top: 60px; padding-top: 40px; border-top: 1px solid var(--colors--text); opacity: 0.8;">
+                <h3 style="font-size: 1.1em; margin-bottom: 20px;">More to Read</h3>
+                <ul style="list-style: none; padding: 0;">
+                    ${recentPosts.map(p => {
+                        const pDate = new Date(p.date);
+                        const pFormattedDate = pDate.toLocaleDateString('en-US', {
+                            year: 'numeric',
+                            month: 'short'
+                        });
+                        return `<li style="margin-bottom: 12px;">
+                            <a href="post.html?slug=${encodeURIComponent(p.slug)}">${escapeHtml(p.title)}</a>
+                            <span style="opacity: 0.6; font-size: 0.9em;"> (${pFormattedDate})</span>
+                        </li>`;
+                    }).join('')}
+                </ul>
+            </div>
+        ` : '';
+
         // Render post
         container.innerHTML = `
             <article>
@@ -107,6 +132,17 @@
                 <div class="post-body" style="margin-top: 30px;">
                     ${post.content}
                 </div>
+
+                <!-- Email Subscription -->
+                <div class="email-subscription" style="margin-top: 50px; padding: 30px 0; border-top: 1px solid var(--colors--text); border-bottom: 1px solid var(--colors--text);">
+                    <p style="margin-bottom: 15px; font-size: 1em;">Want posts like this in your inbox?</p>
+                    <form action="https://buttondown.email/api/emails/embed-subscribe/johnowolabi" method="post" target="popupwindow" onsubmit="window.open('https://buttondown.email/johnowolabi', 'popupwindow')" style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center;">
+                        <input type="email" name="email" placeholder="your@email.com" required style="flex: 1; min-width: 200px; padding: 10px 12px; border: 1px solid var(--colors--text); background-color: var(--colors--background); color: var(--colors--text); font-family: inherit; font-size: 0.95em;">
+                        <button type="submit" style="padding: 10px 20px; border: 1px solid var(--colors--text); background-color: var(--colors--text); color: var(--colors--background); cursor: pointer; font-family: inherit; font-size: 0.95em; transition: opacity 0.2s ease;">Subscribe</button>
+                    </form>
+                </div>
+
+                ${recentPostsHtml}
             </article>
         `;
     }
