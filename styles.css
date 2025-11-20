@@ -241,7 +241,7 @@ h1 {
 
 h2 {
     font-size: 24px;
-    font-weight: 600;
+    font-weight: 700;
     margin-top: 50px;
     margin-bottom: 15px;
     letter-spacing: -0.01em;
@@ -268,9 +268,14 @@ p {
     font-weight: 300;
 }
 
+.bio {
+    margin-bottom: 30px;
+}
+
 .bio p {
     margin-bottom: 10px;
     font-weight: 400;
+    font-size: 17px;
 }
 
 /* Rich text modifiers */
@@ -417,8 +422,8 @@ a:active {
     right: 0;
     bottom: 0;
     background-color: var(--colors--background);
-    border: 1px solid var(--colors--text);
-    border-radius: 20px;
+    border: 1.5px solid var(--colors--text);
+    border-radius: 100px;
     transition: background-color 0.3s, border-color 0.3s;
 }
 
@@ -569,10 +574,11 @@ dialog.modal::backdrop {
 @media screen and (max-width: 768px) {
     body {
         font-size: 16px;
+        padding: 16px;
     }
 
     .container {
-        padding: 40px 20px;
+        padding: 30px 20px;
         max-width: 100%;
     }
 
@@ -581,6 +587,7 @@ dialog.modal::backdrop {
         justify-content: space-between;
         align-items: center;
         gap: 0;
+        margin-bottom: 25px;
     }
 
     .post-header {
@@ -591,11 +598,16 @@ dialog.modal::backdrop {
     }
 
     h1 {
-        font-size: 1.5em;
+        font-size: 1.75em;
+        font-weight: 600;
+        letter-spacing: -0.02em;
     }
 
     h2 {
-        font-size: 22px;
+        font-size: 1.35em;
+        font-weight: 700;
+        margin-top: 40px;
+        margin-bottom: 12px;
     }
 
     h3 {
@@ -603,56 +615,98 @@ dialog.modal::backdrop {
     }
 
     p {
-        font-size: 16px;
-        line-height: 1.65;
+        font-size: 17px;
+        line-height: 1.7;
     }
 
     li {
-        font-size: 16px;
+        font-size: 17px;
+        line-height: 1.75;
     }
 
     ul, ol {
-        padding-left: 20px;
+        padding-left: 22px;
+        margin-top: 8px;
+    }
+
+    section {
+        margin-bottom: 40px;
+    }
+
+    section:first-of-type {
+        margin-top: 0;
+    }
+
+    .bio + section h2 {
+        margin-top: 35px;
     }
 
     .toggle-switch {
-        width: 36px;
-        height: 18px;
+        width: 42px;
+        height: 22px;
     }
 
     .toggle-label:before {
-        height: 12px;
-        width: 12px;
+        height: 16px;
+        width: 16px;
+        left: 2px;
+        bottom: 2px;
     }
 
     .toggle-checkbox:checked + .toggle-label:before {
-        transform: translateX(18px);
+        transform: translateX(20px);
     }
 
     .theme-icon {
-        font-size: 1em;
+        display: none;
     }
 }
 
 @media screen and (max-width: 480px) {
     body {
-        padding: 16px;
+        padding: 14px;
     }
 
     .container {
-        padding-top: 16px;
+        padding: 24px 16px;
+    }
+
+    .site-header {
+        margin-bottom: 20px;
     }
 
     h1 {
-        font-size: 1.35em;
+        font-size: 1.65em;
+        font-weight: 600;
     }
 
     h2 {
-        font-size: 1.1em;
+        font-size: 1.3em;
+        font-weight: 700;
+        margin-top: 35px;
+        margin-bottom: 10px;
+    }
+
+    p {
+        font-size: 17px;
+        line-height: 1.7;
+    }
+
+    li {
+        font-size: 17px;
+        line-height: 1.75;
+        margin-bottom: 6px;
+    }
+
+    section {
+        margin-bottom: 35px;
+    }
+
+    .bio + section h2 {
         margin-top: 30px;
     }
 
-    p, li {
-        font-size: 0.95em;
+    .bio p {
+        font-size: 17px;
     }
 }
