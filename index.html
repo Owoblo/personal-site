@@ -24,6 +24,33 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
+
+    <!-- Canonical URL -->
+    <meta property="og:site_name" content="John Owolabi">
+    <link rel="canonical" href="https://johnowolabi.com/">
+
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "John Owolabi",
+      "url": "https://johnowolabi.com",
+      "image": "https://johnowolabi.com/11.png",
+      "sameAs": [
+        "https://twitter.com/johnowolabi_",
+        "https://instagram.com/johnowolabi_"
+      ],
+      "jobTitle": "Founder & Software Developer",
+      "worksFor": {
+        "@type": "Organization",
+        "name": "Saturn Star Movers",
+        "url": "https://starmovers.ca"
+      },
+      "description": "Operates Saturn Star Movers and builds software projects spanning logistics, real estate data, and automation tools.",
+      "knowsAbout": ["Logistics", "Real Estate Technology", "Software Development", "Automation", "Moving Industry"]
+    }
+    </script>
 </head>
 <body>
     <div class="container">
@@ -42,7 +69,7 @@
             <p>
                 John Owolabi operates <a href="https://starmovers.ca" target="_blank">Saturn Star Movers</a>, a moving company in Canada, while building software projects on the side. His work spans logistics, real estate data, automation, and tools that help people make faster, clearer decisions. <a href="#" id="bio-more-toggle" onclick="toggleBio(event)">More</a>
             </p>
-            <div id="bio-extended" style="display: none;">
+            <div id="bio-extended" class="bio-extended">
                 <p>
                     He focuses on systems, not noise, and prefers solving real problems over talking about them.
                 </p>
@@ -63,7 +90,7 @@
             <h2><a href="thoughts.html">Thoughts</a></h2>
             <ul id="blog-posts">
                 <!-- Posts will be loaded dynamically -->
-                <li style="opacity: 0.7;">Loading posts...</li>
+                <li class="loading-state">Loading posts...</li>
             </ul>
             <p style="margin-top: 15px;"><a href="thoughts.html">View all →</a></p>
         </section>
@@ -96,9 +123,6 @@
         </section>
     </div>
 
-    <!-- Fathom Analytics -->
-    <script src="https://cdn.usefathom.com/script.js" data-site="DARIOAMODEI" defer></script>
-
     <!-- Blog Posts Loader -->
     <script src="blog.js"></script>
 
@@ -109,12 +133,12 @@
             const extended = document.getElementById('bio-extended');
             const toggle = document.getElementById('bio-more-toggle');
 
-            if (extended.style.display === 'none') {
-                extended.style.display = 'block';
-                toggle.textContent = 'Less';
-            } else {
-                extended.style.display = 'none';
+            if (extended.classList.contains('expanded')) {
+                extended.classList.remove('expanded');
                 toggle.textContent = 'More';
+            } else {
+                extended.classList.add('expanded');
+                toggle.textContent = 'Less';
             }
         }
 

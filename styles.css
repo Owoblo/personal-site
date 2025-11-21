@@ -312,6 +312,30 @@ p {
     font-size: 18px;
 }
 
+.bio-extended {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height 0.4s ease, opacity 0.3s ease;
+}
+
+.bio-extended.expanded {
+    max-height: 1000px;
+    opacity: 1;
+}
+
+/* Loading states */
+.loading-state {
+    opacity: 0.6;
+    font-style: italic;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 0.3; }
+}
+
 .key-statement {
     background-color: rgba(0, 100, 255, 0.05);
     padding: 20px 24px;

@@ -41,7 +41,7 @@
 
         if (posts.length === 0) {
             console.log('No posts to display');
-            container.innerHTML = '<li style="opacity: 0.7;">No posts yet.</li>';
+            container.innerHTML = '<li class="loading-state">No posts yet.</li>';
             return;
         }
 
