@@ -476,7 +476,6 @@ a {
     border-bottom: 1px solid var(--colors--link);
     transition: all 0.25s ease;
     padding-bottom: 1px;
-    display: inline-block;
 }
 
 a:visited {
@@ -489,12 +488,11 @@ a:hover {
     border-bottom-color: var(--colors--link-hover);
     border-bottom-width: 2px;
     padding-bottom: 0px;
-    transform: translateY(-1px);
+    opacity: 0.85;
 }
 
 a:active {
     color: var(--colors--link-active);
-    transform: translateY(0);
 }
 
 /* ============================================
