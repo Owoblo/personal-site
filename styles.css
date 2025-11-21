@@ -163,9 +163,9 @@ input:-webkit-autofill:focus {
    Layout
    ============================================ */
 .container {
-    max-width: 800px;
+    max-width: 680px;
     margin: 0 auto;
-    padding: 60px 40px;
+    padding: 80px 40px;
     position: relative;
 }
 
@@ -203,7 +203,7 @@ input:-webkit-autofill:focus {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 30px;
+    margin-bottom: 50px;
 }
 
 .site-header h1 {
@@ -251,7 +251,7 @@ h1, h2, h3, h4 {
 }
 
 h1 {
-    font-size: 1.85em;
+    font-size: 2em;
     font-weight: 600;
     letter-spacing: -0.03em;
 }
@@ -259,8 +259,8 @@ h1 {
 h2 {
     font-size: 24px;
     font-weight: 700;
-    margin-top: 50px;
-    margin-bottom: 15px;
+    margin-top: 60px;
+    margin-bottom: 20px;
     letter-spacing: -0.01em;
 }
 
@@ -296,20 +296,20 @@ h4 {
 }
 
 p {
-    margin-bottom: 15px;
-    font-size: 17px;
-    line-height: 1.7;
+    margin-bottom: 20px;
+    font-size: 18px;
+    line-height: 1.75;
     font-weight: 300;
 }
 
 .bio {
-    margin-bottom: 30px;
+    margin-bottom: 40px;
 }
 
 .bio p {
-    margin-bottom: 10px;
+    margin-bottom: 20px;
     font-weight: 400;
-    font-size: 17px;
+    font-size: 18px;
 }
 
 .key-statement {
@@ -370,11 +370,11 @@ p {
    Sections
    ============================================ */
 section {
-    margin-bottom: 35px;
+    margin-bottom: 50px;
 }
 
 section:last-child {
-    margin-bottom: 60px;
+    margin-bottom: 80px;
 }
 
 /* ============================================
@@ -393,8 +393,8 @@ ol {
 }
 
 li {
-    margin-bottom: 8px;
-    font-size: 17px;
+    margin-bottom: 12px;
+    font-size: 18px;
     line-height: 1.8;
     font-weight: 300;
 }
