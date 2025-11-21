@@ -102,6 +102,46 @@
         // Update page title
         document.title = `${post.title} - John Owolabi`;
 
+        // Update meta description
+        const metaDescription = document.querySelector('meta[name="description"]');
+        if (metaDescription) {
+            // Extract first 150 characters from content as description
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = post.content;
+            const textContent = tempDiv.textContent || tempDiv.innerText || '';
+            const description = textContent.substring(0, 150).trim() + '...';
+            metaDescription.setAttribute('content', description);
+        }
+
+        // Update Open Graph meta tags
+        const ogTitle = document.querySelector('meta[property="og:title"]');
+        if (ogTitle) ogTitle.setAttribute('content', `${post.title} - John Owolabi`);
+
+        const ogDescription = document.querySelector('meta[property="og:description"]');
+        if (ogDescription) {
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = post.content;
+            const textContent = tempDiv.textContent || tempDiv.innerText || '';
+            const description = textContent.substring(0, 150).trim() + '...';
+            ogDescription.setAttribute('content', description);
+        }
+
+        const ogUrl = document.querySelector('meta[property="og:url"]');
+        if (ogUrl) ogUrl.setAttribute('content', `https://johnowolabi.com/post.html?slug=${slug}`);
+
+        // Update Twitter Card meta tags
+        const twitterTitle = document.querySelector('meta[name="twitter:title"]');
+        if (twitterTitle) twitterTitle.setAttribute('content', `${post.title} - John Owolabi`);
+
+        const twitterDescription = document.querySelector('meta[name="twitter:description"]');
+        if (twitterDescription) {
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = post.content;
+            const textContent = tempDiv.textContent || tempDiv.innerText || '';
+            const description = textContent.substring(0, 150).trim() + '...';
+            twitterDescription.setAttribute('content', description);
+        }
+
         // Get recent posts (excluding current post)
         const recentPosts = posts
             .filter(p => p.slug !== slug)
