@@ -54,16 +54,9 @@
         }
 
         const html = sortedPosts.map(post => {
-            const date = new Date(post.date);
-            const formattedDate = date.toLocaleDateString('en-US', {
-                year: 'numeric',
-                month: 'short'
-            });
-
             return `
                 <li>
                     <a href="post.html?slug=${encodeURIComponent(post.slug)}">${escapeHtml(post.title)}</a>
-                    (${formattedDate})
                 </li>
             `;
         }).join('');
