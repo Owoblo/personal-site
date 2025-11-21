@@ -122,11 +122,20 @@ body {
     line-height: 1.7;
     color: var(--colors--text);
     background-color: var(--colors--background);
+    background-image:
+        repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,.01) 2px, rgba(0,0,0,.01) 4px),
+        repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(0,0,0,.01) 2px, rgba(0,0,0,.01) 4px);
     margin: 0;
     padding: 20px;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.u-mode-invert {
+    background-image:
+        repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,.008) 2px, rgba(255,255,255,.008) 4px),
+        repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(255,255,255,.008) 2px, rgba(255,255,255,.008) 4px);
 }
 
 /* Reset apple form styles */
@@ -400,6 +409,19 @@ section:last-child {
     margin-bottom: 120px;
 }
 
+/* Built/Building section with subtle background */
+.projects-section {
+    background-color: rgba(0, 0, 0, 0.015);
+    padding: 40px;
+    margin-left: -40px;
+    margin-right: -40px;
+    border-radius: 4px;
+}
+
+.u-mode-invert .projects-section {
+    background-color: rgba(255, 255, 255, 0.02);
+}
+
 /* Links section spacing */
 .links-list a {
     margin-right: 24px;
@@ -452,8 +474,9 @@ a {
     color: var(--colors--link);
     text-decoration: none;
     border-bottom: 1px solid var(--colors--link);
-    transition: all 0.2s ease;
+    transition: all 0.25s ease;
     padding-bottom: 1px;
+    display: inline-block;
 }
 
 a:visited {
@@ -466,10 +489,12 @@ a:hover {
     border-bottom-color: var(--colors--link-hover);
     border-bottom-width: 2px;
     padding-bottom: 0px;
+    transform: translateY(-1px);
 }
 
 a:active {
     color: var(--colors--link-active);
+    transform: translateY(0);
 }
 
 /* ============================================
@@ -679,6 +704,12 @@ dialog.modal::backdrop {
         max-width: 100%;
     }
 
+    .projects-section {
+        margin-left: -20px;
+        margin-right: -20px;
+        padding: 30px 20px;
+    }
+
     .site-header {
         flex-direction: row;
         justify-content: space-between;
@@ -767,6 +798,12 @@ dialog.modal::backdrop {
 
     .container {
         padding: 16px 16px 24px;
+    }
+
+    .projects-section {
+        margin-left: -16px;
+        margin-right: -16px;
+        padding: 24px 16px;
     }
 
     .site-header {

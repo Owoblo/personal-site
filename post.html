@@ -50,6 +50,31 @@
     <script src="blog.js"></script>
 
     <script>
+        // Swipe gesture navigation
+        (function() {
+            let touchStartX = 0;
+            let touchEndX = 0;
+            const minSwipeDistance = 50;
+
+            document.addEventListener('touchstart', function(e) {
+                touchStartX = e.changedTouches[0].screenX;
+            }, { passive: true });
+
+            document.addEventListener('touchend', function(e) {
+                touchEndX = e.changedTouches[0].screenX;
+                handleSwipe();
+            }, { passive: true });
+
+            function handleSwipe() {
+                const swipeDistance = touchEndX - touchStartX;
+
+                // Swipe left (going backwards/home)
+                if (swipeDistance < -minSwipeDistance) {
+                    window.location.href = 'index.html';
+                }
+            }
+        })();
+
         // Dark/Light mode toggle functionality
         (function() {
             const toggleCheckbox = document.getElementById('theme-toggle');
