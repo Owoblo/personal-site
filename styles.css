@@ -337,20 +337,15 @@ p {
 }
 
 .key-statement {
-    background-color: rgba(0, 100, 255, 0.05);
-    padding: 20px 24px;
+    padding: 20px 0;
     margin: 20px 0 !important;
-    border-left: 3px solid var(--colors--primary-accent);
-    border-radius: 0 4px 4px 0;
+    border-left: 2px solid var(--colors--text);
+    padding-left: 24px;
 }
 
 .key-statement em {
     font-style: italic;
     font-weight: 500;
-}
-
-.u-mode-invert .key-statement {
-    background-color: rgba(107, 158, 255, 0.08);
 }
 
 /* Rich text modifiers */
@@ -398,7 +393,16 @@ section {
 }
 
 section:last-child {
-    margin-bottom: 80px;
+    margin-bottom: 120px;
+}
+
+/* Links section spacing */
+.links-list a {
+    margin-right: 24px;
+}
+
+.links-list a:last-child {
+    margin-right: 0;
 }
 
 /* ============================================
