@@ -165,7 +165,7 @@ input:-webkit-autofill:focus {
 .container {
     max-width: 680px;
     margin: 0 auto;
-    padding: 40px 40px 80px;
+    padding: 25px 40px 80px;
     position: relative;
 }
 
@@ -458,6 +458,12 @@ a:active {
     outline: none;
 }
 
+.toggle-switch:focus,
+.toggle-switch:focus-visible {
+    outline: none;
+    box-shadow: none;
+}
+
 .toggle-checkbox {
     opacity: 0;
     width: 0;
@@ -506,14 +512,22 @@ a:active {
 
 .toggle-switch:focus-within {
     outline: none;
+    box-shadow: none;
 }
 
 .toggle-checkbox:focus {
     outline: none;
+    box-shadow: none;
+}
+
+.toggle-checkbox:focus-visible {
+    outline: none;
+    box-shadow: none;
 }
 
 .toggle-checkbox:focus-visible + .toggle-label {
     outline: none;
+    box-shadow: none;
 }
 
 /* Theme toggle icons */
