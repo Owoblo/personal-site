@@ -251,9 +251,10 @@ h1, h2, h3, h4 {
 }
 
 h1 {
-    font-size: 2em;
+    font-size: 2.75em;
     font-weight: 600;
-    letter-spacing: -0.03em;
+    letter-spacing: -0.04em;
+    line-height: 1.1;
 }
 
 h2 {
@@ -337,15 +338,18 @@ p {
 }
 
 .key-statement {
-    padding: 20px 0;
-    margin: 20px 0 !important;
-    border-left: 2px solid var(--colors--text);
-    padding-left: 24px;
+    padding: 24px 0;
+    margin: 32px 0 !important;
+    border-left: 3px solid var(--colors--text);
+    padding-left: 28px;
+    font-size: 19px;
+    font-weight: 400;
 }
 
 .key-statement em {
     font-style: italic;
-    font-weight: 500;
+    font-weight: 600;
+    font-size: 1.05em;
 }
 
 /* Rich text modifiers */
@@ -691,9 +695,10 @@ dialog.modal::backdrop {
     }
 
     h1 {
-        font-size: 1.75em;
+        font-size: 2.2em;
         font-weight: 600;
-        letter-spacing: -0.02em;
+        letter-spacing: -0.03em;
+        line-height: 1.15;
     }
 
     h2 {
@@ -769,8 +774,10 @@ dialog.modal::backdrop {
     }
 
     h1 {
-        font-size: 1.65em;
+        font-size: 2em;
         font-weight: 600;
+        letter-spacing: -0.025em;
+        line-height: 1.2;
     }
 
     h2 {
