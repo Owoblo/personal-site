@@ -29,7 +29,7 @@
     }
 
     // Render posts to the page
-    function renderPosts(posts) {
+    function renderPosts(posts, limit = null) {
         const container = document.getElementById('blog-posts');
         console.log('renderPosts called with:', posts);
         console.log('Container element:', container);
@@ -46,7 +46,12 @@
         }
 
         // Sort by date, newest first
-        const sortedPosts = [...posts].sort((a, b) => new Date(b.date) - new Date(a.date));
+        let sortedPosts = [...posts].sort((a, b) => new Date(b.date) - new Date(a.date));
+
+        // Limit posts if specified (for homepage preview)
+        if (limit && sortedPosts.length > limit) {
+            sortedPosts = sortedPosts.slice(0, limit);
+        }
 
         const html = sortedPosts.map(post => {
             const date = new Date(post.date);
@@ -166,10 +171,12 @@
         const posts = await loadPosts();
         console.log('Posts loaded in init:', posts);
 
-        // Check if we're on the main page or single post page
+        // Check if we're on the main page, thoughts page, or single post page
         if (document.getElementById('blog-posts')) {
             console.log('Found blog-posts container, rendering posts list...');
-            renderPosts(posts);
+            // Check if we're on the homepage (limit to 5 posts) or thoughts page (show all)
+            const isHomepage = !document.querySelector('.thoughts-list');
+            renderPosts(posts, isHomepage ? 5 : null);
         } else if (document.getElementById('post-content')) {
             console.log('Found post-content container, rendering single post...');
             renderSinglePost(posts);
