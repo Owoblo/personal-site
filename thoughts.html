@@ -17,12 +17,10 @@
             <h1><a href="index.html" class="site-title">John Owolabi</a></h1>
             <!-- Dark/Light Mode Toggle -->
             <div class="theme-toggle-wrapper">
-                <i class="ph ph-sun theme-icon" id="sun-icon"></i>
                 <label class="toggle-switch" for="theme-toggle" aria-label="Toggle dark mode">
                     <input type="checkbox" id="theme-toggle" class="toggle-checkbox">
                     <span class="toggle-label has-transition"></span>
                 </label>
-                <i class="ph ph-moon theme-icon" id="moon-icon"></i>
             </div>
         </header>
 
@@ -47,19 +45,6 @@
         (function() {
             const toggleCheckbox = document.getElementById('theme-toggle');
             const body = document.body;
-            const sunIcon = document.getElementById('sun-icon');
-            const moonIcon = document.getElementById('moon-icon');
-
-            // Update icon states based on theme
-            function updateIcons(isDark) {
-                if (isDark) {
-                    sunIcon.classList.add('hidden');
-                    moonIcon.classList.remove('hidden');
-                } else {
-                    sunIcon.classList.remove('hidden');
-                    moonIcon.classList.add('hidden');
-                }
-            }
 
             // Check for saved user preference, otherwise check system preference
             const currentTheme = localStorage.getItem('theme');
@@ -69,9 +54,6 @@
             if (currentTheme === 'dark' || (!currentTheme && prefersDark)) {
                 body.classList.add('u-mode-invert');
                 toggleCheckbox.checked = true;
-                updateIcons(true);
-            } else {
-                updateIcons(false);
             }
 
             // Toggle theme on checkbox change
@@ -79,11 +61,9 @@
                 if (this.checked) {
                     body.classList.add('u-mode-invert');
                     localStorage.setItem('theme', 'dark');
-                    updateIcons(true);
                 } else {
                     body.classList.remove('u-mode-invert');
                     localStorage.setItem('theme', 'light');
-                    updateIcons(false);
                 }
             });
 
@@ -93,11 +73,9 @@
                     if (e.matches) {
                         body.classList.add('u-mode-invert');
                         toggleCheckbox.checked = true;
-                        updateIcons(true);
                     } else {
                         body.classList.remove('u-mode-invert');
                         toggleCheckbox.checked = false;
-                        updateIcons(false);
                     }
                 }
             });
