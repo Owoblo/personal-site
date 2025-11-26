@@ -198,43 +198,75 @@
 
         <div class="editor-section" id="editor-section">
             <h2 id="editor-title">Create New Post</h2>
-            <form id="post-form">
-                <input type="hidden" id="post-id">
 
+            <!-- Step 1: Paste Raw Text -->
+            <div id="paste-section">
                 <div class="form-group">
-                    <label for="post-title">Title *</label>
-                    <input type="text" id="post-title" required>
+                    <label for="raw-text">Paste Your Article</label>
+                    <textarea id="raw-text" placeholder="Paste your raw article text here. The AI will analyze it, format it beautifully, and auto-generate the title, excerpt, and slug for you." style="min-height: 300px; font-size: 1em; line-height: 1.6;"></textarea>
+                </div>
+                <div style="display: flex; gap: 10px; align-items: center;">
+                    <button type="button" class="btn btn-primary" onclick="generatePost()" id="generate-btn">✨ Generate Post with AI</button>
+                    <span id="generate-status" style="font-size: 0.9em; opacity: 0.7;"></span>
+                </div>
+            </div>
+
+            <!-- Step 2: Review & Edit AI Generated Content -->
+            <div id="review-section" style="display: none;">
+                <div class="alert alert-success" style="margin-bottom: 20px;">
+                    ✓ AI has generated your post! Review the details below, make any edits, and preview before publishing.
                 </div>
 
-                <div class="form-group">
-                    <label for="post-slug">URL Slug *</label>
-                    <input type="text" id="post-slug" required placeholder="e.g., my-first-post">
-                </div>
+                <form id="post-form">
+                    <input type="hidden" id="post-id">
 
-                <div class="form-group">
-                    <label for="post-date">Date *</label>
-                    <input type="date" id="post-date" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="post-excerpt">Excerpt *</label>
-                    <textarea id="post-excerpt" rows="3" required placeholder="A short summary of your post"></textarea>
-                </div>
-
-                <div class="form-group">
-                    <label for="post-content">Content *</label>
-                    <textarea id="post-content" required placeholder="Paste your raw text here, then click 'Auto-Format with AI' to format it beautifully."></textarea>
-                    <div style="margin-top: 10px; display: flex; gap: 10px; align-items: center;">
-                        <button type="button" class="btn" onclick="autoFormatContent()" id="format-btn">✨ Auto-Format with AI</button>
-                        <span id="format-status" style="font-size: 0.9em; opacity: 0.7;"></span>
+                    <div class="form-group">
+                        <label for="post-title">Title *</label>
+                        <input type="text" id="post-title" required>
+                        <small style="opacity: 0.7;">AI-generated. Feel free to edit.</small>
                     </div>
-                </div>
 
-                <div class="post-actions">
-                    <button type="submit" class="btn btn-primary">Save Post</button>
-                    <button type="button" class="btn" onclick="cancelEdit()">Cancel</button>
+                    <div class="form-group">
+                        <label for="post-slug">URL Slug *</label>
+                        <input type="text" id="post-slug" required placeholder="e.g., my-first-post">
+                        <small style="opacity: 0.7;">Auto-generated from title.</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="post-date">Date *</label>
+                        <input type="date" id="post-date" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="post-excerpt">Excerpt *</label>
+                        <textarea id="post-excerpt" rows="3" required placeholder="A short summary of your post"></textarea>
+                        <small style="opacity: 0.7;">AI-generated summary. Edit if needed.</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="post-content">Content (HTML) *</label>
+                        <textarea id="post-content" required placeholder="Formatted HTML content" style="min-height: 250px; font-family: monospace; font-size: 0.9em;"></textarea>
+                        <small style="opacity: 0.7;">AI-formatted with proper headings, bold, and blockquotes.</small>
+                    </div>
+
+                    <div class="post-actions">
+                        <button type="button" class="btn" onclick="showPreview()" id="preview-btn">👁️ Preview</button>
+                        <button type="submit" class="btn btn-primary">Publish Post</button>
+                        <button type="button" class="btn" onclick="cancelEdit()">Cancel</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Step 3: Preview -->
+            <div id="preview-section" style="display: none; margin-top: 40px; padding: 30px; border: 2px solid var(--colors--text); background-color: var(--colors--footnote-background);">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h3>Preview</h3>
+                    <button type="button" class="btn" onclick="closePreview()">✕ Close Preview</button>
                 </div>
-            </form>
+                <div id="preview-content" style="max-width: 700px; margin: 0 auto;">
+                    <!-- Preview will be rendered here -->
+                </div>
+            </div>
         </div>
 
         <div class="posts-management">
@@ -318,9 +350,17 @@
         function showNewPostForm() {
             editingId = null;
             document.getElementById('editor-title').textContent = 'Create New Post';
+
+            // Reset and show paste section
+            document.getElementById('raw-text').value = '';
+            document.getElementById('paste-section').style.display = 'block';
+            document.getElementById('review-section').style.display = 'none';
+            document.getElementById('preview-section').style.display = 'none';
+
+            // Reset form
             document.getElementById('post-form').reset();
             document.getElementById('post-id').value = '';
-            document.getElementById('post-date').value = new Date().toISOString().split('T')[0];
+
             document.getElementById('editor-section').classList.add('active');
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
@@ -332,12 +372,20 @@
 
             editingId = id;
             document.getElementById('editor-title').textContent = 'Edit Post';
+
+            // Skip paste section, go straight to review/edit
+            document.getElementById('paste-section').style.display = 'none';
+            document.getElementById('review-section').style.display = 'block';
+            document.getElementById('preview-section').style.display = 'none';
+
+            // Fill form with existing post data
             document.getElementById('post-id').value = post.id;
             document.getElementById('post-title').value = post.title;
             document.getElementById('post-slug').value = post.slug;
             document.getElementById('post-date').value = post.date;
             document.getElementById('post-excerpt').value = post.excerpt;
             document.getElementById('post-content').value = post.content;
+
             document.getElementById('editor-section').classList.add('active');
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
@@ -346,6 +394,10 @@
         function cancelEdit() {
             editingId = null;
             document.getElementById('post-form').reset();
+            document.getElementById('raw-text').value = '';
+            document.getElementById('paste-section').style.display = 'block';
+            document.getElementById('review-section').style.display = 'none';
+            document.getElementById('preview-section').style.display = 'none';
             document.getElementById('editor-section').classList.remove('active');
         }
 
@@ -399,7 +451,7 @@
             cancelEdit();
         });
 
-        // Auto-generate slug from title
+        // Auto-update slug when title changes manually
         document.getElementById('post-title').addEventListener('input', function(e) {
             if (!editingId) {
                 const slug = e.target.value
@@ -464,25 +516,25 @@
             header.appendChild(downloadBtn);
         });
 
-        // Auto-format content with AI using Netlify Function
-        async function autoFormatContent() {
-            const contentTextarea = document.getElementById('post-content');
-            const rawText = contentTextarea.value.trim();
-            const formatBtn = document.getElementById('format-btn');
-            const formatStatus = document.getElementById('format-status');
+        // Generate complete post with AI
+        async function generatePost() {
+            const rawTextarea = document.getElementById('raw-text');
+            const rawText = rawTextarea.value.trim();
+            const generateBtn = document.getElementById('generate-btn');
+            const generateStatus = document.getElementById('generate-status');
 
             if (!rawText) {
-                alert('Please paste some text in the Content field first.');
+                alert('Please paste your article text first.');
                 return;
             }
 
             // Show loading state
-            formatBtn.disabled = true;
-            formatBtn.textContent = '⏳ Formatting...';
-            formatStatus.textContent = 'AI is analyzing your text...';
+            generateBtn.disabled = true;
+            generateBtn.textContent = '⏳ AI is working...';
+            generateStatus.textContent = 'Generating title, excerpt, and formatting content...';
 
             try {
-                // Call Netlify Function instead of OpenAI directly
+                // Call Netlify Function to generate complete post
                 const response = await fetch('/.netlify/functions/format-content', {
                     method: 'POST',
                     headers: {
@@ -495,31 +547,79 @@
 
                 if (!response.ok) {
                     const error = await response.json();
-                    throw new Error(error.error || 'Failed to format content');
+                    throw new Error(error.error || 'Failed to generate post');
                 }
 
                 const data = await response.json();
-                const formattedContent = data.formattedContent;
 
-                // Update the textarea with formatted content
-                contentTextarea.value = formattedContent;
-                formatStatus.textContent = '✓ Formatted successfully!';
-                formatStatus.style.color = '#28a745';
+                // Auto-fill all fields
+                document.getElementById('post-title').value = data.title;
+                document.getElementById('post-excerpt').value = data.excerpt;
+                document.getElementById('post-content').value = data.content;
+                document.getElementById('post-date').value = new Date().toISOString().split('T')[0];
 
-                setTimeout(() => {
-                    formatStatus.textContent = '';
-                    formatStatus.style.color = '';
-                }, 3000);
+                // Auto-generate slug from title
+                const slug = data.title
+                    .toLowerCase()
+                    .trim()
+                    .replace(/[^\w\s-]/g, '')
+                    .replace(/\s+/g, '-')
+                    .replace(/-+/g, '-');
+                document.getElementById('post-slug').value = slug;
+
+                // Hide paste section, show review section
+                document.getElementById('paste-section').style.display = 'none';
+                document.getElementById('review-section').style.display = 'block';
+
+                generateStatus.textContent = '';
+                window.scrollTo({ top: 0, behavior: 'smooth' });
 
             } catch (error) {
-                console.error('Error formatting content:', error);
-                formatStatus.textContent = '✗ Error: ' + error.message;
-                formatStatus.style.color = '#dc3545';
-                alert('Failed to format content. Error: ' + error.message);
+                console.error('Error generating post:', error);
+                generateStatus.textContent = '✗ Error: ' + error.message;
+                generateStatus.style.color = '#dc3545';
+                alert('Failed to generate post. Error: ' + error.message);
             } finally {
-                formatBtn.disabled = false;
-                formatBtn.textContent = '✨ Auto-Format with AI';
+                generateBtn.disabled = false;
+                generateBtn.textContent = '✨ Generate Post with AI';
             }
+        }
+
+        // Show preview
+        function showPreview() {
+            const title = document.getElementById('post-title').value;
+            const content = document.getElementById('post-content').value;
+            const date = document.getElementById('post-date').value;
+
+            if (!title || !content) {
+                alert('Please fill in title and content first.');
+                return;
+            }
+
+            const formattedDate = new Date(date).toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+
+            const previewContent = document.getElementById('preview-content');
+            previewContent.innerHTML = `
+                <article>
+                    <h1 style="margin-bottom: 10px;">${escapeHtml(title)}</h1>
+                    <p style="opacity: 0.7; font-style: italic; margin-bottom: 30px;">${formattedDate}</p>
+                    <div class="post-body">
+                        ${content}
+                    </div>
+                </article>
+            `;
+
+            document.getElementById('preview-section').style.display = 'block';
+            document.getElementById('preview-section').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Close preview
+        function closePreview() {
+            document.getElementById('preview-section').style.display = 'none';
         }
 
         // Login authentication using Netlify Function

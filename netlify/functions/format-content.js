@@ -1,4 +1,4 @@
-// Netlify Function to format content with OpenAI
+// Netlify Function to generate complete blog post with OpenAI
 // This keeps your API key secure on the server side
 
 exports.handler = async (event, context) => {
@@ -30,7 +30,7 @@ exports.handler = async (event, context) => {
       };
     }
 
-    // Call OpenAI API
+    // Call OpenAI API to generate complete post metadata
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
@@ -42,27 +42,37 @@ exports.handler = async (event, context) => {
         messages: [
           {
             role: 'system',
-            content: `You are an expert content formatter. Your job is to take raw text and format it beautifully with HTML markup. Follow these guidelines:
+            content: `You are an expert blog post generator. Analyze the raw article text and generate:
 
-1. Add <h2> tags for main section headings (analyze content to identify natural sections)
-2. Add <h3> tags for subsections when appropriate
-3. Use <strong> or <b> for emphasis on important words/phrases
-4. Use <em> or <i> for subtle emphasis or foreign words
-5. Use <blockquote><p>...</p></blockquote> for impactful quotes or key statements
-6. Wrap paragraphs in <p> tags
-7. Maintain the author's voice and tone - don't change the writing style
-8. Don't add any content that wasn't in the original text
-9. Preserve line breaks between paragraphs
-10. Look for patterns like "Here's what..." or "The truth is..." that might warrant bold or blockquote treatment
+1. **Title**: A compelling, concise title (5-10 words) that captures the essence of the article
+2. **Excerpt**: A 1-2 sentence summary (under 200 characters) that entices readers
+3. **Formatted Content**: The article formatted with beautiful HTML markup:
+   - Add <h2> tags for main section headings (analyze content to identify natural sections)
+   - Add <h3> tags for subsections when appropriate
+   - Use <strong> or <b> for emphasis on important words/phrases
+   - Use <em> or <i> for subtle emphasis or foreign words
+   - Use <blockquote><p>...</p></blockquote> for impactful quotes or key statements
+   - Wrap paragraphs in <p> tags
+   - Maintain the author's voice and tone - don't change the writing style
+   - Don't add any content that wasn't in the original text
+   - Preserve the natural flow and line breaks
 
-Return ONLY the formatted HTML, no explanations or markdown code blocks.`
+Return a JSON object with this EXACT structure:
+{
+  "title": "The Generated Title",
+  "excerpt": "A compelling 1-2 sentence summary under 200 characters.",
+  "content": "<p>The full formatted HTML content...</p>"
+}
+
+Return ONLY valid JSON, nothing else.`
           },
           {
             role: 'user',
             content: text
           }
         ],
-        temperature: 0.3
+        temperature: 0.3,
+        response_format: { type: "json_object" }
       })
     });
 
@@ -72,21 +82,23 @@ Return ONLY the formatted HTML, no explanations or markdown code blocks.`
     }
 
     const data = await response.json();
-    const formattedContent = data.choices[0].message.content.trim();
+    const result = JSON.parse(data.choices[0].message.content.trim());
 
     return {
       statusCode: 200,
       body: JSON.stringify({
-        formattedContent
+        title: result.title,
+        excerpt: result.excerpt,
+        content: result.content
       })
     };
 
   } catch (error) {
-    console.error('Error formatting content:', error);
+    console.error('Error generating post:', error);
     return {
       statusCode: 500,
       body: JSON.stringify({
-        error: error.message || 'Failed to format content'
+        error: error.message || 'Failed to generate post'
       })
     };
   }
