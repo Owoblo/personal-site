@@ -201,7 +201,10 @@
     <div class="admin-container">
         <div class="admin-header">
             <h1>Blog Admin</h1>
-            <a href="index.html" class="btn">← Back to Site</a>
+            <div style="display: flex; gap: 10px;">
+                <button class="btn" onclick="testGitHubConnection()" id="test-github-btn">Test GitHub</button>
+                <a href="index.html" class="btn">← Back to Site</a>
+            </div>
         </div>
 
         <div id="alert-container"></div>
@@ -319,9 +322,11 @@
         async function savePosts() {
             // Save to localStorage for immediate access
             localStorage.setItem('blog-posts', JSON.stringify(posts));
+            console.log('Saved to localStorage. Total posts:', posts.length);
 
             // Also save to GitHub so it's available on all devices
             try {
+                console.log('Attempting to save to GitHub...');
                 showAlert('Saving post to GitHub...', 'info');
 
                 const response = await fetch('/.netlify/functions/save-post', {
@@ -334,21 +339,40 @@
                     })
                 });
 
+                console.log('GitHub save response status:', response.status);
+
                 if (!response.ok) {
-                    const error = await response.json();
-                    throw new Error(error.error || 'Failed to save to GitHub');
+                    const errorText = await response.text();
+                    console.error('GitHub save error response:', errorText);
+                    let errorMessage;
+                    try {
+                        const errorJson = JSON.parse(errorText);
+                        errorMessage = errorJson.error || 'Unknown error';
+                    } catch {
+                        errorMessage = errorText || 'Failed to save to GitHub';
+                    }
+                    throw new Error(errorMessage);
                 }
 
                 const data = await response.json();
                 console.log('Successfully saved to GitHub:', data);
 
                 // Show success message
-                showAlert('Post saved! Your site will update in a moment.', 'success');
+                showAlert('✓ Post saved to GitHub! Your site will update in ~30 seconds.', 'success');
 
             } catch (error) {
                 console.error('Error saving to GitHub:', error);
                 // Still saved to localStorage, so don't block the user
-                showAlert('Post saved locally. GitHub sync failed: ' + error.message, 'warning');
+                const errorMsg = error.message.includes('not configured')
+                    ? 'GitHub credentials not set in Netlify. Check GITHUB_TOKEN and GITHUB_REPO environment variables.'
+                    : error.message;
+                showAlert('⚠️ Post saved locally only. GitHub sync failed: ' + errorMsg, 'warning');
+
+                // Show detailed error in console
+                console.error('Detailed error:', {
+                    message: error.message,
+                    stack: error.stack
+                });
             }
         }
 
@@ -548,6 +572,67 @@
             downloadBtn.style.marginLeft = '10px';
             header.appendChild(downloadBtn);
         });
+
+        // Test GitHub connection
+        async function testGitHubConnection() {
+            const testBtn = document.getElementById('test-github-btn');
+            testBtn.disabled = true;
+            testBtn.textContent = 'Testing...';
+
+            try {
+                console.log('Testing GitHub connection...');
+                showAlert('Testing GitHub connection...', 'info');
+
+                // Try to save current posts (or empty array if no posts)
+                const testPosts = posts.length > 0 ? posts : [];
+
+                const response = await fetch('/.netlify/functions/save-post', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        posts: testPosts
+                    })
+                });
+
+                console.log('Test response status:', response.status);
+                const responseText = await response.text();
+                console.log('Test response body:', responseText);
+
+                if (!response.ok) {
+                    let errorMessage;
+                    try {
+                        const errorJson = JSON.parse(responseText);
+                        errorMessage = errorJson.error || 'Unknown error';
+                    } catch {
+                        errorMessage = responseText || 'Unknown error';
+                    }
+                    throw new Error(errorMessage);
+                }
+
+                const data = JSON.parse(responseText);
+                console.log('GitHub test successful:', data);
+                showAlert('✓ GitHub connection works! Environment variables are configured correctly.', 'success');
+
+            } catch (error) {
+                console.error('GitHub test failed:', error);
+
+                let helpText = '';
+                if (error.message.includes('not configured')) {
+                    helpText = '\n\nPlease add GITHUB_TOKEN and GITHUB_REPO to Netlify environment variables, then redeploy.';
+                } else if (error.message.includes('404') || error.message.includes('Not Found')) {
+                    helpText = '\n\nFunction not found. Make sure your site has been deployed after adding the save-post function.';
+                } else if (error.message.includes('Bad credentials')) {
+                    helpText = '\n\nGitHub token is invalid. Please check GITHUB_TOKEN in Netlify.';
+                }
+
+                showAlert('✗ GitHub test failed: ' + error.message + helpText, 'warning');
+            } finally {
+                testBtn.disabled = false;
+                testBtn.textContent = 'Test GitHub';
+            }
+        }
 
         // Generate complete post with AI
         async function generatePost() {
