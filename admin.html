@@ -143,6 +143,16 @@
             border-color: #28a745;
         }
 
+        .alert-info {
+            background-color: rgba(23, 162, 184, 0.1);
+            border-color: #17a2b8;
+        }
+
+        .alert-warning {
+            background-color: rgba(255, 193, 7, 0.1);
+            border-color: #ffc107;
+        }
+
         .login-container {
             max-width: 400px;
             margin: 100px auto;
@@ -305,18 +315,41 @@
             }
         }
 
-        // Save posts to localStorage
-        function savePosts() {
+        // Save posts to localStorage AND GitHub
+        async function savePosts() {
+            // Save to localStorage for immediate access
             localStorage.setItem('blog-posts', JSON.stringify(posts));
-            // Also download as JSON file for backup
-            const dataStr = JSON.stringify({ posts: posts }, null, 2);
-            const dataBlob = new Blob([dataStr], { type: 'application/json' });
 
-            // Store the latest data URL
-            if (window.latestDataUrl) {
-                URL.revokeObjectURL(window.latestDataUrl);
+            // Also save to GitHub so it's available on all devices
+            try {
+                showAlert('Saving post to GitHub...', 'info');
+
+                const response = await fetch('/.netlify/functions/save-post', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        posts: posts
+                    })
+                });
+
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.error || 'Failed to save to GitHub');
+                }
+
+                const data = await response.json();
+                console.log('Successfully saved to GitHub:', data);
+
+                // Show success message
+                showAlert('Post saved! Your site will update in a moment.', 'success');
+
+            } catch (error) {
+                console.error('Error saving to GitHub:', error);
+                // Still saved to localStorage, so don't block the user
+                showAlert('Post saved locally. GitHub sync failed: ' + error.message, 'warning');
             }
-            window.latestDataUrl = URL.createObjectURL(dataBlob);
         }
 
         // Render posts list
