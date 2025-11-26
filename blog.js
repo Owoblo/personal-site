@@ -6,8 +6,10 @@
     async function loadPosts() {
         try {
             // Always try to load from posts.json first
+            // Add cache-busting timestamp to prevent browser caching
             console.log('Attempting to load from posts.json...');
-            const response = await fetch('posts.json');
+            const timestamp = new Date().getTime();
+            const response = await fetch(`posts.json?v=${timestamp}`);
             const data = await response.json();
             const jsonPosts = data.posts || [];
             console.log('Loaded posts from posts.json:', jsonPosts);

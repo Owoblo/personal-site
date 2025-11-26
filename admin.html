@@ -305,7 +305,9 @@
                 if (stored) {
                     posts = JSON.parse(stored);
                 } else {
-                    const response = await fetch('posts.json');
+                    // Add cache-busting timestamp
+                    const timestamp = new Date().getTime();
+                    const response = await fetch(`posts.json?v=${timestamp}`);
                     const data = await response.json();
                     posts = data.posts || [];
                     savePosts();
