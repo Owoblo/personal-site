@@ -5,25 +5,45 @@
     // Load posts from localStorage or posts.json
     async function loadPosts() {
         try {
-            // First try localStorage
+            // Always try to load from posts.json first
+            console.log('Attempting to load from posts.json...');
+            const response = await fetch('posts.json');
+            const data = await response.json();
+            const jsonPosts = data.posts || [];
+            console.log('Loaded posts from posts.json:', jsonPosts);
+
+            // Then check localStorage
             const stored = localStorage.getItem('blog-posts');
             console.log('Checking localStorage for posts:', stored ? 'Found' : 'Not found');
 
             if (stored) {
-                const posts = JSON.parse(stored);
-                console.log('Loaded posts from localStorage:', posts);
-                return posts;
+                const localPosts = JSON.parse(stored);
+                console.log('Loaded posts from localStorage:', localPosts);
+
+                // Merge posts, preferring localStorage for posts with matching IDs
+                const mergedPosts = [...jsonPosts];
+                localPosts.forEach(localPost => {
+                    const index = mergedPosts.findIndex(p => p.id === localPost.id);
+                    if (index >= 0) {
+                        // Update existing post with localStorage version
+                        mergedPosts[index] = localPost;
+                    } else {
+                        // Add new post from localStorage
+                        mergedPosts.push(localPost);
+                    }
+                });
+                console.log('Merged posts:', mergedPosts);
+                return mergedPosts;
             }
 
-            // Fallback to posts.json
-            console.log('Attempting to load from posts.json...');
-            const response = await fetch('posts.json');
-            const data = await response.json();
-            console.log('Loaded posts from posts.json:', data.posts);
-            return data.posts || [];
+            return jsonPosts;
         } catch (error) {
             console.error('Error loading posts:', error);
-            // Return empty array on error
+            // Fallback to localStorage if fetch fails
+            const stored = localStorage.getItem('blog-posts');
+            if (stored) {
+                return JSON.parse(stored);
+            }
             return [];
         }
     }
