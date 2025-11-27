@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics - John Owolabi</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        .stat-card {
+            padding: 20px;
+            border: 1px solid var(--colors--text);
+            opacity: 0.9;
+        }
+        .stat-number {
+            font-size: 2em;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        .stat-label {
+            opacity: 0.7;
+            font-size: 0.9em;
+        }
+        .page-stats {
+            margin-top: 30px;
+        }
+        .page-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--colors--text);
+            opacity: 0.3;
+        }
+        .page-item:first-child {
+            border-top: 1px solid var(--colors--text);
+        }
+        .page-name {
+            flex: 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .page-views {
+            font-weight: 600;
+            margin-left: 20px;
+        }
+        .loading {
+            text-align: center;
+            padding: 40px;
+            opacity: 0.7;
+        }
+        .date-range {
+            opacity: 0.6;
+            font-size: 0.9em;
+            margin-bottom: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="site-header">
+            <h1><a href="index.html" class="site-title">John Owolabi</a></h1>
+            <!-- Dark/Light Mode Toggle -->
+            <div class="theme-toggle-wrapper">
+                <label class="toggle-switch" for="theme-toggle" aria-label="Toggle dark mode">
+                    <input type="checkbox" id="theme-toggle" class="toggle-checkbox">
+                    <span class="toggle-label has-transition"></span>
+                </label>
+            </div>
+        </header>
+
+        <section>
+            <h2>Analytics</h2>
+            <div id="analytics-content" class="loading">Loading analytics...</div>
+        </section>
+    </div>
+
+    <script>
+        // Dark/Light mode toggle functionality
+        (function() {
+            const toggleCheckbox = document.getElementById('theme-toggle');
+            const body = document.body;
+
+            const currentTheme = localStorage.getItem('theme');
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+            if (currentTheme === 'dark' || (!currentTheme && prefersDark)) {
+                body.classList.add('u-mode-invert');
+                toggleCheckbox.checked = true;
+            }
+
+            toggleCheckbox.addEventListener('change', function() {
+                if (this.checked) {
+                    body.classList.add('u-mode-invert');
+                    localStorage.setItem('theme', 'dark');
+                } else {
+                    body.classList.remove('u-mode-invert');
+                    localStorage.setItem('theme', 'light');
+                }
+            });
+
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e) {
+                if (!localStorage.getItem('theme')) {
+                    if (e.matches) {
+                        body.classList.add('u-mode-invert');
+                        toggleCheckbox.checked = true;
+                    } else {
+                        body.classList.remove('u-mode-invert');
+                        toggleCheckbox.checked = false;
+                    }
+                }
+            });
+        })();
+
+        // Load and display analytics
+        async function loadAnalytics() {
+            try {
+                const timestamp = new Date().getTime();
+                const response = await fetch(`analytics.json?v=${timestamp}`);
+
+                if (!response.ok) {
+                    throw new Error('No analytics data yet');
+                }
+
+                const data = await response.json();
+                const views = data.views || [];
+
+                if (views.length === 0) {
+                    document.getElementById('analytics-content').innerHTML = '<p style="opacity: 0.7;">No views recorded yet.</p>';
+                    return;
+                }
+
+                // Calculate stats
+                const totalViews = views.length;
+
+                // Group by page
+                const pageViews = {};
+                views.forEach(view => {
+                    const page = view.page || 'unknown';
+                    pageViews[page] = (pageViews[page] || 0) + 1;
+                });
+
+                // Sort pages by views
+                const sortedPages = Object.entries(pageViews)
+                    .sort((a, b) => b[1] - a[1]);
+
+                // Get date range
+                const dates = views.map(v => new Date(v.timestamp));
+                const oldestDate = new Date(Math.min(...dates));
+                const newestDate = new Date(Math.max(...dates));
+
+                // Format dates
+                const formatDate = (date) => {
+                    return date.toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'short',
+                        day: 'numeric'
+                    });
+                };
+
+                // Get unique visitors (approximate based on different user agents)
+                const uniqueUserAgents = new Set(views.map(v => v.userAgent)).size;
+
+                // Render stats
+                const html = `
+                    <div class="date-range">
+                        Data from ${formatDate(oldestDate)} to ${formatDate(newestDate)}
+                    </div>
+
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-number">${totalViews.toLocaleString()}</div>
+                            <div class="stat-label">Total Views</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">${sortedPages.length}</div>
+                            <div class="stat-label">Pages Viewed</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">~${uniqueUserAgents}</div>
+                            <div class="stat-label">Unique Visitors</div>
+                        </div>
+                    </div>
+
+                    <div class="page-stats">
+                        <h3 style="margin-bottom: 20px;">Views by Page</h3>
+                        ${sortedPages.map(([page, count]) => {
+                            // Clean up page name for display
+                            let displayName = page;
+                            if (page === '/' || page === '/index.html') {
+                                displayName = 'Home';
+                            } else if (page === '/thoughts.html') {
+                                displayName = 'Thoughts';
+                            } else if (page.startsWith('/post.html?slug=')) {
+                                const slug = page.split('slug=')[1];
+                                displayName = 'Post: ' + decodeURIComponent(slug).replace(/-/g, ' ');
+                            }
+
+                            return `
+                                <div class="page-item">
+                                    <span class="page-name">${displayName}</span>
+                                    <span class="page-views">${count.toLocaleString()}</span>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                `;
+
+                document.getElementById('analytics-content').innerHTML = html;
+
+            } catch (error) {
+                console.error('Error loading analytics:', error);
+                document.getElementById('analytics-content').innerHTML =
+                    '<p style="opacity: 0.7;">No analytics data available yet. Views will appear here once people visit your site.</p>';
+            }
+        }
+
+        // Load analytics when page loads
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', loadAnalytics);
+        } else {
+            loadAnalytics();
+        }
+    </script>
+</body>
+</html>
