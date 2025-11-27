@@ -260,6 +260,10 @@
 
             <div class="form-group">
                 <label for="post-title">Title *</label>
+                <div id="title-options" style="margin-bottom: 10px; display: none;">
+                    <small style="display: block; margin-bottom: 8px;">Choose a title variation or edit:</small>
+                    <div id="title-buttons" style="display: flex; flex-direction: column; gap: 8px;"></div>
+                </div>
                 <input type="text" id="post-title" required>
                 <small>AI-generated. Feel free to edit.</small>
             </div>
@@ -419,20 +423,46 @@
 
                 const data = await response.json();
 
-                // Auto-fill fields
-                document.getElementById('post-title').value = data.title;
+                // Show title options
+                if (data.titleOptions && data.titleOptions.length > 0) {
+                    const titleOptionsDiv = document.getElementById('title-options');
+                    const titleButtonsDiv = document.getElementById('title-buttons');
+
+                    titleButtonsDiv.innerHTML = data.titleOptions.map((title, index) => `
+                        <button type="button" class="btn btn-small" onclick="selectTitle('${escapeHtml(title).replace(/'/g, "\\'")}', event)" style="text-align: left; justify-content: flex-start;">
+                            ${index + 1}. ${escapeHtml(title)}
+                        </button>
+                    `).join('');
+
+                    titleOptionsDiv.style.display = 'block';
+
+                    // Set first option as default
+                    document.getElementById('post-title').value = data.titleOptions[0];
+
+                    // Generate slug from first title
+                    const slug = data.titleOptions[0]
+                        .toLowerCase()
+                        .trim()
+                        .replace(/[^\w\s-]/g, '')
+                        .replace(/\s+/g, '-')
+                        .replace(/-+/g, '-');
+                    document.getElementById('post-slug').value = slug;
+                } else {
+                    // Fallback to single title if titleOptions not available
+                    document.getElementById('post-title').value = data.title || '';
+                    const slug = (data.title || '')
+                        .toLowerCase()
+                        .trim()
+                        .replace(/[^\w\s-]/g, '')
+                        .replace(/\s+/g, '-')
+                        .replace(/-+/g, '-');
+                    document.getElementById('post-slug').value = slug;
+                }
+
+                // Auto-fill other fields
                 document.getElementById('post-excerpt').value = data.excerpt;
                 document.getElementById('post-content').value = data.content;
                 document.getElementById('post-date').value = new Date().toISOString().split('T')[0];
-
-                // Generate slug
-                const slug = data.title
-                    .toLowerCase()
-                    .trim()
-                    .replace(/[^\w\s-]/g, '')
-                    .replace(/\s+/g, '-')
-                    .replace(/-+/g, '-');
-                document.getElementById('post-slug').value = slug;
 
                 // Generate new ID
                 currentPostId = posts.length > 0 ? Math.max(...posts.map(p => p.id)) + 1 : 1;
@@ -451,6 +481,21 @@
                 generateBtn.disabled = false;
                 generateBtn.textContent = '✨ Generate Post with AI';
             }
+        }
+
+        // Select title from options
+        function selectTitle(title, event) {
+            event.preventDefault();
+            document.getElementById('post-title').value = title;
+
+            // Auto-update slug
+            const slug = title
+                .toLowerCase()
+                .trim()
+                .replace(/[^\w\s-]/g, '')
+                .replace(/\s+/g, '-')
+                .replace(/-+/g, '-');
+            document.getElementById('post-slug').value = slug;
         }
 
         // Show preview
@@ -608,11 +653,23 @@
                     throw new Error(error.error || 'Failed to save');
                 }
 
-                showAlert(isEditing ? '✓ Post updated! Your site will update in ~30 seconds.' : '✓ Post published! Your site will update in ~30 seconds.', 'success');
+                showAlert(isEditing ? '✓ Post updated! Your site will update in ~30 seconds.' : '✓ Post published! Your site will update in ~30 seconds. Check it on the Thoughts page.', 'success');
 
+                // Reset form and go back to create tab
                 setTimeout(() => {
-                    window.location.href = 'thoughts.html';
-                }, 2000);
+                    document.getElementById('raw-text').value = '';
+                    document.getElementById('paste-section').classList.remove('hidden');
+                    document.getElementById('review-section').classList.add('hidden');
+                    document.getElementById('preview-section').classList.add('hidden');
+                    isEditing = false;
+                    currentPostId = null;
+                    document.getElementById('publish-btn').textContent = 'Publish Post';
+
+                    // Refresh posts list
+                    loadPosts();
+
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }, 1500);
 
             } catch (error) {
                 console.error('Error:', error);

@@ -182,6 +182,10 @@
             </div>
         ` : '';
 
+        // Get current page URL for sharing
+        const pageUrl = encodeURIComponent(window.location.href);
+        const pageTitle = encodeURIComponent(post.title);
+
         // Render post
         container.innerHTML = `
             <article>
@@ -189,6 +193,15 @@
                     <h1>${escapeHtml(post.title)}</h1>
                     <p class="post-date" style="opacity: 0.7; font-style: italic; margin-top: 10px;">${formattedDate}</p>
                 </header>
+
+                <!-- Share buttons -->
+                <div class="share-buttons" style="margin-top: 20px; padding-top: 15px; border-top: 1px solid var(--colors--text); opacity: 0.6; display: flex; gap: 15px; align-items: center; font-size: 0.9em;">
+                    <span>Share:</span>
+                    <a href="https://twitter.com/intent/tweet?text=${pageTitle}&url=${pageUrl}" target="_blank" rel="noopener" style="text-decoration: underline;">Twitter</a>
+                    <a href="https://www.linkedin.com/sharing/share-offsite/?url=${pageUrl}" target="_blank" rel="noopener" style="text-decoration: underline;">LinkedIn</a>
+                    <button onclick="navigator.clipboard.writeText('${window.location.href}'); alert('Link copied!')" style="background: none; border: none; color: var(--colors--text); text-decoration: underline; cursor: pointer; font-family: inherit; font-size: inherit; padding: 0; opacity: inherit;">Copy link</button>
+                </div>
+
                 <div class="post-body" style="margin-top: 30px;">
                     ${post.content}
                 </div>

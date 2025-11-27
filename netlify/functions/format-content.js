@@ -44,14 +44,14 @@ exports.handler = async (event, context) => {
             role: 'system',
             content: `You are an expert blog post generator. Analyze the raw article text and generate:
 
-1. **Title**: A compelling, concise title (5-10 words) that captures the essence of the article
+1. **Title Options**: Generate 4 different compelling title variations (5-10 words each) that capture different angles of the article
 2. **Excerpt**: A 1-2 sentence summary (under 200 characters) that entices readers
 3. **Formatted Content**: The article formatted with beautiful HTML markup:
    - Add <h2> tags for main section headings (analyze content to identify natural sections)
    - Add <h3> tags for subsections when appropriate
    - Use <strong> or <b> for emphasis on important words/phrases
    - Use <em> or <i> for subtle emphasis or foreign words
-   - Use <blockquote><p>...</p></blockquote> for impactful quotes or key statements
+   - Use <blockquote><p>...</p></blockquote> for impactful quotes, key statements, or powerful conclusions
    - Wrap paragraphs in <p> tags
    - Maintain the author's voice and tone - don't change the writing style
    - Don't add any content that wasn't in the original text
@@ -59,7 +59,7 @@ exports.handler = async (event, context) => {
 
 Return a JSON object with this EXACT structure:
 {
-  "title": "The Generated Title",
+  "titleOptions": ["Title Option 1", "Title Option 2", "Title Option 3", "Title Option 4"],
   "excerpt": "A compelling 1-2 sentence summary under 200 characters.",
   "content": "<p>The full formatted HTML content...</p>"
 }
@@ -87,7 +87,7 @@ Return ONLY valid JSON, nothing else.`
     return {
       statusCode: 200,
       body: JSON.stringify({
-        title: result.title,
+        titleOptions: result.titleOptions,
         excerpt: result.excerpt,
         content: result.content
       })
