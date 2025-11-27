@@ -194,14 +194,6 @@
                     <p class="post-date" style="opacity: 0.7; font-style: italic; margin-top: 10px;">${formattedDate}</p>
                 </header>
 
-                <!-- Share buttons -->
-                <div class="share-buttons" style="margin-top: 20px; padding-top: 15px; border-top: 1px solid var(--colors--text); opacity: 0.6; display: flex; gap: 15px; align-items: center; font-size: 0.9em;">
-                    <span>Share:</span>
-                    <a href="https://twitter.com/intent/tweet?text=${pageTitle}&url=${pageUrl}" target="_blank" rel="noopener" style="text-decoration: underline;">Twitter</a>
-                    <a href="https://www.linkedin.com/sharing/share-offsite/?url=${pageUrl}" target="_blank" rel="noopener" style="text-decoration: underline;">LinkedIn</a>
-                    <button onclick="navigator.clipboard.writeText('${window.location.href}'); alert('Link copied!')" style="background: none; border: none; color: var(--colors--text); text-decoration: underline; cursor: pointer; font-family: inherit; font-size: inherit; padding: 0; opacity: inherit;">Copy link</button>
-                </div>
-
                 <div class="post-body" style="margin-top: 30px;">
                     ${post.content}
                 </div>
@@ -213,6 +205,14 @@
                         <input type="email" name="email" placeholder="your@email.com" required style="flex: 1; min-width: 200px; padding: 10px 12px; border: 1px solid var(--colors--text); background-color: var(--colors--background); color: var(--colors--text); font-family: inherit; font-size: 0.95em;">
                         <button type="submit" style="padding: 10px 20px; border: 1px solid var(--colors--text); background-color: var(--colors--text); color: var(--colors--background); cursor: pointer; font-family: inherit; font-size: 0.95em; transition: opacity 0.2s ease;">Subscribe</button>
                     </form>
+                </div>
+
+                <!-- Share buttons -->
+                <div class="share-buttons" style="margin-top: 30px; opacity: 0.6; display: flex; gap: 15px; align-items: center; font-size: 0.9em;">
+                    <span>Share:</span>
+                    <a href="https://twitter.com/intent/tweet?text=${pageTitle}&url=${pageUrl}" target="_blank" rel="noopener" style="text-decoration: underline;">Twitter</a>
+                    <a href="https://www.linkedin.com/sharing/share-offsite/?url=${pageUrl}" target="_blank" rel="noopener" style="text-decoration: underline;">LinkedIn</a>
+                    <button onclick="navigator.clipboard.writeText('${window.location.href}'); alert('Link copied!')" style="background: none; border: none; color: var(--colors--text); text-decoration: underline; cursor: pointer; font-family: inherit; font-size: inherit; padding: 0; opacity: inherit;">Copy link</button>
                 </div>
 
                 ${recentPostsHtml}
