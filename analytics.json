@@ -1895,6 +1895,12 @@
       "timestamp": "2025-11-28T17:52:43.126Z",
       "referrer": "direct",
       "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/131.0.6778.0 Safari/537.36"
+    },
+    {
+      "page": "/",
+      "timestamp": "2025-11-28T17:52:52.025Z",
+      "referrer": "https://johnowolabi.com/post.html?slug=everything-all-at-once-somewhere-on-highway-401",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
     }
   ]
 }
