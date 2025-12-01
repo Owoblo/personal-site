@@ -2,14 +2,80 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://johnowolabi.com/</loc>
-    <lastmod>2025-11-21</lastmod>
+    <lastmod>2025-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://johnowolabi.com/thoughts.html</loc>
-    <lastmod>2025-11-21</lastmod>
+    <lastmod>2025-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://johnowolabi.com/post.html?slug=you-dont-lose-everyone-at-once</loc>
+    <lastmod>2024-01-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://johnowolabi.com/post.html?slug=love-feels-like-magic-until-it-doesnt</loc>
+    <lastmod>2024-01-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://johnowolabi.com/post.html?slug=people-dont-love-my-writing-they-love-my-honesty</loc>
+    <lastmod>2024-02-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://johnowolabi.com/post.html?slug=the-science-we-cant-explain</loc>
+    <lastmod>2024-02-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://johnowolabi.com/post.html?slug=before-you-know-its-friday</loc>
+    <lastmod>2024-02-04</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://johnowolabi.com/post.html?slug=move-in-day</loc>
+    <lastmod>2024-02-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://johnowolabi.com/post.html?slug=its-not-about-if-life-hits-you-its-when</loc>
+    <lastmod>2024-02-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://johnowolabi.com/post.html?slug=everything-all-at-once-somewhere-on-highway-401</loc>
+    <lastmod>2024-02-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://johnowolabi.com/post.html?slug=confronting-mortality-a-personal-reflection</loc>
+    <lastmod>2025-11-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://johnowolabi.com/post.html?slug=the-frustration-of-futuristic-bathroom-doors</loc>
+    <lastmod>2025-11-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://johnowolabi.com/post.html?slug=the-real-causes-of-violence-in-muslim-regions</loc>
+    <lastmod>2025-11-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
   </url>
 </urlset>

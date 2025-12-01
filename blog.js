@@ -144,6 +144,10 @@
         const ogUrl = document.querySelector('meta[property="og:url"]');
         if (ogUrl) ogUrl.setAttribute('content', `https://johnowolabi.com/post.html?slug=${slug}`);
 
+        // Update canonical URL
+        const canonical = document.querySelector('link[rel="canonical"]');
+        if (canonical) canonical.setAttribute('href', `https://johnowolabi.com/post.html?slug=${slug}`);
+
         // Update Twitter Card meta tags
         const twitterTitle = document.querySelector('meta[name="twitter:title"]');
         if (twitterTitle) twitterTitle.setAttribute('content', `${post.title} - John Owolabi`);

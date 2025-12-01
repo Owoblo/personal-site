@@ -1,4 +1,7 @@
 User-agent: *
 Allow: /
+Disallow: /create.html
+Disallow: /debug.html
+Disallow: /analytics.html
 
 Sitemap: https://johnowolabi.com/sitemap.xml
