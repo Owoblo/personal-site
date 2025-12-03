@@ -7721,6 +7721,12 @@
       "timestamp": "2025-12-03T16:37:18.179Z",
       "referrer": "direct",
       "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+    },
+    {
+      "page": "/post.html?slug=the-art-of-easing-it",
+      "timestamp": "2025-12-03T16:37:24.247Z",
+      "referrer": "https://johnowolabi.com/",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
     }
   ]
 }
