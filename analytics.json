@@ -7769,6 +7769,12 @@
       "timestamp": "2025-12-03T16:40:32.659Z",
       "referrer": "direct",
       "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/131.0.6778.0 Safari/537.36"
+    },
+    {
+      "page": "/",
+      "timestamp": "2025-12-03T16:53:43.340Z",
+      "referrer": "direct",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_3_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/142.0.7444.148 Mobile/15E148 Safari/604.1"
     }
   ]
 }
