@@ -8363,6 +8363,12 @@
       "timestamp": "2025-12-04T05:37:33.037Z",
       "referrer": "direct",
       "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.0 Mobile/15E148 Safari/604.1"
+    },
+    {
+      "page": "/index.html",
+      "timestamp": "2025-12-04T05:37:36.699Z",
+      "referrer": "https://johnowolabi.com/post.html?slug=everything-all-at-once-somewhere-on-highway-401",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.0 Mobile/15E148 Safari/604.1"
     }
   ]
 }
