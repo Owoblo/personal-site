@@ -281,6 +281,16 @@
             </div>
 
             <div class="form-group">
+                <label for="post-status">Status *</label>
+                <select id="post-status" required style="width: 100%; padding: 12px; border: 1px solid var(--colors--text); background-color: var(--colors--background); color: var(--colors--text); font-size: 1em; font-family: inherit; box-sizing: border-box;">
+                    <option value="published">Published - Live on site</option>
+                    <option value="draft">Draft - Save without publishing</option>
+                    <option value="archived">Archived - Hidden from feed but accessible via URL</option>
+                </select>
+                <small>Choose whether to publish immediately or save as draft</small>
+            </div>
+
+            <div class="form-group">
                 <label for="post-excerpt">Excerpt *</label>
                 <textarea id="post-excerpt" rows="3" required></textarea>
                 <small>AI-generated summary. Edit if needed.</small>
@@ -370,9 +380,24 @@
             // Sort by date, newest first
             const sortedPosts = [...posts].sort((a, b) => new Date(b.date) - new Date(a.date));
 
-            container.innerHTML = sortedPosts.map(post => `
+            container.innerHTML = sortedPosts.map(post => {
+                const status = post.status || 'published';
+                const statusColors = {
+                    'published': '#28a745',
+                    'draft': '#ffc107',
+                    'archived': '#6c757d'
+                };
+                const statusLabels = {
+                    'published': 'Published',
+                    'draft': 'Draft',
+                    'archived': 'Archived'
+                };
+                return `
                 <div class="post-item">
-                    <h3>${escapeHtml(post.title)}</h3>
+                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 10px;">
+                        <h3 style="margin: 0;">${escapeHtml(post.title)}</h3>
+                        <span style="padding: 4px 12px; font-size: 0.85em; border-radius: 3px; background-color: ${statusColors[status]}20; color: ${statusColors[status]}; border: 1px solid ${statusColors[status]};">${statusLabels[status]}</span>
+                    </div>
                     <div class="post-meta">
                         ${formatDate(post.date)} • Slug: ${escapeHtml(post.slug)}
                     </div>
@@ -382,7 +407,8 @@
                         <button class="btn btn-small btn-danger" onclick="deletePost(${post.id})">Delete</button>
                     </div>
                 </div>
-            `).join('');
+            `;
+            }).join('');
         }
 
         // Format date
@@ -464,6 +490,7 @@
                 document.getElementById('post-excerpt').value = data.excerpt;
                 document.getElementById('post-content').value = data.content;
                 document.getElementById('post-date').value = new Date().toISOString().split('T')[0];
+                document.getElementById('post-status').value = 'draft'; // Default to draft for new posts
 
                 // Generate new ID
                 currentPostId = posts.length > 0 ? Math.max(...posts.map(p => p.id)) + 1 : 1;
@@ -547,6 +574,7 @@
             document.getElementById('post-date').value = post.date;
             document.getElementById('post-excerpt').value = post.excerpt;
             document.getElementById('post-content').value = post.content;
+            document.getElementById('post-status').value = post.status || 'published'; // Default to published for legacy posts
 
             // Hide paste section, show review section
             document.getElementById('paste-section').classList.add('hidden');
@@ -604,8 +632,9 @@
             const date = document.getElementById('post-date').value;
             const excerpt = document.getElementById('post-excerpt').value.trim();
             const content = document.getElementById('post-content').value.trim();
+            const status = document.getElementById('post-status').value;
 
-            if (!title || !slug || !date || !excerpt || !content) {
+            if (!title || !slug || !date || !excerpt || !content || !status) {
                 alert('Please fill in all fields.');
                 return;
             }
@@ -627,7 +656,8 @@
                             slug,
                             date,
                             excerpt,
-                            content
+                            content,
+                            status
                         };
                     }
                 } else {
@@ -638,7 +668,8 @@
                         slug,
                         date,
                         excerpt,
-                        content
+                        content,
+                        status
                     });
                 }
 

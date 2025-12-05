@@ -61,14 +61,20 @@
             return;
         }
 
-        if (posts.length === 0) {
-            console.log('No posts to display');
+        // Filter to only show published posts (hide drafts and archived)
+        const publishedPosts = posts.filter(post => {
+            const status = post.status || 'published'; // Default to published for legacy posts
+            return status === 'published';
+        });
+
+        if (publishedPosts.length === 0) {
+            console.log('No published posts to display');
             container.innerHTML = '<li class="loading-state">No posts yet.</li>';
             return;
         }
 
         // Sort by date, newest first
-        let sortedPosts = [...posts].sort((a, b) => new Date(b.date) - new Date(a.date));
+        let sortedPosts = [...publishedPosts].sort((a, b) => new Date(b.date) - new Date(a.date));
 
         // Limit posts if specified (for homepage preview)
         if (limit && sortedPosts.length > limit) {
@@ -161,9 +167,12 @@
             twitterDescription.setAttribute('content', description);
         }
 
-        // Get recent posts (excluding current post)
+        // Get recent posts (excluding current post, only published)
         const recentPosts = posts
-            .filter(p => p.slug !== slug)
+            .filter(p => {
+                const status = p.status || 'published';
+                return p.slug !== slug && status === 'published';
+            })
             .sort((a, b) => new Date(b.date) - new Date(a.date))
             .slice(0, 4);
 
@@ -190,6 +199,14 @@
         const pageUrl = encodeURIComponent(window.location.href);
         const pageTitle = encodeURIComponent(post.title);
 
+        // Check if post is archived
+        const status = post.status || 'published';
+        const archivedNotice = status === 'archived' ? `
+            <div style="padding: 15px; margin-bottom: 20px; background-color: rgba(108, 117, 125, 0.1); border-left: 3px solid #6c757d;">
+                <strong>Note:</strong> This post has been archived and is no longer listed in the main feed.
+            </div>
+        ` : '';
+
         // Render post
         container.innerHTML = `
             <article>
@@ -197,6 +214,8 @@
                     <h1>${escapeHtml(post.title)}</h1>
                     <p class="post-date" style="opacity: 0.7; font-style: italic; margin-top: 10px;">${formattedDate}</p>
                 </header>
+
+                ${archivedNotice}
 
                 <div class="post-body" style="margin-top: 30px;">
                     ${post.content}
