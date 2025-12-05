@@ -12095,6 +12095,12 @@
       "timestamp": "2025-12-05T20:53:06.768Z",
       "referrer": "https://johnowolabi.com/?utm_source=ig&utm_medium=social&utm_content=link_in_bio&fbclid=PAZXh0bgNhZW0CMTEAc3J0YwZhcHBfaWQPMTI0MDI0NTc0Mjg3NDE0AAGnFBflfTiDFV6ljEXiNGxgz6Ejhu2g34TzoFS1dwoWgfUizw95YyMPNCX2S-o_aem_Koj5fgc01BICBPcNGJXNaw",
       "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_6_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/22G100 Instagram 408.1.0.45.70 (iPhone15,4; iOS 18_6_2; en_US; en; scale=3.00; 1179x2556; IABMV/1; 833451024) NW/1"
+    },
+    {
+      "page": "/",
+      "timestamp": "2025-12-05T20:53:23.610Z",
+      "referrer": "direct",
+      "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/131.0.6778.0 Safari/537.36"
     }
   ]
 }
