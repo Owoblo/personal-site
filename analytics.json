@@ -10901,6 +10901,12 @@
       "timestamp": "2025-12-05T01:25:49.682Z",
       "referrer": "https://johnowolabi.com/",
       "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+    },
+    {
+      "page": "/",
+      "timestamp": "2025-12-05T01:26:22.733Z",
+      "referrer": "direct",
+      "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/131.0.6778.0 Safari/537.36"
     }
   ]
 }
