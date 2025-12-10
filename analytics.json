@@ -16109,6 +16109,12 @@
       "timestamp": "2025-12-10T20:14:56.800Z",
       "referrer": "https://johnowolabi.com/post.html?slug=the-invisible-forces-shaping-our-choices",
       "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_3_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/143.0.7499.92 Mobile/15E148 Safari/604.1"
+    },
+    {
+      "page": "/",
+      "timestamp": "2025-12-10T20:15:41.719Z",
+      "referrer": "direct",
+      "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/131.0.6778.0 Safari/537.36"
     }
   ]
 }
