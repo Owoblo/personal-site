@@ -219,6 +219,81 @@
         .tab-content.active {
             display: block;
         }
+
+        .editor-toolbar {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+            align-items: center;
+        }
+
+        .view-toggle {
+            display: inline-flex;
+            border: 1px solid var(--colors--text);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .view-toggle button {
+            padding: 6px 14px;
+            border: none;
+            background: var(--colors--background);
+            color: var(--colors--text);
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.9em;
+            transition: all 0.2s ease;
+        }
+
+        .view-toggle button.active {
+            background: var(--colors--text);
+            color: var(--colors--background);
+        }
+
+        .view-toggle button:hover:not(.active) {
+            opacity: 0.7;
+        }
+
+        .btn-icon {
+            padding: 6px 14px;
+            font-size: 0.9em;
+        }
+
+        .link-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .link-modal.active {
+            display: flex;
+        }
+
+        .link-modal-content {
+            background: var(--colors--background);
+            border: 2px solid var(--colors--text);
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+        }
+
+        .link-modal-content h3 {
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
@@ -297,9 +372,16 @@
             </div>
 
             <div class="form-group">
-                <label for="post-content">Content (HTML) *</label>
-                <textarea id="post-content" required style="min-height: 250px; font-family: monospace; font-size: 0.9em;"></textarea>
-                <small>AI-formatted with proper headings, bold, and blockquotes.</small>
+                <label for="post-content">Content *</label>
+                <div class="editor-toolbar">
+                    <div class="view-toggle">
+                        <button type="button" class="active" onclick="switchEditorView('text')">Text View</button>
+                        <button type="button" onclick="switchEditorView('html')">HTML View</button>
+                    </div>
+                    <button type="button" class="btn btn-icon" onclick="openLinkModal()">🔗 Insert Link</button>
+                </div>
+                <textarea id="post-content" required style="min-height: 250px; font-family: inherit; font-size: 1em; line-height: 1.6;"></textarea>
+                <small id="content-view-hint">Plain text view - HTML tags hidden for easier editing.</small>
             </div>
 
             <div class="actions">
@@ -332,10 +414,32 @@
 
     </div><!-- End container -->
 
+    <!-- Link Insert Modal -->
+    <div id="link-modal" class="link-modal">
+        <div class="link-modal-content">
+            <h3>Insert Link</h3>
+            <div class="form-group">
+                <label for="link-text">Link Text *</label>
+                <input type="text" id="link-text" placeholder="Click here">
+            </div>
+            <div class="form-group">
+                <label for="link-url">URL *</label>
+                <input type="url" id="link-url" placeholder="https://example.com">
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-primary" onclick="insertLink()">Insert</button>
+                <button class="btn" onclick="closeLinkModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         let posts = [];
         let currentPostId = null;
         let isEditing = false;
+        let editorView = 'text'; // 'text' or 'html'
+        let htmlContent = ''; // Store HTML version when in text view
+        let cursorPosition = 0; // Track cursor position for link insertion
 
         // Switch tabs
         function switchTab(tabName) {
@@ -352,6 +456,174 @@
                 renderPostsList();
             }
         }
+
+        // Convert HTML to readable text
+        function htmlToText(html) {
+            // Create a temporary div to parse HTML
+            const temp = document.createElement('div');
+            temp.innerHTML = html;
+
+            // Convert links to readable format before extracting text
+            temp.querySelectorAll('a').forEach(link => {
+                const text = link.textContent;
+                const url = link.getAttribute('href');
+                link.replaceWith(`${text} (${url})`);
+            });
+
+            // Replace block elements with newlines
+            temp.querySelectorAll('h2, h3, p, blockquote, br').forEach(el => {
+                if (el.tagName === 'BR') {
+                    el.replaceWith('\n');
+                } else {
+                    el.insertAdjacentText('afterend', '\n\n');
+                }
+            });
+
+            // Get text content
+            return temp.textContent.trim();
+        }
+
+        // Convert text back to HTML
+        function textToHtml(text) {
+            // Split by double newlines to identify paragraphs
+            const paragraphs = text.split(/\n\n+/);
+
+            return paragraphs.map(para => {
+                para = para.trim();
+                if (!para) return '';
+
+                // Check if it looks like a heading (short, no punctuation at end)
+                if (para.length < 80 && !para.match(/[.!?]$/)) {
+                    return `<h2>${escapeHtml(para)}</h2>`;
+                }
+
+                // Regular paragraph
+                // Replace single newlines with <br>
+                let processedPara = para.split('\n').map(line => {
+                    // Convert text links like "text (url)" to HTML links
+                    line = line.replace(/([^(]+)\s*\((https?:\/\/[^\s)]+)\)/g, function(match, text, url) {
+                        return `<a href="${url.trim()}">${text.trim()}</a>`;
+                    });
+                    return escapeHtml(line.trim());
+                }).join('<br>');
+
+                // Re-process to unescape the links we just created
+                processedPara = processedPara.replace(/&lt;a href=&quot;([^&]+)&quot;&gt;([^&]+)&lt;\/a&gt;/g, '<a href="$1">$2</a>');
+
+                return `<p>${processedPara}</p>`;
+            }).join('\n\n');
+        }
+
+        // Switch editor view
+        function switchEditorView(view) {
+            const textarea = document.getElementById('post-content');
+            const hint = document.getElementById('content-view-hint');
+            const buttons = document.querySelectorAll('.view-toggle button');
+
+            // Track cursor position
+            cursorPosition = textarea.selectionStart;
+
+            if (view === 'text' && editorView === 'html') {
+                // Switch from HTML to Text
+                htmlContent = textarea.value;
+                textarea.value = htmlToText(htmlContent);
+                textarea.style.fontFamily = 'inherit';
+                textarea.style.fontSize = '1em';
+                textarea.style.lineHeight = '1.6';
+                hint.textContent = 'Plain text view - HTML tags hidden for easier editing.';
+                editorView = 'text';
+                buttons[0].classList.add('active');
+                buttons[1].classList.remove('active');
+            } else if (view === 'html' && editorView === 'text') {
+                // Switch from Text to HTML
+                const textContent = textarea.value;
+                // Try to intelligently convert text to HTML
+                const converted = textToHtml(textContent);
+                textarea.value = converted;
+                htmlContent = converted;
+                textarea.style.fontFamily = 'monospace';
+                textarea.style.fontSize = '0.9em';
+                textarea.style.lineHeight = '1.4';
+                hint.textContent = 'HTML view - Edit the raw HTML markup.';
+                editorView = 'html';
+                buttons[0].classList.remove('active');
+                buttons[1].classList.add('active');
+            }
+        }
+
+        // Open link modal
+        function openLinkModal() {
+            const textarea = document.getElementById('post-content');
+            cursorPosition = textarea.selectionStart;
+
+            // If text is selected, use it as link text
+            const selectedText = textarea.value.substring(textarea.selectionStart, textarea.selectionEnd);
+            if (selectedText) {
+                document.getElementById('link-text').value = selectedText;
+            } else {
+                document.getElementById('link-text').value = '';
+            }
+
+            document.getElementById('link-url').value = '';
+            document.getElementById('link-modal').classList.add('active');
+
+            // Focus on the appropriate field
+            setTimeout(() => {
+                if (selectedText) {
+                    document.getElementById('link-url').focus();
+                } else {
+                    document.getElementById('link-text').focus();
+                }
+            }, 100);
+        }
+
+        // Close link modal
+        function closeLinkModal() {
+            document.getElementById('link-modal').classList.remove('active');
+        }
+
+        // Insert link
+        function insertLink() {
+            const linkText = document.getElementById('link-text').value.trim();
+            const linkUrl = document.getElementById('link-url').value.trim();
+
+            if (!linkText || !linkUrl) {
+                alert('Please enter both link text and URL.');
+                return;
+            }
+
+            const textarea = document.getElementById('post-content');
+            const currentContent = textarea.value;
+
+            let linkHtml;
+            if (editorView === 'text') {
+                // In text view, insert readable link format
+                linkHtml = `${linkText} (${linkUrl})`;
+            } else {
+                // In HTML view, insert proper HTML anchor tag
+                linkHtml = `<a href="${linkUrl}">${linkText}</a>`;
+            }
+
+            // Insert at cursor position
+            const before = currentContent.substring(0, cursorPosition);
+            const after = currentContent.substring(cursorPosition);
+            textarea.value = before + linkHtml + after;
+
+            // Update stored HTML if in text view
+            if (editorView === 'text') {
+                htmlContent = textToHtml(textarea.value);
+            }
+
+            closeLinkModal();
+            textarea.focus();
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('link-modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeLinkModal();
+            }
+        });
 
         // Load existing posts
         async function loadPosts() {
@@ -488,12 +760,19 @@
 
                 // Auto-fill other fields
                 document.getElementById('post-excerpt').value = data.excerpt;
-                document.getElementById('post-content').value = data.content;
+                htmlContent = data.content; // Store HTML version
+                document.getElementById('post-content').value = htmlToText(data.content); // Show text view by default
+                editorView = 'text'; // Set to text view
                 document.getElementById('post-date').value = new Date().toISOString().split('T')[0];
                 document.getElementById('post-status').value = 'draft'; // Default to draft for new posts
 
                 // Generate new ID
                 currentPostId = posts.length > 0 ? Math.max(...posts.map(p => p.id)) + 1 : 1;
+
+                // Reset view toggle buttons to text view
+                const buttons = document.querySelectorAll('.view-toggle button');
+                buttons[0].classList.add('active');
+                buttons[1].classList.remove('active');
 
                 // Show review section
                 document.getElementById('paste-section').classList.add('hidden');
@@ -529,8 +808,15 @@
         // Show preview
         function showPreview() {
             const title = document.getElementById('post-title').value;
-            const content = document.getElementById('post-content').value;
             const date = document.getElementById('post-date').value;
+
+            // Get content in HTML format for preview
+            let content;
+            if (editorView === 'text') {
+                content = textToHtml(document.getElementById('post-content').value);
+            } else {
+                content = document.getElementById('post-content').value;
+            }
 
             if (!title || !content) {
                 alert('Please fill in title and content first.');
@@ -573,8 +859,15 @@
             document.getElementById('post-slug').value = post.slug;
             document.getElementById('post-date').value = post.date;
             document.getElementById('post-excerpt').value = post.excerpt;
-            document.getElementById('post-content').value = post.content;
+            htmlContent = post.content; // Store HTML version
+            document.getElementById('post-content').value = htmlToText(post.content); // Show text view by default
+            editorView = 'text'; // Set to text view
             document.getElementById('post-status').value = post.status || 'published'; // Default to published for legacy posts
+
+            // Reset view toggle buttons to text view
+            const buttons = document.querySelectorAll('.view-toggle button');
+            buttons[0].classList.add('active');
+            buttons[1].classList.remove('active');
 
             // Hide paste section, show review section
             document.getElementById('paste-section').classList.add('hidden');
@@ -631,7 +924,16 @@
             const slug = document.getElementById('post-slug').value.trim();
             const date = document.getElementById('post-date').value;
             const excerpt = document.getElementById('post-excerpt').value.trim();
-            const content = document.getElementById('post-content').value.trim();
+
+            // Get content in HTML format
+            let content;
+            if (editorView === 'text') {
+                // Convert text to HTML before saving
+                content = textToHtml(document.getElementById('post-content').value.trim());
+            } else {
+                content = document.getElementById('post-content').value.trim();
+            }
+
             const status = document.getElementById('post-status').value;
 
             if (!title || !slug || !date || !excerpt || !content || !status) {
@@ -695,7 +997,14 @@
                     document.getElementById('preview-section').classList.add('hidden');
                     isEditing = false;
                     currentPostId = null;
+                    editorView = 'text';
+                    htmlContent = '';
                     document.getElementById('publish-btn').textContent = 'Publish Post';
+
+                    // Reset view toggle buttons
+                    const buttons = document.querySelectorAll('.view-toggle button');
+                    buttons[0].classList.add('active');
+                    buttons[1].classList.remove('active');
 
                     // Refresh posts list
                     loadPosts();
@@ -722,7 +1031,14 @@
                 // Reset editing state
                 isEditing = false;
                 currentPostId = null;
+                editorView = 'text';
+                htmlContent = '';
                 document.getElementById('publish-btn').textContent = 'Publish Post';
+
+                // Reset view toggle buttons
+                const buttons = document.querySelectorAll('.view-toggle button');
+                buttons[0].classList.add('active');
+                buttons[1].classList.remove('active');
 
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             }
