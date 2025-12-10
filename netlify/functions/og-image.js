@@ -9,28 +9,25 @@ exports.handler = async (event, context) => {
     const width = 1200;
     const height = 630;
 
+    // Wrap text to fit width
+    const wrappedTitle = wrapText(title, 28); // Wrap at ~28 chars per line
+    const lines = wrappedTitle.slice(0, 4); // Max 4 lines
+
+    // Calculate vertical positioning based on number of lines
+    const titleFontSize = lines.length > 2 ? 60 : 72;
+    const lineHeight = titleFontSize * 1.3;
+    const totalHeight = lines.length * lineHeight;
+    const startY = (height - totalHeight) / 2 - 40; // Center and move up slightly
+
+    // Build SVG text elements for each line
+    const titleTextElements = lines.map((line, index) => {
+      const y = startY + (index * lineHeight);
+      return `<text x="100" y="${y}" style="font-family: Georgia, serif; font-size: ${titleFontSize}px; font-weight: bold; fill: #1a1a1a;">${escapeXml(line)}</text>`;
+    }).join('\n');
+
     // Create SVG with the post title and author name
     const svg = `
       <svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <style>
-            @import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&amp;display=swap');
-            .title {
-              font-family: 'Libre Baskerville', serif;
-              font-size: 72px;
-              font-weight: 700;
-              fill: #1a1a1a;
-              line-height: 1.2;
-            }
-            .author {
-              font-family: 'Libre Baskerville', serif;
-              font-size: 32px;
-              font-weight: 400;
-              fill: #666;
-            }
-          </style>
-        </defs>
-
         <!-- Background -->
         <rect width="${width}" height="${height}" fill="#E8E4DC"/>
 
@@ -39,19 +36,15 @@ exports.handler = async (event, context) => {
         <line x1="400" y1="0" x2="${width}" y2="0" stroke="#6B9BD1" stroke-width="2"/>
         <line x1="${width - 250}" y1="${height}" x2="${width}" y2="${height - 100}" stroke="#6B9BD1" stroke-width="2"/>
 
-        <!-- Content -->
-        <g>
-          <!-- Title (wrapped manually for now) -->
-          <text x="100" y="250" class="title">
-            <tspan x="100" dy="0">${escapeXml(wrapText(title, 25)[0] || '')}</tspan>
-            ${wrapText(title, 25).slice(1).map((line, i) =>
-              `<tspan x="100" dy="85">${escapeXml(line)}</tspan>`
-            ).join('')}
-          </text>
+        <!-- Title -->
+        ${titleTextElements}
 
-          <!-- Author name -->
-          <text x="100" y="${height - 80}" class="author">${escapeXml(author)}</text>
-        </g>
+        <!-- Author name -->
+        <text x="100" y="${height - 80}" style="font-family: Georgia, serif; font-size: 32px; fill: #666;">${escapeXml(author)}</text>
+
+        <!-- Watermark -->
+        <text x="100" y="100" style="font-family: Georgia, serif; font-size: 24px; fill: #999;">Graph</text>
+        <text x="${width - 200}" y="100" style="font-family: Georgia, serif; font-size: 20px; fill: #999;">1200x630px</text>
       </svg>
     `;
 
@@ -103,8 +96,7 @@ function wrapText(text, maxLength) {
     lines.push(currentLine);
   }
 
-  // Limit to 3 lines max
-  return lines.slice(0, 3);
+  return lines;
 }
 
 // Helper function to escape XML special characters
