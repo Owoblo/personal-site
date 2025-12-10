@@ -150,6 +150,13 @@
         const ogUrl = document.querySelector('meta[property="og:url"]');
         if (ogUrl) ogUrl.setAttribute('content', `https://johnowolabi.com/post.html?slug=${slug}`);
 
+        // Update Open Graph image with dynamic image
+        const ogImage = document.querySelector('meta[property="og:image"]');
+        if (ogImage) {
+            const dynamicImageUrl = `https://johnowolabi.com/.netlify/functions/og-image?title=${encodeURIComponent(post.title)}`;
+            ogImage.setAttribute('content', dynamicImageUrl);
+        }
+
         // Update canonical URL
         const canonical = document.querySelector('link[rel="canonical"]');
         if (canonical) canonical.setAttribute('href', `https://johnowolabi.com/post.html?slug=${slug}`);
@@ -165,6 +172,13 @@
             const textContent = tempDiv.textContent || tempDiv.innerText || '';
             const description = textContent.substring(0, 150).trim() + '...';
             twitterDescription.setAttribute('content', description);
+        }
+
+        // Update Twitter Card image with dynamic image
+        const twitterImage = document.querySelector('meta[name="twitter:image"]');
+        if (twitterImage) {
+            const dynamicImageUrl = `https://johnowolabi.com/.netlify/functions/og-image?title=${encodeURIComponent(post.title)}`;
+            twitterImage.setAttribute('content', dynamicImageUrl);
         }
 
         // Get recent posts (excluding current post, only published)
