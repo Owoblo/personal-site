@@ -17633,6 +17633,12 @@
       "timestamp": "2025-12-15T22:13:14.315Z",
       "referrer": "direct",
       "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 26_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Brave/1 Mobile/15E148 Safari/604.1"
+    },
+    {
+      "page": "/?fbclid=IwZXh0bgNhZW0CMTEAc3J0YwZhcHBfaWQMMjU2MjgxMDQwNTU4AAEewZQakFSy3svR98-NHEh85KsxG-kvlDUQVUs9wwSshEPUMitLw-FJEf09wZ4_aem_qif9zIvvdpJXIES2uQ1AAg",
+      "timestamp": "2025-12-15T22:13:45.651Z",
+      "referrer": "https://www.facebook.com/",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
     }
   ]
 }
