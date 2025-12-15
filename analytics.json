@@ -17639,6 +17639,12 @@
       "timestamp": "2025-12-15T22:13:45.651Z",
       "referrer": "https://www.facebook.com/",
       "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+    },
+    {
+      "page": "/",
+      "timestamp": "2025-12-15T22:13:55.049Z",
+      "referrer": "direct",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_3_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/143.0.7499.108 Mobile/15E148 Safari/604.1"
     }
   ]
 }
