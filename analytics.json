@@ -17819,6 +17819,12 @@
       "timestamp": "2025-12-17T04:57:09.339Z",
       "referrer": "https://johnowolabi.com/",
       "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+    },
+    {
+      "page": "/post.html?slug=the-science-we-cant-explain",
+      "timestamp": "2025-12-17T07:48:08.430Z",
+      "referrer": "direct",
+      "userAgent": "Mozilla/5.0 (Linux; Android 6.0.1; Nexus 5X Build/MMB29P) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.7390.122 Mobile Safari/537.36 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)"
     }
   ]
 }
