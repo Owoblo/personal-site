@@ -18023,6 +18023,12 @@
       "timestamp": "2025-12-18T19:50:42.263Z",
       "referrer": "direct",
       "userAgent": "Mozilla/5.0 (compatible; AhrefsBot/7.0; +http://ahrefs.com/robot/)"
+    },
+    {
+      "page": "/?fbclid=IwZXh0bgNhZW0CMTEAc3J0YwZhcHBfaWQMMjU2MjgxMDQwNTU4AAEe006VN5pFmVUZLi0ZS5yQbpXpPHZ9dvLjX_Hc1mIIbc_VaGw07mE8cf-pVUI_aem_gfX4HAN7Hq8_mA5wAPstKQ",
+      "timestamp": "2025-12-18T23:31:58.413Z",
+      "referrer": "http://m.facebook.com",
+      "userAgent": "Instagram 392.0.0.36.90 (iPhone17,3; iOS 18_5; en_US; en; scale=3.00; 1179x2556; 774162303) AppleWebKit/420+"
     }
   ]
 }
