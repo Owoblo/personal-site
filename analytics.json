@@ -18053,6 +18053,12 @@
       "timestamp": "2025-12-20T00:03:42.856Z",
       "referrer": "direct",
       "userAgent": "Mozilla/5.0 (compatible; AhrefsBot/7.0; +http://ahrefs.com/robot/)"
+    },
+    {
+      "page": "/",
+      "timestamp": "2025-12-20T02:50:50.074Z",
+      "referrer": "direct",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36"
     }
   ]
 }
