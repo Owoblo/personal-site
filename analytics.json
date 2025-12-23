@@ -18443,6 +18443,12 @@
       "timestamp": "2025-12-23T04:30:03.114Z",
       "referrer": "direct",
       "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/131.0.6778.0 Safari/537.36"
+    },
+    {
+      "page": "/?utm_source=ig&utm_medium=social&utm_content=link_in_bio&fbclid=PAZXh0bgNhZW0CMTEAc3J0YwZhcHBfaWQPNTY3MDY3MzQzMzUyNDI3AAGnaLBv5YLXCSWgKTSnebOxl2NeW90d0cZriHwAjlmpZ25FHD09B1Jw7uEse7E_aem_gOriya5QV6XLoDoO9HN2CQ",
+      "timestamp": "2025-12-23T06:02:51.506Z",
+      "referrer": "https://l.instagram.com/",
+      "userAgent": "Mozilla/5.0 (Linux; Android 16; SM-S921U Build/BP2A.250605.031.A3; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/143.0.7499.34 Mobile Safari/537.36 Instagram 410.1.0.63.71 Android (36/16; 480dpi; 1080x2340; samsung; SM-S921U; e1q; qcom; en_US; 846519237; IABMV/1)"
     }
   ]
 }
