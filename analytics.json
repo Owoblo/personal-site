@@ -18785,6 +18785,12 @@
       "timestamp": "2026-01-02T01:31:31.690Z",
       "referrer": "direct",
       "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/131.0.6778.0 Safari/537.36"
+    },
+    {
+      "page": "/?fbclid=IwZXh0bgNhZW0CMTEAc3J0YwZhcHBfaWQMMjU2MjgxMDQwNTU4AAEeCYFFFH9V9M-fEBseElstEVOlmfASgQx4de-AIzqF5BHil4AHtGblKFuYAM4_aem_jcwuOjn6tBpieHSwaRkJKQ",
+      "timestamp": "2026-01-02T01:35:49.444Z",
+      "referrer": "http://m.facebook.com",
+      "userAgent": "Instagram 410.1.0.36.70 (iPhone16,2; iOS 18_6_2; en_US; en; scale=3.00; 1290x2796; 849447290) AppleWebKit/420+"
     }
   ]
 }
