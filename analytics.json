@@ -20195,6 +20195,12 @@
       "timestamp": "2026-01-02T04:03:38.783Z",
       "referrer": "direct",
       "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/131.0.6778.0 Safari/537.36"
+    },
+    {
+      "page": "/index.html",
+      "timestamp": "2026-01-02T04:04:27.015Z",
+      "referrer": "https://johnowolabi.com/post.html?slug=confronting-mortality-a-personal-reflection&fbclid=PAZXh0bgNhZW0CMTEAc3J0YwZhcHBfaWQPMTI0MDI0NTc0Mjg3NDE0AAGnMs__aA1716qE9TMrBM5SaM_L3IqNn3FyG3iv3XG0K8_lxK5PorcAaK6S7xE_aem_w79rZzd_Z8132tlbAUEzfQ",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_3_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/22D82 Instagram 410.1.0.36.70 (iPhone14,5; iOS 18_3_2; en_US; en; scale=3.00; 1170x2532; IABMV/1; 849447290) Safari/604.1"
     }
   ]
 }
