@@ -19535,6 +19535,12 @@
       "timestamp": "2026-01-02T03:02:48.587Z",
       "referrer": "https://l.instagram.com/",
       "userAgent": "Mozilla/5.0 (Linux; Android 16; Pixel 8 Build/BP3A.251105.015; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/143.0.7499.35 Mobile Safari/537.36 Instagram 410.1.0.63.71 Android (36/16; 420dpi; 1080x2400; Google/google; Pixel 8; shiba; shiba; en_US; 846519237; IABMV/1)"
+    },
+    {
+      "page": "/",
+      "timestamp": "2026-01-02T03:03:15.644Z",
+      "referrer": "direct",
+      "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/131.0.6778.0 Safari/537.36"
     }
   ]
 }
