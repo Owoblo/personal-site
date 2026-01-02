@@ -21059,6 +21059,12 @@
       "timestamp": "2026-01-02T09:12:34.352Z",
       "referrer": "direct",
       "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_3_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/143.0.7499.151 Mobile/15E148 Safari/604.1"
+    },
+    {
+      "page": "/post.html?slug=when-truths-scares-you&fbclid=PAZXh0bgNhZW0CMTEAc3J0YwZhcHBfaWQPNTY3MDY3MzQzMzUyNDI3AAGn6nllcm1eKMZiDd5vSS80RmQEZ7MsolOcmyOqoTRyUZwTQrrM0GL3-mtB_BE_aem_ETrUUeeqs9KHhQZ64D8ObQ",
+      "timestamp": "2026-01-02T09:12:55.390Z",
+      "referrer": "https://l.instagram.com/",
+      "userAgent": "Mozilla/5.0 (Linux; Android 12; SM-M515F Build/SP1A.210812.016; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/143.0.7499.35 Mobile Safari/537.36 Instagram 408.0.0.51.78 Android (31/12; 420dpi; 1080x2270; samsung; SM-M515F; m51; qcom; en_GB; 832162521; IABMV/1)"
     }
   ]
 }
