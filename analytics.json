@@ -20903,6 +20903,12 @@
       "timestamp": "2026-01-02T06:53:42.028Z",
       "referrer": "https://l.instagram.com/",
       "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_3_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/22D82 Instagram 410.1.0.36.70 (iPhone17,4; iOS 18_3_2; en_US; en; scale=3.00; 1290x2796; IABMV/1; 849447290) Safari/604.1"
+    },
+    {
+      "page": "/?utm_source=ig&utm_medium=social&utm_content=link_in_bio&fbclid=PAZXh0bgNhZW0CMTEAc3J0YwZhcHBfaWQPMTI0MDI0NTc0Mjg3NDE0AAGnYn7Knq0Ggf0yRTOJGFd-55HYJqnvMY9VLdhG8PuXXVdVscJ1fRgXnZ9P940_aem_xn_wXTipjiS4pSGI4VcGXw",
+      "timestamp": "2026-01-02T07:12:30.354Z",
+      "referrer": "direct",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/23B85 Instagram 410.1.0.36.70 (iPhone17,2; iOS 26_1; en_US; en; scale=3.00; 1320x2868; IABMV/1; 849447290) Safari/604.1"
     }
   ]
 }
