@@ -21053,6 +21053,12 @@
       "timestamp": "2026-01-02T09:11:34.852Z",
       "referrer": "https://johnowolabi.com/thoughts",
       "userAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Mobile Safari/537.36"
+    },
+    {
+      "page": "/",
+      "timestamp": "2026-01-02T09:12:34.352Z",
+      "referrer": "direct",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_3_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/143.0.7499.151 Mobile/15E148 Safari/604.1"
     }
   ]
 }
