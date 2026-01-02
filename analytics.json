@@ -21281,6 +21281,12 @@
       "timestamp": "2026-01-02T12:12:33.766Z",
       "referrer": "direct",
       "userAgent": "Mozilla/5.0 (Linux; Android 6.0.1; Nexus 5X Build/MMB29P) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.7390.122 Mobile Safari/537.36 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)"
+    },
+    {
+      "page": "/post.html?slug=the-art-of-easing-it",
+      "timestamp": "2026-01-02T12:19:12.021Z",
+      "referrer": "https://johnowolabi.com/post.html?slug=confronting-chaos-a-path-to-clarity&fbclid=PAdGRleAPEdWFleHRuA2FlbQIxMQBzcnRjBmFwcF9pZA8xMjQwMjQ1NzQyODc0MTQAAac8JjX2TbGbOmJcz2ypTpDGJMNi32kOjlSEWB5MW4yh1QZIYuDYrLKmCyuTHw_aem_eIPKvF7yDIFkNinr6KvXFw",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 26_1_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/142.0.7444.148 Mobile/15E148 Safari/604.1"
     }
   ]
 }
