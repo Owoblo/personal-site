@@ -21839,6 +21839,12 @@
       "timestamp": "2026-01-03T07:46:36.618Z",
       "referrer": "http://instagram.com/",
       "userAgent": "Mozilla/5.0 (Linux; Android 14; TECNO KL4 Build/UP1A.231005.007; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/143.0.7499.114 Mobile Safari/537.36 Instagram 410.1.0.63.71 Android (34/14; 320dpi; 720x1528; TECNO; TECNO KL4; TECNO-KL4; ums9230_KL4_go; en_US; 846519237; IABMV/1)"
+    },
+    {
+      "page": "/",
+      "timestamp": "2026-01-03T09:51:43.696Z",
+      "referrer": "direct",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36"
     }
   ]
 }
