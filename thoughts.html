@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -22,12 +23,14 @@
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 
     <!-- Canonical URL -->
     <link rel="canonical" href="https://johnowolabi.com/thoughts.html">
 </head>
+
 <body>
     <div class="container">
         <header class="site-header">
@@ -43,11 +46,27 @@
 
         <section>
             <h2>Thoughts</h2>
-            <p style="opacity: 0.8; margin-bottom: 30px;">Essays, reflections, and things I've learned along the way.</p>
+            <p style="opacity: 0.8; margin-bottom: 30px;">Essays, reflections, and things I've learned along the way.
+            </p>
             <ul id="blog-posts" class="thoughts-list">
                 <!-- Posts will be loaded dynamically -->
                 <li class="loading-state">Loading posts...</li>
             </ul>
+        </section>
+
+        <section>
+            <h2>Subscribe</h2>
+            <p>
+                Get new posts in your inbox. No spam, ever.
+            </p>
+            <form name="newsletter" method="POST" data-netlify="true">
+                <input type="hidden" name="form-name" value="newsletter" />
+                <div class="newsletter-form-group">
+                    <input type="email" name="email" placeholder="Your email address" required
+                        aria-label="Email address" />
+                    <button type="submit">Subscribe</button>
+                </div>
+            </form>
         </section>
     </div>
 
@@ -59,7 +78,7 @@
 
     <script>
         // Dark/Light mode toggle functionality
-        (function() {
+        (function () {
             const toggleCheckbox = document.getElementById('theme-toggle');
             const body = document.body;
 
@@ -74,7 +93,7 @@
             }
 
             // Toggle theme on checkbox change
-            toggleCheckbox.addEventListener('change', function() {
+            toggleCheckbox.addEventListener('change', function () {
                 if (this.checked) {
                     body.classList.add('u-mode-invert');
                     localStorage.setItem('theme', 'dark');
@@ -85,7 +104,7 @@
             });
 
             // Listen for system theme changes
-            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e) {
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function (e) {
                 if (!localStorage.getItem('theme')) {
                     if (e.matches) {
                         body.classList.add('u-mode-invert');
@@ -99,4 +118,5 @@
         })();
     </script>
 </body>
+
 </html>
