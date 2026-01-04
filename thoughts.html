@@ -59,13 +59,11 @@
             <p>
                 Get new posts in your inbox. No spam, ever.
             </p>
-            <form name="newsletter" method="POST" data-netlify="true">
-                <input type="hidden" name="form-name" value="newsletter" />
-                <div class="newsletter-form-group">
-                    <input type="email" name="email" placeholder="Your email address" required
-                        aria-label="Email address" />
-                    <button type="submit">Subscribe</button>
-                </div>
+            <form action="https://buttondown.email/api/emails/embed-subscribe/owolabi" method="post"
+                target="popupwindow" onsubmit="window.open('https://buttondown.email/owolabi', 'popupwindow')"
+                class="newsletter-form-group">
+                <input type="email" name="email" placeholder="Your email address" required aria-label="Email address" />
+                <button type="submit">Subscribe</button>
             </form>
         </section>
     </div>
