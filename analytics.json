@@ -22637,6 +22637,12 @@
       "timestamp": "2026-01-05T21:34:56.427Z",
       "referrer": "direct",
       "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/23B85 Instagram 410.1.0.36.70 (iPhone16,1; iOS 26_1; en_US; en; scale=3.00; 1179x2556; IABMV/1; 849447290) Safari/604.1"
+    },
+    {
+      "page": "/?utm_source=ig&utm_medium=social&utm_content=link_in_bio&fbclid=PAZXh0bgNhZW0CMTEAc3J0YwZhcHBfaWQPMTI0MDI0NTc0Mjg3NDE0AAGnrNWr2I9u8GgCRXgIqi7uvVa4kfZGy0plS0IQNUehrvV9lwlWYJZeEGUFqzU_aem_XjekWlVoO84oOYXpa4w1yQ",
+      "timestamp": "2026-01-05T21:38:08.941Z",
+      "referrer": "https://johnowolabi.com/?utm_source=ig&utm_medium=social&utm_content=link_in_bio&fbclid=PAZXh0bgNhZW0CMTEAc3J0YwZhcHBfaWQPMTI0MDI0NTc0Mjg3NDE0AAGnrNWr2I9u8GgCRXgIqi7uvVa4kfZGy0plS0IQNUehrvV9lwlWYJZeEGUFqzU_aem_XjekWlVoO84oOYXpa4w1yQ",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/23B85 Instagram 410.1.0.36.70 (iPhone16,1; iOS 26_1; en_US; en; scale=3.00; 1179x2556; IABMV/1; 849447290) NW/1 Safari/604.1"
     }
   ]
 }
