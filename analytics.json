@@ -22529,6 +22529,12 @@
       "timestamp": "2026-01-05T02:16:29.103Z",
       "referrer": "https://johnowolabi.com/post.html?slug=breaking-free-from-survival-mode",
       "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 17_7_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/21H216 Instagram 410.1.0.36.70 (iPhone14,5; iOS 17_7_1; en_GB; en-GB; scale=3.00; 1170x2532; IABMV/1; 849447290)"
+    },
+    {
+      "page": "/",
+      "timestamp": "2026-01-05T02:31:26.596Z",
+      "referrer": "direct",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36"
     }
   ]
 }
