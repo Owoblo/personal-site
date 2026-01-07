@@ -161,6 +161,12 @@
       "timestamp": "2026-01-07T08:09:16.738Z",
       "referrer": "direct",
       "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_3_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/22D82 Instagram 410.1.0.36.70 (iPhone17,4; iOS 18_3_2; en_US; en; scale=3.00; 1290x2796; IABMV/1; 849447290) Safari/604.1"
+    },
+    {
+      "page": "/",
+      "timestamp": "2026-01-07T10:48:22.136Z",
+      "referrer": "direct",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 26_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Brave/1 Mobile/15E148 Safari/604.1"
     }
   ]
 }
