@@ -185,6 +185,12 @@
       "timestamp": "2026-01-07T13:46:32.122Z",
       "referrer": "direct",
       "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/23B85 Instagram 410.1.0.36.70 (iPhone17,1; iOS 26_1; en_US; en; scale=3.00; 1206x2622; IABMV/1; 849447290) Safari/604.1"
+    },
+    {
+      "page": "/",
+      "timestamp": "2026-01-07T14:11:28.987Z",
+      "referrer": "direct",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36"
     }
   ]
 }
