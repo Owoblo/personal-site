@@ -299,6 +299,12 @@
       "timestamp": "2026-01-07T21:27:31.219Z",
       "referrer": "https://l.instagram.com/",
       "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_6_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/22G100 Instagram 410.1.0.36.70 (iPhone15,3; iOS 18_6_2; en_GB; en-GB; scale=3.00; 1290x2796; IABMV/1; 849447290) Safari/604.1"
+    },
+    {
+      "page": "/index.html",
+      "timestamp": "2026-01-07T21:27:50.533Z",
+      "referrer": "https://johnowolabi.com/post.html?slug=confronting-envy-a-social-media-reflection&fbclid=PAZXh0bgNhZW0CMTEAc3J0YwZhcHBfaWQPNTY3MDY3MzQzMzUyNDI3AAGnB8-lIzSFq7jTlMx6LthBzu4RLgZdJ5ybMK27C3yH5MoeRg4VPkJyB5870oM_aem_a9VzxrgcSc21rglTO7eq8Q",
+      "userAgent": "Mozilla/5.0 (Linux; Android 15; SM-A065F Build/AP3A.240905.015.A2; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/143.0.7499.34 Mobile Safari/537.36 Instagram 410.1.0.63.71 Android (35/15; 300dpi; 720x1600; samsung; SM-A065F; a06; mt6768; en_GB; 846519237; IABMV/1)"
     }
   ]
 }
