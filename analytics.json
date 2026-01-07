@@ -209,6 +209,12 @@
       "timestamp": "2026-01-07T16:20:27.126Z",
       "referrer": "direct",
       "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148"
+    },
+    {
+      "page": "/post.html?slug=the-invisible-forces-shaping-our-choices&utm_medium=social&utm_source=snapchat",
+      "timestamp": "2026-01-07T16:25:05.997Z",
+      "referrer": "direct",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.0.1 Mobile/15E148 Snapchat/13.72.0.57 (like Safari/8622.1.22.10.11, panda)"
     }
   ]
 }
