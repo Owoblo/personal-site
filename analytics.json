@@ -1559,6 +1559,12 @@
       "timestamp": "2026-01-13T11:49:46.395Z",
       "referrer": "https://l.instagram.com/",
       "userAgent": "Mozilla/5.0 (Linux; Android 12; SM-M515F Build/SP1A.210812.016; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/143.0.7499.146 Mobile Safari/537.36 Instagram 411.0.0.23.257 Android (31/12; 420dpi; 1080x2400; samsung; SM-M515F; m51; qcom; en_GB; 856095591; IABMV/1)"
+    },
+    {
+      "page": "/",
+      "timestamp": "2026-01-13T12:07:39.893Z",
+      "referrer": "direct",
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36"
     }
   ]
 }
