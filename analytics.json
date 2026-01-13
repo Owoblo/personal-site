@@ -1583,6 +1583,12 @@
       "timestamp": "2026-01-13T17:02:45.517Z",
       "referrer": "direct",
       "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 26_2_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/143.0.7499.151 Mobile/15E148 Safari/604.1"
+    },
+    {
+      "page": "/",
+      "timestamp": "2026-01-13T17:03:05.116Z",
+      "referrer": "https://johnowolabi.com/post.html?slug=confronting-the-demonic-within-a-personal-journey",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 26_2_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/143.0.7499.151 Mobile/15E148 Safari/604.1"
     }
   ]
 }
