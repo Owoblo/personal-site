@@ -1613,6 +1613,12 @@
       "timestamp": "2026-01-13T18:29:39.616Z",
       "referrer": "direct",
       "userAgent": "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; Googlebot/2.1; +http://www.google.com/bot.html) Chrome/143.0.7499.169 Safari/537.36"
+    },
+    {
+      "page": "/",
+      "timestamp": "2026-01-13T18:29:40.434Z",
+      "referrer": "direct",
+      "userAgent": "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; Googlebot/2.1; +http://www.google.com/bot.html) Chrome/143.0.7499.169 Safari/537.36"
     }
   ]
 }
