@@ -378,6 +378,8 @@
                         <button type="button" class="active" onclick="switchEditorView('text')">Text View</button>
                         <button type="button" onclick="switchEditorView('html')">HTML View</button>
                     </div>
+                    <button type="button" class="btn btn-icon" onclick="formatText('bold')"><strong>B</strong></button>
+                    <button type="button" class="btn btn-icon" onclick="formatText('italic')"><em>I</em></button>
                     <button type="button" class="btn btn-icon" onclick="openLinkModal()">🔗 Insert Link</button>
                 </div>
                 <textarea id="post-content" required style="min-height: 250px; font-family: inherit; font-size: 1em; line-height: 1.6;"></textarea>
@@ -470,6 +472,18 @@
                 link.replaceWith(`${text} (${url})`);
             });
 
+            // Convert bold tags to markdown format
+            temp.querySelectorAll('strong, b').forEach(el => {
+                const text = el.textContent;
+                el.replaceWith(`**${text}**`);
+            });
+
+            // Convert italic tags to markdown format
+            temp.querySelectorAll('em, i').forEach(el => {
+                const text = el.textContent;
+                el.replaceWith(`*${text}*`);
+            });
+
             // Replace block elements with newlines
             temp.querySelectorAll('h2, h3, p, blockquote, br').forEach(el => {
                 if (el.tagName === 'BR') {
@@ -509,6 +523,12 @@
 
                 // Re-process to unescape the links we just created
                 processedPara = processedPara.replace(/&lt;a href=&quot;([^&]+)&quot;&gt;([^&]+)&lt;\/a&gt;/g, '<a href="$1">$2</a>');
+
+                // Convert markdown-style bold: **text** to <strong>text</strong>
+                processedPara = processedPara.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+
+                // Convert markdown-style italic: *text* to <em>text</em>
+                processedPara = processedPara.replace(/\*([^*]+)\*/g, '<em>$1</em>');
 
                 return `<p>${processedPara}</p>`;
             }).join('\n\n');
@@ -615,6 +635,52 @@
             }
 
             closeLinkModal();
+            textarea.focus();
+        }
+
+        // Format text (bold or italic)
+        function formatText(format) {
+            const textarea = document.getElementById('post-content');
+            const start = textarea.selectionStart;
+            const end = textarea.selectionEnd;
+            const selectedText = textarea.value.substring(start, end);
+
+            if (!selectedText) {
+                alert('Please select some text to format.');
+                return;
+            }
+
+            let formattedText;
+            if (editorView === 'text') {
+                // In text view, use markdown-style formatting
+                if (format === 'bold') {
+                    formattedText = `**${selectedText}**`;
+                } else if (format === 'italic') {
+                    formattedText = `*${selectedText}*`;
+                }
+            } else {
+                // In HTML view, use HTML tags
+                if (format === 'bold') {
+                    formattedText = `<strong>${selectedText}</strong>`;
+                } else if (format === 'italic') {
+                    formattedText = `<em>${selectedText}</em>`;
+                }
+            }
+
+            // Replace selected text with formatted text
+            const before = textarea.value.substring(0, start);
+            const after = textarea.value.substring(end);
+            textarea.value = before + formattedText + after;
+
+            // Set cursor position after the formatted text
+            const newCursorPos = start + formattedText.length;
+            textarea.setSelectionRange(newCursorPos, newCursorPos);
+
+            // Update stored HTML if in text view
+            if (editorView === 'text') {
+                htmlContent = textToHtml(textarea.value);
+            }
+
             textarea.focus();
         }
 
