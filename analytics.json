@@ -2531,6 +2531,12 @@
       "timestamp": "2026-01-15T19:57:44.690Z",
       "referrer": "https://johnowolabi.com/thoughts",
       "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_3_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/143.0.7499.151 Mobile/15E148 Safari/604.1"
+    },
+    {
+      "page": "/post.html?slug=everything-all-at-once-somewhere-on-highway-401",
+      "timestamp": "2026-01-15T20:01:31.890Z",
+      "referrer": "direct",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.0 Mobile/15E148 Safari/604.1"
     }
   ]
 }
