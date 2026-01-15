@@ -2015,6 +2015,12 @@
       "timestamp": "2026-01-15T02:58:07.416Z",
       "referrer": "https://johnowolabi.com/post.html?slug=confronting-envy-a-social-media-reflection",
       "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.2 Mobile/15E148 Safari/604.1"
+    },
+    {
+      "page": "/post.html?slug=confronting-envy-a-social-media-reflection",
+      "timestamp": "2026-01-15T03:04:41.840Z",
+      "referrer": "direct",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.2 Mobile/15E148 Safari/604.1"
     }
   ]
 }
