@@ -2567,6 +2567,12 @@
       "timestamp": "2026-01-15T20:24:55.340Z",
       "referrer": "direct",
       "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.0 Mobile/15E148 Safari/604.1"
+    },
+    {
+      "page": "/index.html",
+      "timestamp": "2026-01-15T20:30:52.683Z",
+      "referrer": "https://johnowolabi.com/post.html?slug=breaking-free-from-survival-mode",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.0 Mobile/15E148 Safari/604.1"
     }
   ]
 }
