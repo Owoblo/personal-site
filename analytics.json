@@ -2309,6 +2309,12 @@
       "timestamp": "2026-01-15T11:55:41.815Z",
       "referrer": "direct",
       "userAgent": "Mozilla/5.0 (compatible; AhrefsBot/7.0; +http://ahrefs.com/robot/)"
+    },
+    {
+      "page": "/",
+      "timestamp": "2026-01-15T14:55:16.215Z",
+      "referrer": "direct",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_3_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/143.0.7499.151 Mobile/15E148 Safari/604.1"
     }
   ]
 }
