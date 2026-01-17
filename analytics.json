@@ -2849,6 +2849,12 @@
       "timestamp": "2026-01-17T17:01:02.663Z",
       "referrer": "direct",
       "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 26_1_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/144.0.7559.85 Mobile/15E148 Safari/604.1"
+    },
+    {
+      "page": "/index.html",
+      "timestamp": "2026-01-17T17:02:25.823Z",
+      "referrer": "https://johnowolabi.com/post.html?slug=when-truths-scares-you",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 26_1_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/144.0.7559.85 Mobile/15E148 Safari/604.1"
     }
   ]
 }
