@@ -2909,6 +2909,12 @@
       "timestamp": "2026-01-17T22:51:29.018Z",
       "referrer": "https://johnowolabi.com/thoughts",
       "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36"
+    },
+    {
+      "page": "/thoughts",
+      "timestamp": "2026-01-17T23:01:05.542Z",
+      "referrer": "https://t.co/",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_3_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/22D82 Twitter for iPhone/11.56.1"
     }
   ]
 }
