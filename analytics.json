@@ -2933,6 +2933,12 @@
       "timestamp": "2026-01-18T00:08:50.732Z",
       "referrer": "https://t.co/",
       "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 16_7_11 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6.1 Mobile/15E148 Safari/604.1"
+    },
+    {
+      "page": "/?fbclid=IwZXh0bgNhZW0CMTEAc3J0YwZhcHBfaWQMMjU2MjgxMDQwNTU4AAEejKRMeVe3yRu1IylmcqK_XkISu9fl5sPSLjwf1EaED0u87Azh3DLDK9TjYGg_aem_h3I9fHtrLZvGaKKZ6fYxZg",
+      "timestamp": "2026-01-18T00:50:31.686Z",
+      "referrer": "http://m.facebook.com",
+      "userAgent": "Instagram 411.3.0.30.238 (iPhone17,4; iOS 18_3_2; en_US; en; scale=3.00; 1290x2796; 858646473) AppleWebKit/420+"
     }
   ]
 }
