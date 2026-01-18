@@ -2975,6 +2975,12 @@
       "timestamp": "2026-01-18T20:15:52.687Z",
       "referrer": "https://l.instagram.com/",
       "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36 OPR/125.0.0.0"
+    },
+    {
+      "page": "/",
+      "timestamp": "2026-01-18T22:50:42.930Z",
+      "referrer": "direct",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
     }
   ]
 }
