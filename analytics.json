@@ -3125,6 +3125,12 @@
       "timestamp": "2026-01-19T23:02:39.155Z",
       "referrer": "direct",
       "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.2 Mobile/15E148 Safari/604.1"
+    },
+    {
+      "page": "/index.html",
+      "timestamp": "2026-01-19T23:02:40.053Z",
+      "referrer": "https://johnowolabi.com/post.html?slug=love-feels-like-magic-until-it-doesnt",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.2 Mobile/15E148 Safari/604.1"
     }
   ]
 }
