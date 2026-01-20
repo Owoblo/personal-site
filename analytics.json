@@ -3233,6 +3233,12 @@
       "timestamp": "2026-01-20T14:44:50.894Z",
       "referrer": "direct",
       "userAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Mobile Safari/537.36"
+    },
+    {
+      "page": "/",
+      "timestamp": "2026-01-20T16:16:28.929Z",
+      "referrer": "direct",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
     }
   ]
 }
