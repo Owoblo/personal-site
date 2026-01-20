@@ -3155,6 +3155,12 @@
       "timestamp": "2026-01-20T00:50:55.787Z",
       "referrer": "https://johnowolabi.com/",
       "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36"
+    },
+    {
+      "page": "/",
+      "timestamp": "2026-01-20T00:57:38.345Z",
+      "referrer": "https://johnowolabi.com/post.html?slug=breaking-free-from-survival-mode",
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36"
     }
   ]
 }
