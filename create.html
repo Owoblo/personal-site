@@ -142,6 +142,37 @@
             font-style: italic;
         }
 
+        .preview-box s,
+        .preview-box del,
+        .preview-box strike {
+            text-decoration: line-through;
+        }
+
+        .preview-box blockquote {
+            border-left: 3px solid var(--colors--primary-accent);
+            margin: 1em 0;
+            padding: 0.5em 1em;
+            background: var(--colors--footnote-background);
+            font-style: italic;
+        }
+
+        .preview-box ul,
+        .preview-box ol {
+            margin: 1em 0;
+            padding-left: 2em;
+        }
+
+        .preview-box li {
+            margin: 0.5em 0;
+        }
+
+        .preview-box img {
+            max-width: 100%;
+            height: auto;
+            margin: 1em 0;
+            border-radius: 4px;
+        }
+
         .actions {
             display: flex;
             gap: 10px;
@@ -269,6 +300,73 @@
             font-size: 0.9em;
         }
 
+        .toolbar-divider {
+            width: 1px;
+            height: 24px;
+            background-color: var(--colors--text);
+            opacity: 0.3;
+            margin: 0 5px;
+        }
+
+        .toolbar-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .toolbar-dropdown > button {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .toolbar-dropdown > button span {
+            font-size: 0.7em;
+        }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: var(--colors--background);
+            border: 1px solid var(--colors--text);
+            min-width: 120px;
+            z-index: 100;
+            margin-top: 4px;
+        }
+
+        .toolbar-dropdown:hover .dropdown-menu,
+        .toolbar-dropdown:focus-within .dropdown-menu {
+            display: block;
+        }
+
+        .dropdown-menu button {
+            display: block;
+            width: 100%;
+            padding: 8px 12px;
+            border: none;
+            background: none;
+            text-align: left;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.9em;
+            color: var(--colors--text);
+        }
+
+        .dropdown-menu button:hover {
+            background: var(--colors--footnote-background);
+        }
+
+        .word-count {
+            font-size: 0.85em;
+            opacity: 0.7;
+            margin-left: auto;
+        }
+
+        .editor-toolbar {
+            flex-wrap: wrap;
+        }
+
         .link-modal {
             position: fixed;
             top: 0;
@@ -385,12 +483,35 @@
                 <label for="post-content">Content *</label>
                 <div class="editor-toolbar">
                     <div class="view-toggle">
-                        <button type="button" class="active" onclick="switchEditorView('text')">Text View</button>
-                        <button type="button" onclick="switchEditorView('html')">HTML View</button>
+                        <button type="button" class="active" onclick="switchEditorView('text')">Text</button>
+                        <button type="button" onclick="switchEditorView('html')">HTML</button>
                     </div>
-                    <button type="button" class="btn btn-icon" onclick="formatText('bold')"><strong>B</strong></button>
-                    <button type="button" class="btn btn-icon" onclick="formatText('italic')"><em>I</em></button>
-                    <button type="button" class="btn btn-icon" onclick="openLinkModal()">🔗 Insert Link</button>
+                    <div class="toolbar-divider"></div>
+                    <button type="button" class="btn btn-icon" onclick="formatText('bold')" title="Bold"><strong>B</strong></button>
+                    <button type="button" class="btn btn-icon" onclick="formatText('italic')" title="Italic"><em>I</em></button>
+                    <button type="button" class="btn btn-icon" onclick="formatText('strikethrough')" title="Strikethrough"><s>S</s></button>
+                    <div class="toolbar-divider"></div>
+                    <div class="toolbar-dropdown">
+                        <button type="button" class="btn btn-icon">Body <span>▼</span></button>
+                        <div class="dropdown-menu">
+                            <button type="button" onclick="setTextStyle('body')">Body</button>
+                            <button type="button" onclick="setTextStyle('h2')">Heading 2</button>
+                            <button type="button" onclick="setTextStyle('h3')">Heading 3</button>
+                        </div>
+                    </div>
+                    <div class="toolbar-divider"></div>
+                    <button type="button" class="btn btn-icon" onclick="insertBlockquote()" title="Blockquote">"</button>
+                    <button type="button" class="btn btn-icon" onclick="insertBulletList()" title="Bullet List">•</button>
+                    <button type="button" class="btn btn-icon" onclick="insertNumberedList()" title="Numbered List">1.</button>
+                    <div class="toolbar-divider"></div>
+                    <button type="button" class="btn btn-icon" onclick="openLinkModal()" title="Insert Link">🔗</button>
+                    <div class="toolbar-dropdown">
+                        <button type="button" class="btn btn-icon">Insert <span>▼</span></button>
+                        <div class="dropdown-menu">
+                            <button type="button" onclick="openImageModal()">📷 Image</button>
+                        </div>
+                    </div>
+                    <span class="word-count">0 words</span>
                 </div>
                 <textarea id="post-content" required style="min-height: 250px; font-family: inherit; font-size: 1em; line-height: 1.6;"></textarea>
                 <small id="content-view-hint">Plain text view - HTML tags hidden for easier editing.</small>
@@ -445,6 +566,28 @@
         </div>
     </div>
 
+    <!-- Image Insert Modal -->
+    <div id="image-modal" class="link-modal">
+        <div class="link-modal-content">
+            <h3>Insert Image</h3>
+            <div class="form-group">
+                <label for="image-file">Select Image *</label>
+                <input type="file" id="image-file" accept="image/*" onchange="previewImage(event)">
+            </div>
+            <div class="form-group">
+                <label for="image-alt">Alt Text (optional)</label>
+                <input type="text" id="image-alt" placeholder="Describe the image">
+            </div>
+            <div id="image-preview" style="display: none; margin: 15px 0; text-align: center;">
+                <img id="preview-img" style="max-width: 100%; max-height: 200px; border: 1px solid var(--colors--text);">
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-primary" onclick="uploadAndInsertImage()" id="upload-btn">Upload & Insert</button>
+                <button class="btn" onclick="closeImageModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         let posts = [];
         let currentPostId = null;
@@ -475,6 +618,13 @@
             const temp = document.createElement('div');
             temp.innerHTML = html;
 
+            // Convert images to markdown format
+            temp.querySelectorAll('img').forEach(img => {
+                const alt = img.getAttribute('alt') || 'Image';
+                const src = img.getAttribute('src') || '';
+                img.replaceWith(`![${alt}](${src})`);
+            });
+
             // Convert links to readable format before extracting text
             temp.querySelectorAll('a').forEach(link => {
                 const text = link.textContent;
@@ -494,8 +644,44 @@
                 el.replaceWith(`*${text}*`);
             });
 
-            // Replace block elements with newlines
-            temp.querySelectorAll('h2, h3, p, blockquote, br').forEach(el => {
+            // Convert strikethrough tags to markdown format
+            temp.querySelectorAll('s, del, strike').forEach(el => {
+                const text = el.textContent;
+                el.replaceWith(`~~${text}~~`);
+            });
+
+            // Convert headings to markdown format
+            temp.querySelectorAll('h2').forEach(el => {
+                const text = el.textContent;
+                el.replaceWith(`## ${text}\n\n`);
+            });
+
+            temp.querySelectorAll('h3').forEach(el => {
+                const text = el.textContent;
+                el.replaceWith(`### ${text}\n\n`);
+            });
+
+            // Convert blockquotes to markdown format
+            temp.querySelectorAll('blockquote').forEach(el => {
+                const text = el.textContent.trim();
+                const quotedText = text.split('\n').map(line => `> ${line}`).join('\n');
+                el.replaceWith(`${quotedText}\n\n`);
+            });
+
+            // Convert unordered lists to markdown format
+            temp.querySelectorAll('ul').forEach(ul => {
+                const items = Array.from(ul.querySelectorAll('li')).map(li => `- ${li.textContent}`).join('\n');
+                ul.replaceWith(`${items}\n\n`);
+            });
+
+            // Convert ordered lists to markdown format
+            temp.querySelectorAll('ol').forEach(ol => {
+                const items = Array.from(ol.querySelectorAll('li')).map((li, i) => `${i + 1}. ${li.textContent}`).join('\n');
+                ol.replaceWith(`${items}\n\n`);
+            });
+
+            // Replace remaining block elements with newlines
+            temp.querySelectorAll('p, br').forEach(el => {
                 if (el.tagName === 'BR') {
                     el.replaceWith('\n');
                 } else {
@@ -516,32 +702,86 @@
                 para = para.trim();
                 if (!para) return '';
 
-                // Check if it looks like a heading (short, no punctuation at end)
-                if (para.length < 80 && !para.match(/[.!?]$/)) {
+                // Check for markdown headings
+                if (para.startsWith('## ')) {
+                    const headingText = para.substring(3);
+                    return `<h2>${escapeHtml(headingText)}</h2>`;
+                }
+                if (para.startsWith('### ')) {
+                    const headingText = para.substring(4);
+                    return `<h3>${escapeHtml(headingText)}</h3>`;
+                }
+
+                // Check for blockquotes (lines starting with >)
+                if (para.startsWith('> ') || para.startsWith('>')) {
+                    const quoteLines = para.split('\n').map(line => {
+                        return line.replace(/^>\s?/, '');
+                    });
+                    return `<blockquote><p>${escapeHtml(quoteLines.join(' '))}</p></blockquote>`;
+                }
+
+                // Check for unordered lists (lines starting with -)
+                if (para.match(/^- /m)) {
+                    const items = para.split('\n')
+                        .filter(line => line.trim().startsWith('- '))
+                        .map(line => `<li>${processInlineFormatting(escapeHtml(line.trim().substring(2)))}</li>`)
+                        .join('\n');
+                    return `<ul>\n${items}\n</ul>`;
+                }
+
+                // Check for ordered lists (lines starting with number.)
+                if (para.match(/^\d+\. /m)) {
+                    const items = para.split('\n')
+                        .filter(line => line.trim().match(/^\d+\. /))
+                        .map(line => `<li>${processInlineFormatting(escapeHtml(line.trim().replace(/^\d+\. /, '')))}</li>`)
+                        .join('\n');
+                    return `<ol>\n${items}\n</ol>`;
+                }
+
+                // Check if it looks like a heading (short, no punctuation at end, not a list)
+                if (para.length < 80 && !para.match(/[.!?]$/) && !para.startsWith('-') && !para.match(/^\d+\./)) {
                     return `<h2>${escapeHtml(para)}</h2>`;
                 }
 
                 // Regular paragraph
                 // Replace single newlines with <br>
                 let processedPara = para.split('\n').map(line => {
-                    // Convert text links like "text (url)" to HTML links
-                    line = line.replace(/([^(]+)\s*\((https?:\/\/[^\s)]+)\)/g, function(match, text, url) {
-                        return `<a href="${url.trim()}">${text.trim()}</a>`;
-                    });
                     return escapeHtml(line.trim());
                 }).join('<br>');
 
-                // Re-process to unescape the links we just created
-                processedPara = processedPara.replace(/&lt;a href=&quot;([^&]+)&quot;&gt;([^&]+)&lt;\/a&gt;/g, '<a href="$1">$2</a>');
-
-                // Convert markdown-style bold: **text** to <strong>text</strong>
-                processedPara = processedPara.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
-
-                // Convert markdown-style italic: *text* to <em>text</em>
-                processedPara = processedPara.replace(/\*([^*]+)\*/g, '<em>$1</em>');
+                // Process inline formatting
+                processedPara = processInlineFormatting(processedPara);
 
                 return `<p>${processedPara}</p>`;
             }).join('\n\n');
+        }
+
+        // Process inline formatting (bold, italic, strikethrough, links, images)
+        function processInlineFormatting(text) {
+            // Convert markdown images: ![alt](url) to <img>
+            text = text.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1">');
+
+            // Convert text links like "text (url)" to HTML links
+            text = text.replace(/([^(]+)\s*\((https?:\/\/[^\s)]+)\)/g, function(match, linkText, url) {
+                // Don't convert if it's an image
+                if (linkText.includes('<img')) return match;
+                return `<a href="${url.trim()}">${linkText.trim()}</a>`;
+            });
+
+            // Re-process to unescape the links and images we just created
+            text = text.replace(/&lt;a href=&quot;([^&]+)&quot;&gt;([^&]+)&lt;\/a&gt;/g, '<a href="$1">$2</a>');
+            text = text.replace(/&lt;img src=&quot;([^&]+)&quot; alt=&quot;([^&]*)&quot;&gt;/g, '<img src="$1" alt="$2">');
+
+            // Convert markdown-style strikethrough: ~~text~~ to <s>text</s>
+            text = text.replace(/~~([^~]+)~~/g, '<s>$1</s>');
+
+            // Convert markdown-style bold: **text** to <strong>text</strong>
+            text = text.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+
+            // Convert markdown-style italic: *text* to <em>text</em>
+            text = text.replace(/\*([^*]+)\*/g, '<em>$1</em>');
+
+            return text;
         }
 
         // Switch editor view
@@ -648,7 +888,7 @@
             textarea.focus();
         }
 
-        // Format text (bold or italic)
+        // Format text (bold, italic, or strikethrough)
         function formatText(format) {
             const textarea = document.getElementById('post-content');
             const start = textarea.selectionStart;
@@ -667,6 +907,8 @@
                     formattedText = `**${selectedText}**`;
                 } else if (format === 'italic') {
                     formattedText = `*${selectedText}*`;
+                } else if (format === 'strikethrough') {
+                    formattedText = `~~${selectedText}~~`;
                 }
             } else {
                 // In HTML view, use HTML tags
@@ -674,6 +916,8 @@
                     formattedText = `<strong>${selectedText}</strong>`;
                 } else if (format === 'italic') {
                     formattedText = `<em>${selectedText}</em>`;
+                } else if (format === 'strikethrough') {
+                    formattedText = `<s>${selectedText}</s>`;
                 }
             }
 
@@ -691,6 +935,318 @@
                 htmlContent = textToHtml(textarea.value);
             }
 
+            updateWordCount();
+            textarea.focus();
+        }
+
+        // Set text style (body, h2, h3)
+        function setTextStyle(style) {
+            const textarea = document.getElementById('post-content');
+            const start = textarea.selectionStart;
+            const end = textarea.selectionEnd;
+            const selectedText = textarea.value.substring(start, end);
+
+            if (!selectedText) {
+                alert('Please select some text to format.');
+                return;
+            }
+
+            let formattedText;
+            if (editorView === 'text') {
+                // In text view, use markdown-style formatting
+                if (style === 'h2') {
+                    formattedText = `## ${selectedText}`;
+                } else if (style === 'h3') {
+                    formattedText = `### ${selectedText}`;
+                } else {
+                    formattedText = selectedText; // Body - no special formatting
+                }
+            } else {
+                // In HTML view, use HTML tags
+                if (style === 'h2') {
+                    formattedText = `<h2>${selectedText}</h2>`;
+                } else if (style === 'h3') {
+                    formattedText = `<h3>${selectedText}</h3>`;
+                } else {
+                    formattedText = `<p>${selectedText}</p>`;
+                }
+            }
+
+            // Replace selected text with formatted text
+            const before = textarea.value.substring(0, start);
+            const after = textarea.value.substring(end);
+            textarea.value = before + formattedText + after;
+
+            // Set cursor position after the formatted text
+            const newCursorPos = start + formattedText.length;
+            textarea.setSelectionRange(newCursorPos, newCursorPos);
+
+            // Update stored HTML if in text view
+            if (editorView === 'text') {
+                htmlContent = textToHtml(textarea.value);
+            }
+
+            updateWordCount();
+            textarea.focus();
+        }
+
+        // Insert blockquote
+        function insertBlockquote() {
+            const textarea = document.getElementById('post-content');
+            const start = textarea.selectionStart;
+            const end = textarea.selectionEnd;
+            const selectedText = textarea.value.substring(start, end);
+
+            let formattedText;
+            if (editorView === 'text') {
+                // In text view, prefix each line with >
+                if (selectedText) {
+                    formattedText = selectedText.split('\n').map(line => `> ${line}`).join('\n');
+                } else {
+                    formattedText = '> ';
+                }
+            } else {
+                // In HTML view, use blockquote tag
+                if (selectedText) {
+                    formattedText = `<blockquote><p>${selectedText}</p></blockquote>`;
+                } else {
+                    formattedText = '<blockquote><p></p></blockquote>';
+                }
+            }
+
+            // Replace selected text with formatted text
+            const before = textarea.value.substring(0, start);
+            const after = textarea.value.substring(end);
+            textarea.value = before + formattedText + after;
+
+            // Set cursor position
+            const newCursorPos = start + formattedText.length;
+            textarea.setSelectionRange(newCursorPos, newCursorPos);
+
+            // Update stored HTML if in text view
+            if (editorView === 'text') {
+                htmlContent = textToHtml(textarea.value);
+            }
+
+            updateWordCount();
+            textarea.focus();
+        }
+
+        // Insert bullet list
+        function insertBulletList() {
+            const textarea = document.getElementById('post-content');
+            const start = textarea.selectionStart;
+            const end = textarea.selectionEnd;
+            const selectedText = textarea.value.substring(start, end);
+
+            let formattedText;
+            if (editorView === 'text') {
+                // In text view, prefix each line with -
+                if (selectedText) {
+                    formattedText = selectedText.split('\n').map(line => `- ${line}`).join('\n');
+                } else {
+                    formattedText = '- ';
+                }
+            } else {
+                // In HTML view, use ul/li tags
+                if (selectedText) {
+                    const items = selectedText.split('\n').map(line => `<li>${line}</li>`).join('\n');
+                    formattedText = `<ul>\n${items}\n</ul>`;
+                } else {
+                    formattedText = '<ul>\n<li></li>\n</ul>';
+                }
+            }
+
+            // Replace selected text with formatted text
+            const before = textarea.value.substring(0, start);
+            const after = textarea.value.substring(end);
+            textarea.value = before + formattedText + after;
+
+            // Set cursor position
+            const newCursorPos = start + formattedText.length;
+            textarea.setSelectionRange(newCursorPos, newCursorPos);
+
+            // Update stored HTML if in text view
+            if (editorView === 'text') {
+                htmlContent = textToHtml(textarea.value);
+            }
+
+            updateWordCount();
+            textarea.focus();
+        }
+
+        // Insert numbered list
+        function insertNumberedList() {
+            const textarea = document.getElementById('post-content');
+            const start = textarea.selectionStart;
+            const end = textarea.selectionEnd;
+            const selectedText = textarea.value.substring(start, end);
+
+            let formattedText;
+            if (editorView === 'text') {
+                // In text view, prefix each line with number
+                if (selectedText) {
+                    formattedText = selectedText.split('\n').map((line, i) => `${i + 1}. ${line}`).join('\n');
+                } else {
+                    formattedText = '1. ';
+                }
+            } else {
+                // In HTML view, use ol/li tags
+                if (selectedText) {
+                    const items = selectedText.split('\n').map(line => `<li>${line}</li>`).join('\n');
+                    formattedText = `<ol>\n${items}\n</ol>`;
+                } else {
+                    formattedText = '<ol>\n<li></li>\n</ol>';
+                }
+            }
+
+            // Replace selected text with formatted text
+            const before = textarea.value.substring(0, start);
+            const after = textarea.value.substring(end);
+            textarea.value = before + formattedText + after;
+
+            // Set cursor position
+            const newCursorPos = start + formattedText.length;
+            textarea.setSelectionRange(newCursorPos, newCursorPos);
+
+            // Update stored HTML if in text view
+            if (editorView === 'text') {
+                htmlContent = textToHtml(textarea.value);
+            }
+
+            updateWordCount();
+            textarea.focus();
+        }
+
+        // Update word count
+        function updateWordCount() {
+            const textarea = document.getElementById('post-content');
+            if (!textarea) return;
+            const text = textarea.value.trim();
+            // Remove markdown/HTML syntax for more accurate count
+            const cleanText = text
+                .replace(/<[^>]+>/g, ' ')  // Remove HTML tags
+                .replace(/[*_~#>\-\[\]()!]/g, ' ')  // Remove markdown syntax
+                .replace(/\s+/g, ' ')  // Normalize whitespace
+                .trim();
+            const wordCount = cleanText ? cleanText.split(/\s+/).filter(word => word.length > 0).length : 0;
+            const wordCountEl = document.querySelector('.word-count');
+            if (wordCountEl) {
+                wordCountEl.textContent = `${wordCount} words`;
+            }
+        }
+
+        // Open image modal
+        function openImageModal() {
+            const textarea = document.getElementById('post-content');
+            cursorPosition = textarea.selectionStart;
+            document.getElementById('image-file').value = '';
+            document.getElementById('image-alt').value = '';
+            document.getElementById('image-preview').style.display = 'none';
+            document.getElementById('image-modal').classList.add('active');
+        }
+
+        // Close image modal
+        function closeImageModal() {
+            document.getElementById('image-modal').classList.remove('active');
+        }
+
+        // Preview image before upload
+        function previewImage(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('preview-img').src = e.target.result;
+                    document.getElementById('image-preview').style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Convert file to base64
+        function fileToBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = reject;
+                reader.readAsDataURL(file);
+            });
+        }
+
+        // Upload and insert image
+        async function uploadAndInsertImage() {
+            const fileInput = document.getElementById('image-file');
+            const altText = document.getElementById('image-alt').value.trim() || 'Image';
+
+            if (!fileInput.files[0]) {
+                alert('Please select an image file.');
+                return;
+            }
+
+            const uploadBtn = document.getElementById('upload-btn');
+            uploadBtn.disabled = true;
+            uploadBtn.textContent = 'Uploading...';
+
+            try {
+                // Convert file to base64
+                const file = fileInput.files[0];
+                const base64 = await fileToBase64(file);
+
+                // Upload to GitHub via Netlify function
+                const response = await fetch('/.netlify/functions/upload-image', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        filename: file.name,
+                        content: base64,
+                        contentType: file.type
+                    })
+                });
+
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.error || 'Upload failed');
+                }
+
+                const { url } = await response.json();
+
+                // Insert image into editor
+                insertImageAtCursor(url, altText);
+                closeImageModal();
+                showAlert('Image uploaded successfully!', 'success');
+
+            } catch (error) {
+                console.error('Error uploading image:', error);
+                alert('Failed to upload image: ' + error.message);
+            } finally {
+                uploadBtn.disabled = false;
+                uploadBtn.textContent = 'Upload & Insert';
+            }
+        }
+
+        // Insert image at cursor position
+        function insertImageAtCursor(url, alt) {
+            const textarea = document.getElementById('post-content');
+
+            let imageMarkup;
+            if (editorView === 'text') {
+                imageMarkup = `![${alt}](${url})`;
+            } else {
+                imageMarkup = `<img src="${url}" alt="${alt}">`;
+            }
+
+            // Insert at cursor position
+            const before = textarea.value.substring(0, cursorPosition);
+            const after = textarea.value.substring(cursorPosition);
+            textarea.value = before + imageMarkup + after;
+
+            // Update stored HTML if in text view
+            if (editorView === 'text') {
+                htmlContent = textToHtml(textarea.value);
+            }
+
+            updateWordCount();
             textarea.focus();
         }
 
@@ -698,6 +1254,13 @@
         document.getElementById('link-modal').addEventListener('click', function(e) {
             if (e.target === this) {
                 closeLinkModal();
+            }
+        });
+
+        // Close image modal when clicking outside
+        document.getElementById('image-modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeImageModal();
             }
         });
 
@@ -1140,6 +1703,9 @@
 
         // Initialize
         loadPosts();
+
+        // Add event listener for word count updates
+        document.getElementById('post-content').addEventListener('input', updateWordCount);
     </script>
 </body>
 </html>
