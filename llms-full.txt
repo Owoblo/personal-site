@@ -1,0 +1,541 @@
+# John Owolabi - Complete Content
+
+> This file contains the full text content of johnowolabi.com for AI systems.
+
+## About
+
+John Owolabi runs Saturn Star Movers in Canada and realized most moving companies operate like it's 1995. So he's building the software stack the industry should have had decades ago. His work spans real estate data, logistics automation, and tools that turn manual chaos into scalable systems.
+
+He focuses on systems, not noise, and prefers solving real problems over talking about them.
+
+He writes to think. His blog is where he breaks down what he's learning: ideas, experiments, failures, and whatever problem he's currently obsessed with. Curiosity drives most of his work, whether it's AI, markets, travel, design, or understanding how people operate.
+
+He grew up learning to figure things out quickly, and that habit never left. He moves fast, asks direct questions, and takes work seriously. He likes meeting people, but he also keeps his distance. The mix is intentional.
+
+Most of his projects start from the same place: see the gap, build the system, let the results speak.
+
+---
+
+## Projects
+
+### Saturn Star Movers (https://starmovers.ca)
+A moving company in Canada, and the laboratory where John tests every tool he builds. Real operations, real problems, real solutions.
+
+### Sold2Move (https://sold2move.com)
+Moving companies need to know where homes are selling before anyone else. Sold2Move tracks listings and sales in real-time so movers can be first to the door.
+
+### MovSense (https://movsense.com)
+Most moving companies still dispatch with clipboards and spreadsheets. MovSense is the automation software they should have been using all along.
+
+---
+
+## Blog Posts
+
+### The Invisible Forces Shaping Our Choices
+Date: December 10, 2025
+URL: https://johnowolabi.com/post.html?slug=the-invisible-forces-shaping-our-choices
+
+I don't go out of my way to analyze the world; it just happens. Like anyone else, I'll find myself scrolling through my phone, watching a viral TikTok, reading a random Twitter thread, or catching an Instagram Reel that the algorithm threw my way. But I've noticed that what I take away from these moments is rarely what the average person sees.
+
+Where most people see a clip of entertainment, my brain instinctively looks for the bigger picture. I don't try to force it, but I can't help but spot the patterns: the human behavior, the hidden message, the societal structures, the "why" behind the "what." It's a reflex. I see the wiring under the hood.
+
+This reflex kicked in heavily the other day.
+
+I was watching a documentary by a filmmaker exploring the darkest under-belly of Lagos, specifically the "Argentina Bridge" along the well-known Third Mainland Bridge. On the surface, it was a video about crime. The reality there is terrifying. Rape, kidnapping, murder, and drugs are the norm. If you can pass through safely, it's a miracle.
+
+But while the camera focused on the shock value, I saw a pattern.
+
+Watching an interview with a masked man who has cycled in and out of Ikoyi Prison, Kiriri Prison and Kotoki Prison amongst others, multiple times, I stopped seeing just a "criminal" and started seeing the mechanics of a trap. It forced me to ask a difficult question: Is it truly possible to escape poverty when you are born into it, or is the gravity too strong?
+
+I looked at that man and wondered: Is he just "evil," or is he simply playing the only cards he was dealt? We like to think we have choices, but the position from which you start the "game of life" dictates your strategy. Your brain, your formative years, and your environment set a trajectory that is nearly impossible to break.
+
+It's about Inertia.
+
+Just as the richest man in Africa has remained the richest since I was born because wealth preserves wealth, those born into the "storms" of the slums tend to stay there because poverty preserves poverty. It's not necessarily about having bad intentions; often, it's about survival. You can choose a path like school, entrepreneurship, or crime. But once you are positioned on a specific track, moving to a different one is agonizingly difficult.
+
+The tragedy is that the environment often forces you to make choices that stain you. That man wore a mask because of the "work" he does. He knows society won't accept him in the open. Evil didn't just appear; it was cultivated by necessity.
+
+Every path has its pleasures and its prices. But the hardest thing in the world isn't choosing a path; it is changing your starting position.
+
+---
+
+### Confronting Envy: A Social Media Reflection
+Date: December 6, 2025
+URL: https://johnowolabi.com/post.html?slug=confronting-envy-a-social-media-reflection
+
+I've been sick lately, which means I've had more time on my hands than usual. And with that time comes something I've noticed creeping in—something I'm not proud of but need to talk about: envy.
+
+I think there's something about spending too much time on social media that triggers negative emotions. Jealousy. Envy. Maybe we use those words interchangeably, but whatever you call it, it's there. During this break, I've found myself scrolling through Instagram for ungodly amounts of time, and I've started to notice a pattern in how I react to what I see.
+
+Someone posts about a win - a nice dress, a celebration, a new opportunity, a picture with a supposed celebrity. And instead of feeling happy for them, or even just indifferent, I find myself downplaying it in my mind. "It's probably not that deep." "They're exaggerating." "They're doing too much." "Just showing off."
+
+And then I catch myself. What's wrong with you, John?
+
+I think there's something about having too much idle time, about not being actively engaged in your own life, that opens the door for these emotions. When you're busy—genuinely busy, actively working toward something, living healthily—you're more generous with others. You don't have the mental space to tear people down in your head because you're focused on building yourself up.
+
+But when you're stuck in that scroll loop, seeing hundreds, maybe thousands of people's highlight reels, something shifts. You start feeling like everyone's winning and you're losing. You forget that no one posts their health struggles, their money problems, the things they're fixing in the background. You only see the polished version.
+
+Now, whether people are faking their lives or being authentic—that's not even the point. The point is this: if you find yourself being triggered, if you notice that scrolling makes you feel worse instead of better, that's your signal. Maybe it's not normal to be exposed to this many people's lives all at once. Maybe our brains weren't designed for this. Maybe the psychologists working at these companies know exactly what they're doing when they engineer these platforms to keep us hooked.
+
+So what do you do when you catch yourself in that trap?
+
+You have to intentionally work against it. Step back. Take a break from social media. When you see someone winning, force yourself to drop a congratulations message and move on with your day. Reengineer the process before it engineers you.
+
+Because once you fall into that trap, it doesn't just stay on your phone. It seeps into how you think about yourself, your life, your progress. It makes you unhappy. And the crazy part? It's all based on incomplete information—curated snapshots that tell you nothing about the full story.
+
+This is human. The envy, the comparison—it's normal. But it has to be caught. It has to be controlled. Otherwise, you end up a victim of an algorithm designed to keep you feeling just unsatisfied enough to keep scrolling.
+
+So maybe this is your reminder, and mine: when you notice the feeling, name it. Catch yourself. And then do something about it.
+
+---
+
+### When Truths Scares You
+Date: December 5, 2025
+URL: https://johnowolabi.com/post.html?slug=when-truths-scares-you
+
+There's this thing about thoughts - they haunt you. They sit in the back of your mind, calling out to be acknowledged, until you finally write them down just to get some peace.
+
+This is one of those thoughts.
+
+I met this girl about two years ago while I was taking an aimless walk. We spoke at length, the vibe was right, so I asked the standard question: "Do you have a boyfriend?"
+
+She smiled and said yes. Usually, when a girl says that, the air gets cold. It's a stop sign. But with her, it was different. It wasn't a rejection; it was just a fact. She was warm.
+
+Even after that, if we bumped into each other, it was with a warm hug and a genuine smile.
+
+I remember testing the waters back then, dropping a text here and there, but she stood firm. She was loyal. I respected that heavily.
+
+Fast forward two years. I hadn't really thought about her, but suddenly, I started seeing her everywhere. At the gym, on the road, swiping past, it was like the universe was throwing her in my face three or four times a day. You know what they say: absence makes the heart grow fonder.
+
+So, I jokingly put on my "flirting gown." I hit her up for coffee, fully expecting that same firm "I have a boyfriend" response.
+
+Instead, she said, "Yeah, let's go."
+
+We grabbed dinner instead, and things moved fast. It got serious. She was sweet, she was attentive, and she fell hard. We were in that bubble where everything feels perfect.
+
+Then came one of those late nights. You know the ones - just chilling in the dark, vulnerable, that phase where you start comparing notes on your past history.
+
+She started telling me about her ex. This wasn't a small thing; they had been together for almost ten years. They had been through thick and thin together. But she mentioned this one specific time where there was a "break" in the relationship. He had issues with his papers and had to leave the country. He came back eventually, but at the time, he was gone for about seven months.
+
+She looked at me, reflecting on that specific gap, and said:
+
+"I could not wait for seven months. I needed to be well f*cked."
+
+The room didn't change, but the way I saw her did.
+
+It created this crazy dichotomy in my mind. On one hand, she was being raw. She was speaking her truth about her physical needs, and there's something bold about that. She wasn't lying to me.
+
+But on the other hand, it scared the hell out of me.
+
+It was a stark realization about human nature. We want to believe love is unconditional, that people will wait for us. But hearing that made me feel like love is often just transactional. It made me look at this girl, who claimed to be falling for me, and think: If you could flip the switch on a ten-year partner because you couldn't wait a few months, what happens to me if I stumble?
+
+If I get sick, or I'm away, or I can't provide... am I on my own?
+
+She was speaking her truth, but her truth made me realize that loyalty is fragile. And sometimes, no matter how sweet someone is, their self-interest will always win.
+
+---
+
+### The Art of Easing It
+Date: December 3, 2025
+URL: https://johnowolabi.com/post.html?slug=the-art-of-easing-it
+
+If I don't write this down now, it's probably going to slip from my head.
+
+I just had a very stark realization. I was taking a late-night drive around the city, blasting songs, and scrolling through TikTok. Don't tell the police :) Blame it on my short attention span; I'm just out here consuming enough brainwaves to damage my brain, purely for the dopamine hit.
+
+But in the middle of that chaos, I came across this lady whose content stopped me in my tracks.
+
+It wasn't really anything ground-breaking or fresh out of the box. It was basic. But it felt like the exact reminder I needed, and honestly, just what I wanted to hear at that point in time. Paraphrasingly, she said something along the lines of: You need to be patient. You need to be at ease.
+
+She wasn't just talking about the goals, like getting to the beaches or how people perceive you, but about how you actually go through life.
+
+For a long time, I've been running on a different fuel. I used to have this constant feeling of needing to show people. I wanted to prove something. I had this specific dollar figure in my head, "I need a million dollars in the bank", and I was constantly fixated on it. I'd even look for songs that subtly talked about making money just to keep that fire burning.
+
+It's the way capitalism makes you feel; it makes you feel like you're always behind.
+
+But the point I'm trying to make, and the realization that hit me, is this: Why don't I just ease it?
+
+Why am I rushing toward a destination so fast that I forget to enjoy the drive? Why am I sprinting for a dollar figure when, in reality, I should just take it slowly and live life?
+
+This doesn't negate the fact that I should go for what I want. It doesn't mean I stop setting goals or stop getting to work. But the energy behind the work needs to change. I want to do it because I'm enjoying the process. I want to take my time. It's about the whole journey, not just the desperate eagerness to reach the finish line.
+
+Once you change that mindset, everything shifts.
+
+First, it kills the envy. When you're rushing, you're always looking sideways to see who is ahead of you. But when you ease it, you realize: This is my own journey. I'm learning as much as I can. I'm not in a rush. I don't need to compare myself to anyone, and I'm not moved by whatever "success story" is trending out there. I am already comfortable with myself.
+
+I think the things we need to succeed and thrive in life aren't complicated. They are basic truths, but we need to be reminded of them often. And that moment in the car stuck with me.
+
+I had to tell myself: Look, John, be patient. Ease it.
+
+You don't have anything to prove to anybody. You don't have to play music that triggers people. You don't have to "dunk" on your enemies or your haters. Just live your life.
+
+People are dying every single day. Accidents happen. This life doesn't come with a manual, and it is far too short to start harboring things that don't make sense.
+
+It sounds basic, I know. But when the odds are stacked against you and the pressure is mounting, you can't think straight. You need that simple reminder to breathe.
+
+There is time. Just ease it.
+
+---
+
+### Confronting Chaos: A Path to Clarity
+Date: December 1, 2025
+URL: https://johnowolabi.com/post.html?slug=confronting-chaos-a-path-to-clarity
+
+"Stress comes from ignoring the things you shouldn't be ignoring."
+
+I think I heard Jeff Bezos say that once. It's ringing in my ears today.
+
+It's Monday morning, December 1st, 2025. The wind is biting, and the world is still covered in yesterday's snow. I grab my keys and drive to my sanctuary: the computer library at my school.
+
+I sit down, crack open the laptop, and log into my Google account—the central hub of my entire life. But as the screen lights up, so does the anxiety. I have tasks bleeding over from last week. Three separate applications are stalled, held up by one or two tiny details I've been avoiding. Then, my phone buzzes—a reminder to send an urgent email within the next 48 hours.
+
+The day hasn't even started, and I'm already paralyzed. I'm overwhelmed.
+
+But I've been here before. I recognize the pattern.
+
+I look away from the screen. I pick up my pen and open my journal. Because when the mind is cloudy, you can't navigate it by thinking harder; you have to get it out.
+
+And as the ink touches the page, I realize something important.
+
+Maybe I'm not depressed. Maybe life isn't trying to crush me. Maybe I just need to sleep. Maybe I just need to eat. Or maybe I just need to write these thoughts down so I stop drowning in them.
+
+When the deadlines pile up and the projects scream for attention, we sink into this bubble where every problem feels like a disaster. We convince ourselves that life is hard, when really, we just aren't thinking straight.
+
+So if you are feeling that weight today, take a step back. You might be making the problem bigger than it is simply because you're carrying it all in your head. Don't ignore the chaos—confront it, write it down, and take a breath. It's likely not a crisis; it's just life waiting to be organized.
+
+---
+
+### The Latency of Innovation: Why Smart Doors Are Stupid
+Date: November 28, 2025
+URL: https://johnowolabi.com/post.html?slug=when-innovation-compromises-user-experience
+
+Lately, I've been thinking about how "innovation" often degrades user experience. It hit me at a high-end restaurant with a "futuristic" bathroom.
+
+To enter, you wave your hand. The door slides open. Fine. I don't hate tech. But once inside, the door refuses to close for a timed interval of thirty to forty seconds. I actually timed it. You can't push it shut. You can't force it. You just stand there, exposed, waiting for the software to catch up to reality.
+
+This is a classic failure of "Feature over Function."
+
+The Feature: Touchless hygiene.
+
+The Failure: Privacy latency.
+
+The designer optimized for a metric (germ avoidance) but broke the fundamental use case (privacy). This creates a critical failure mode: If you enter urgently, or if someone is walking by, the system forces you to choose between hygiene and dignity.
+
+I keep running scenarios: What if I need to escape a threat? What if I am sick? The system demands I wait for its internal timer to expire before I am safe.
+
+I see this pattern everywhere—gyms, schools, airports. We are replacing mechanical certainty (a lock you can turn instantly) with digital uncertainty (a sensor that might detect you).
+
+I'm not anti-tech; I'm a founder building automation software. But I care about things actually working in the physical world. If a new design increases the latency of the basic user experience, it's not innovation. It's regression.
+
+---
+
+### The Frustration of Futuristic Bathroom Doors
+Date: November 27, 2025
+URL: https://johnowolabi.com/post.html?slug=the-frustration-of-futuristic-bathroom-doors
+
+Lately I've been thinking about something stupidly small but somehow important. It hit me at this restaurant I visit a few times a week. Great food. Terrible toilet design.
+
+To get into the toilet, you have to wave your hand at the door. Fine. I don't hate tech. I'll wave. But once you get inside, the door refuses to close for a good thirty to forty seconds. I actually timed it. You can't push it shut. You can't force it. You just stand there like an idiot waiting for the future to catch up.
+
+And honestly, I don't know who designed this because it's the opposite of practical. Sure, wave-to-flush is nice. Wave-to-open? Also fine. But wave-to-open-then-wait-half-a-minute-for-it-to-close-while-you-stand-exposed is insane.
+
+I keep running scenarios in my head. What if I'm trying to get away from someone? What am I supposed to do—wave at the door while they're right behind me, then wait politely for thirty seconds?
+
+What if I'm seconds away from destroying the place with a smell that could kill a small animal? I need that door shut immediately. Not in half a minute. And definitely not while people are walking by catching a preview.
+
+Or the worst: you open the door, someone's right outside, you're already pressed, and now you've got to start your business while the door is still sliding shut like it's in slow motion. Zero privacy. Zero dignity.
+
+And I've seen this same system in gyms, schools, random public places. It's like someone decided "innovation" means ignoring common sense.
+
+I'm not anti-tech. I just care about things actually working in real life. If a new design makes the basic user experience worse, it's not innovation. It's pointless.
+
+Anyway, maybe this sounds like a rant, but I know I'm not the only one who's dealt with these useless futuristic doors. They're hilarious in concept and annoying in practice.
+
+---
+
+### Confronting Mortality: A Personal Reflection
+Date: November 27, 2025
+URL: https://johnowolabi.com/post.html?slug=confronting-mortality-a-personal-reflection
+
+I've always felt a pressure to write. I tell myself that writing clearly makes me think clearly, but life usually gets in the way. Today, though, a video stopped me in my tracks. It was about a subculturally-famous skit maker who passed away recently, someone I didn't even know until the news of his death broke. He died of complications from high blood pressure, perhaps worsened by lifestyle choices.
+
+That news triggered a memory I haven't touched in 10 years. It was my first real collision with mortality.
+
+I was back in boarding school, maybe JSS3 or SS1 (Grade 9 or 10). I had a mild case of chicken-pox, but to be honest, I decided to milk it. In hindsight, I didn't need a doctor; I just needed to get out. Anyone who went to a strict boarding school understands the urge to see the "outside world," even if it's just the local hospital.
+
+So, I exaggerated every symptom. I played the part well enough that the school nurse panicked and authorized a trip to the General Hospital.
+
+I felt like I had won. I was sitting in the school's Hilux, cruising toward "freedom."
+
+When we got to the General Hospital, reality started to set in. It wasn't the sterile, quiet environment you see in movies. It was an open space, separated only by flimsy curtains. It was chaotic in that typical Nigerian-hospital way. People were everywhere - families anxious, tired, others praying quietly, some sleeping on the bare floor, just waiting.
+
+I sat there in my school uniform, acting way more miserable than I actually felt, pretending to be sick but mainly just enjoying the break from school. That's when I saw her.
+
+There was a baby, maybe a couple of months old, hooked up to an oxygen cylinder that looked massive next to her tiny frame. This wasn't a small medical device; it was a tall, industrial-looking tank. But it was her chest that froze me.
+
+I don't know how to describe what I saw.
+
+I have never seen a human body move like that. It wasn't breathing; it was heaving. Her chest was pounding against her ribs with a violence that didn't seem possible for something so small. It looked like a car hitting speed bumps at full velocity - boom, boom, boom. Fast. Aggressive. Terrifying.
+
+Two doctors were hovering over her. Her parents were standing to the side, praying silently, their lips moving in desperate rhythm with the machine.
+
+I watched this for maybe fifteen minutes. Maybe longer. Time does strange things when you're watching someone fight for their life. I was transfixed.
+
+And then, abruptly, the aggressive rhythm stopped. The heaving ceased.
+
+In the next second, the silence was shattered by a scream I will never forget. "Jesus!"
+
+It was the mother. She was screaming at the top of her lungs, a raw, primal sound of loss. The kind of scream that hits you in your spine. It took three people - the doctors and her husband to hold her back as she thrashed. She was fighting them, wailing, asking God questions nobody could answer.
+
+I just sat there.
+
+In that instant, my exaggerated symptoms didn't just fade, it evaporated. The shock slapped the health back into me. I had blown a mild illness out of proportion just to see the outside world, and the world showed me its harshest truth immediately.
+
+It was the first time I realized death isn't dramatic the way movies show it. It doesn't announce itself. It doesn't pause the world. It just happens, and the world keeps moving.
+
+It's been over a decade since that sad occurrence. I know medical professionals see this every day; for them, it's Tuesday. But for the rest of us, death is a reality we ignore until it screams in our faces.
+
+I don't know how to end this. I'm not trying to turn it into a motivational quote or a sermon about how life is meaningless. I'm just laying out the story the way it happened. It was the first time death stopped being an abstract idea and became a real thing in front of me.
+
+And maybe that's the point: you don't forget the first time you see life leave someone. It changes how you look at your own.
+
+---
+
+### You Don't Lose Everyone at Once
+Date: January 31, 2024
+URL: https://johnowolabi.com/post.html?slug=you-dont-lose-everyone-at-once
+
+I just finished a long conversation with my dad, and it hit me how many people you lose over the years, more than you can count.
+
+The thing is, you don't lose everyone at once. That's the tricky part. Someone goes five months ago, another on a random Sunday, and before you know it, the list gets longer.
+
+Most times, you only count the death of your immediate loved ones, like they're the only ones that matter. But when you sit down and really think about it, you realize there are so many others. People you once knew. People you had conversations with. People who were part of your formative years, or who you laughed with, or simply crossed paths with.
+
+Not a celebrity on TV. Not a face in the media. Real people you interacted with, even if only for a moment. A friend of a friend. A colleague. A mutual. And when you start putting names to it, you realize how many of them are actually gone. That switch in your head is heavy.
+
+The Randomness of Loss
+
+You might think death has a formula. Old age. Sickness. But it doesn't. It shows up in random ways. A young pregnant woman in childbirth, the baby survives but she doesn't. A guy in his twenties, full of life, gone in a car crash. A back ache that turns into a hospital rush, and then no more. Someone who goes to bed and never wakes up. Even standing at a bus stop when a car swerves. There's no neat pattern, no script.
+
+Carrying Forward
+
+And so what do you do? You carry the memories of those who've gone. You pray for their peace. And you keep moving with what you have. Because while people are leaving, life is still unfolding. Good things are still happening. And only God knows what tomorrow will bring.
+
+May the souls of all those we've lost rest in perfect peace.
+
+---
+
+### Love Feels Like Magic Until It Doesn't
+Date: January 30, 2024
+URL: https://johnowolabi.com/post.html?slug=love-feels-like-magic-until-it-doesnt
+
+Intimate relationships are dicey. That's the truth nobody likes to say out loud. You meet someone in the most random way and it feels like a small miracle. Instagram. A dating app. Your church lobby after service. Two treadmills apart at the gym. A friend of a friend at a barbecue. Sometimes you knew them before and it was nothing, then one day the air changes and suddenly it's something.
+
+At first it's light. You trade jokes. You learn their coffee order. You start waiting for their name to pop up on your screen. Your brain flips a switch and this regular person becomes glow-in-the-dark. Their flaws are still there, you just can't see them clearly. The little roll of their eyes is now "cute." Their messy room is "creative chaos." You tell yourself you're being logical, but you're not. It's hormones, hope, and timing, all mixing like gasoline.
+
+You feel the rush. You wake up eager to call but scared to call too much. You tell your friends, "It's different." You brag about the way they laugh. You excuse the thing that should bother you, because love is loud and red flags are quiet in that season. You start using "we." You imagine holidays. You picture apartments. You try their favorite shows. You fold parts of their life into yours like you're packing a suitcase for two.
+
+If it's mutual and life behaves, you might build something real. Maybe there's a ring. Maybe kids. Maybe a home that smells like breakfast on Saturday mornings. That happens. It just doesn't happen for most people, most of the time.
+
+The Drift
+
+What happens more often is the drift. The same story with different costumes.
+
+Someone texts less. Someone texts more. One person loves through acts, the other needs words. One thinks silence means peace, the other hears silence and thinks rejection. There are tiny slights that never get named. There are apologies that sound like excuses. There's the "I'm fine" that isn't fine. There's "work is crazy right now." There's a friend who suddenly has a lot to say about your partner. There's a new follower who laughs a little too hard in the comments. One night you snap at each other and forget what started it. Both of you say things you can't pull back into your mouth.
+
+Sometimes it doesn't even explode. Sometimes it goes flat. The love doesn't die. It just fades like a shirt washed one time too many. The same stories stop being funny. The same habits start feeling heavy. You realize you were in love with a version of them that only lived in your head. Or they were in love with your potential and got tired of waiting for the finished product.
+
+Other times it's messy. Somebody cheats. Somebody lies by omission and then by practice. Somebody starts keeping score. Resentment grows roots. Therapy happens. Or blocking happens. Or both. You tell yourself, "I thought I really liked this girl," and the answer is you did. You just liked her through foggy glass, with the brightness turned up to ten.
+
+The Hard Truth
+
+Here's the part that sounds harsh but is honest. If you look at the world the way it is, the default outcome for relationships is not forever. That doesn't mean love is fake. It means love is fragile. People change jobs, cities, bodies, values, moods. They get sick. They get offered a new life and take it. They get tired. They get curious. They get scared. And fear makes people pick the safest story they can live with, even if that story doesn't include you.
+
+I've seen couples with forty years on the clock fold in the forty-first. Not because they were evil. Because they were human. The promise was real when they said it. Life just kept talking after they finished their vows.
+
+How to Love Without Lying to Yourself
+
+So what do you do with that? How do you love someone without lying to yourself?
+
+You accept that love is not a spell, it's a skill. Feelings are the spark. Habits keep the lights on. Attraction is loud and automatic. Partnership is quiet and deliberate. If you choose someone, you are choosing their rhythm, their stress responses, their family, their history with money, their habits with phones, their patience level when the Wi-Fi drops, their ability to apologize without defending themselves in the same breath. You are also choosing who you become around them. That second part might matter more.
+
+You set terms that are real, not romantic. What does respect look like on Tuesday night when both of you are tired. What does repair look like after the stupid fight over nothing. How do you tell the truth when the truth will make the other person's face fall. What is cheating to you besides sex. DMs. Emotional play-fighting with an ex. "Likes" at 2 a.m. What are the rules around privacy. Around friends who drink until they forget their promises. Around money and how it moves.
+
+You watch actions. Anyone can write poetry in your WhatsApp. Not everyone can show up when your car battery dies in the rain, when you have a fever, when your business takes a loss, when your family brings drama to your doorstep. Love is a verb with receipts.
+
+You hold it lightly, but not carelessly. You celebrate when it's good, and when it's shaky, you either fix it with both hands or you let it go with both hands. Half-work is disrespect. So is staying for convenience and calling it sacrifice.
+
+And if it ends, you let the ending be a teacher instead of a tattoo. You can grieve without turning your heart into cement. You can tell the truth about what happened without making the other person a villain in every chapter. You can find softness without losing standards.
+
+If you're asking me for one sentence to end on, here it is:
+
+Love is beautiful, but it isn't bulletproof, so build the armor too.
+
+---
+
+### People Don't Love My Writing. They Love My Honesty.
+Date: February 6, 2024
+URL: https://johnowolabi.com/post.html?slug=people-dont-love-my-writing-they-love-my-honesty
+
+People sometimes tell me, "I love the way you write" or "You should write a book." I always find that interesting because I don't see myself as a typical writer. I'm not a Chimamanda, and I don't even read as much as I should. What makes my writing stand out isn't fancy language or deep literary knowledge. It's honesty. I write the way I think, and I let people see both the good and the bad. I don't try to dress things up. I just describe them as they are, even when it's uncomfortable. That's what makes people connect with it.
+
+The Source of My Writing
+
+I write because I overthink. Every conversation I have, I replay in my head: did I say too much? Should I have been calmer? Was something unnecessary? Writing helps me unload those thoughts and give them structure. It keeps me balanced. I don't keep it limited either. I write everything down: what I hear, who I talk to, what I feel. My writing isn't born from reading a hundred books. It comes from consuming content in pieces, having conversations, watching people, noticing reactions, and reflecting.
+
+The Formula
+
+So if there's any "formula" I can share, it's this: be brutally honest with yourself. Journal your thoughts, write without filters, and face your flaws on the page. The more honest you are with yourself, the more you'll end up writing words that speak to other people's problems and experiences.
+
+---
+
+### The Science We Can't Explain
+Date: February 5, 2024
+URL: https://johnowolabi.com/post.html?slug=the-science-we-cant-explain
+
+I love music. I really do. I don't even have a genre. I can listen to slow songs, fast ones, rap, soul, whatever. It doesn't matter. And the funny thing is, I can't even explain why it hits the way it does. Sometimes I sit back and wonder, is there a science behind good music? How does an artist take random words, throw them on a beat, step into a studio somewhere, and somehow reach my soul on the other side of the world?
+
+Think about it. A person you've never met, living a life completely different from yours, puts together a song, and now it's stuck on repeat on your phone. It changes your whole mood. That's wild. It makes me ask, how do they even pull it off?
+
+The Deeper Connection
+
+Because music isn't just sound. It's not just words or rhythms. It's something deeper. It's a mirror for the soul. You feel seen, you feel heard. Sometimes it's the lyrics, sometimes it's the beat, sometimes it's the story behind it. But somehow it always finds a way to connect.
+
+You can be sad and play an uplifting track and suddenly the weight lifts. You can be down and press play on a motivational song and now you're fired up. Or you can sit with a song that matches your pain and it pulls you even deeper into it. And at the end of the day, you realize it's just words, it's just sounds. But the way music bends those words and sounds together, it becomes something much more.
+
+That's the magic. That's why I love music.
+
+---
+
+### Before You Know It, It's Friday
+Date: February 4, 2024
+URL: https://johnowolabi.com/post.html?slug=before-you-know-its-friday
+
+Sometimes it feels like the clock is sprinting and you're stuck trying to catch up. Classes, assignments, applications, bills, registrations, immigration papers, deadlines. It piles up until you can't tell where to start. You're tired, but time isn't tired. Time doesn't wait.
+
+Monday blinks into Friday. Thirty days turn into a month that's already gone. People are born. People die. Friends drift. People outgrow each other in the space of a season. Life keeps moving—no pause button, no warning, just motion.
+
+The Universal Race
+
+It's easy to think it's just you, but it's not. Everyone is running some version of the same race. Different tracks, same clock. Some are studying. Some are working three jobs. Some are trying to survive. Some are chasing love. Some are just trying to feel alive. But all of us are living under the same sky, and time moves for all of us.
+
+That's the beauty and the weight of it. Time is brutal and kind at the same time. It takes, but it also gives. It pushes you forward even when you don't feel ready. It forces you to grow, to move, to shift. It's not about having a neat end goal. It's about realizing you're part of something bigger, and acting like your hours matter, because they do.
+
+Living Inside Time
+
+Take a breath. Step back. Look at the clock not as an enemy but as a reminder. This is your life moving. Your season. Your chance. The assignments, the applications, the work—they're not just tasks. They're the bricks you're laying. Little by little, brick by brick.
+
+Because in the middle of the chaos, there's still power in showing up. One call here. One form there. One step at a time. That's how you live inside time instead of being swallowed by it.
+
+---
+
+### Move-In Day
+Date: February 3, 2024
+URL: https://johnowolabi.com/post.html?slug=move-in-day
+
+It's September 1st and I'm walking through the university grounds, just watching. You can feel it right away, it's move-in day. New students are rolling in with their parents, dragging suitcases, laughing nervously, taking in the campus for the first time. Some parents look more anxious than the students, giving those last-minute pep talks before heading back home.
+
+It takes me back to my own first year. That rush of being somewhere completely new, everything wide open. Orientation week, meeting people who felt like strangers at first but became family later, taking pictures of everything like it was history in the making. Back then, the future was just one big blank page.
+
+The Stories Beginning
+
+I can already see the stories beginning to write themselves. Someone will fall for the person down the hall, love blooming in late-night talks and shared walks to class. Someone else will learn heartbreak for the first time, carrying that ache through lectures and quiet dorm rooms. Classes will hit harder, and the old habits from high school won't be enough anymore. Some will chase strength in the gym, trying to shape not just their bodies but their discipline. Others will taste freedom in ways they never could at home, saying yes to nights that blur into mornings, to choices that feel reckless and alive at the same time.
+
+The Universal Journey
+
+It's always the same story, but always new. The thrill, the mistakes, the laughter that echoes in hallways, the tears hidden under blankets, the lessons you never saw coming. This is where edges get softened, where people grow into themselves. Years from now, they'll look back and realize these were the moments that changed them. Right now, they don't know it. They're just stepping in, wide-eyed and fearless, standing at the beginning of a story they'll only understand in hindsight.
+
+---
+
+### It's Not About If Life Hits You — It's When
+Date: February 2, 2024
+URL: https://johnowolabi.com/post.html?slug=its-not-about-if-life-hits-you-its-when
+
+I want you to think about this with me for a second.
+
+Take banks, for example. They have this thing called risk management. I don't know the exact industry standard, maybe it's around a 20% default rate. That means for every 10 people they give credit to, 2 are guaranteed not to pay. They'll have bad credit, they'll default, whatever. But guess what? The bank still makes money. They're not delusional enough to think everyone will pay back. They already expect failure.
+
+Same with Walmart. Their whole brand is "everyday low prices," but they get sued every single day. Just last year alone, they spent almost $2 billion on lawsuits and theft. And yet, they're still standing.
+
+Even in my own small business, I've had to do the same thing. I have insurance, sure, but I still set money aside just knowing that things will go wrong. It's not about if, it's about when.
+
+The Personal Reality
+
+And that's where this gets personal. Because life itself works the same way. We're all going to face our share of defaults and lawsuits, just in different forms. If it's not money problems, it's health problems. If it's not heartbreak, it's betrayal. If it's not addiction, it's death. And if somehow you dodge all of that, life will hit someone close to you and break you through them. Nobody escapes.
+
+That's why I don't want you to just hope for the best. I want you to get ready. Life will throw its punches. I need you to build the kind of mind that can take every hit and still keep standing.
+
+The Mindset You Need
+
+I love how Jawaharlal Nehru put it: "I want to meet my troubles head-on. I want to see myself tossed into the aperture between the two horns of the bull. And being there, I determine that I am going to win, because such a fight requires all my faculties."
+
+That's the mindset you need to survive this world. You don't pray for the storms to never come. You learn how to stand tall when they do.
+
+In the real world, they call it insurance. I call it mental armor.
+
+Prepare yourself. It doesn't matter if you're ready or not. Life is coming.
+
+---
+
+### Everything All at Once, Somewhere on Highway 401
+Date: February 1, 2024
+URL: https://johnowolabi.com/post.html?slug=everything-all-at-once-somewhere-on-highway-401
+
+It's a little after 5 p.m., maybe close to 6. The sky is soft and low, that pale gold you get before it gives up to night. I'm pulling out of Ottawa, pointing the car toward Toronto. The clock on the dashboard blinks like it knows something I don't. I just finished renewing my Nigerian passport. The building smell is still on me. Paper. Ink. People who have been waiting too long.
+
+Out front, a girl is stranded on the curb. Her ride bailed. Phone at 2 percent. The look that says, I'm fine, but I'm not fine. We are going the same way. I tell her to give me a minute. I reshuffle a few things in my head, in my day, in my seat. She gets in. We both say thank you at the same time. It feels like a small blessing.
+
+We roll out. The light is clean. The road is open. The playlist is doing its thing. There is that first moment when the tires hum steady, and it feels like the world has decided not to fight me today.
+
+The Call
+
+Then the call about the move hits.
+
+I should have planned better. I knew about this job. I didn't lock in the crew until the last hour. Now the customer is angry about the timing, and I am seven hours from my main city trying to lead from the highway. I feel it in my chest first. That hot pinch that says, you did this to yourself. You know better. You've learned too much to still be here.
+
+I pull into the next lane. I start dialing. One guy is at his cousin's. Another is free in thirty. The driver can make it if I send gas money now. I send it. I promise an updated ETA. I apologize to the client. I apologize again. I offer a small discount. I hang up and call back. I keep the tone calm while my hands sweat. The girl beside me taps the window with her finger to the beat of a love song. She asks if I'm okay. I say yes. She doesn't know there is a small office in my head where everything is on fire.
+
+The pieces start to land. A crew forms out of thin air and loud favors. The truck turns on. The first box moves. Someone sends a photo. It is a coil of tape and a hand on a dresser. That hand calms me more than the photo. I smile at nothing. Relief floods in like the car just took a breath.
+
+I think about systems. I think about building them so this call never happens again. A calendar that doesn't forget. A message that goes out the day before. A number that rings to the right person every time. I make a promise to myself that I have made before. This is the last time I juggle knives for sport.
+
+The Drift
+
+Another song comes on. The kind that makes everything feel cinematic. She and I start trading stories. How the last relationship ended. What we learned. What we wish we had known earlier. There is laughter. There is an honest quiet. Somewhere in there I drift. I look out at the line of trees and wonder what I am doing with my life.
+
+My bank account does not match my brain. My experience does not match my position. I feel too smart to be this broke and too broke to feel this smart. Then a different thought slides in. None of this matters in the way I'm treating it. I am not dying. This panic has no blood in it. I let that sit. I let it cool me down.
+
+Hope sneaks back in the open window. The projects I'm building start walking through my mind. I can see them finished. I can see the numbers. I say the wild number I always say, the one with nine zeros, and it doesn't feel crazy. It feels like a map I keep folded in my pocket. I catch myself. You say this all the time. You can't keep saying it and still moving like this. I nod to myself like I've just been told the truth by someone I respect.
+
+Then the fear about permits shows up. That quiet paper fear that stays behind the loud things. I add it to the stack. I don't solve it. I keep driving.
+
+The Present Moment
+
+We pass an exit with a name I like. We pass another with a gas station that looks better than it is. My phone buzzes. The job is moving. The client has softened. The photo of the dresser has become the photo of a cleared hallway. I can breathe again.
+
+She turns the music up. A love song, the type with simple words that land heavier than they should. She sings a little. I answer with a line or two. Our voices catch on the same word. I feel present. Then I slip away. She asks, again, if I'm good. I am. I am not. Both can be true.
+
+We talk about the stupid little firsts you only notice when you like someone. The first time they say your name like they actually see you. The first time you leave a hoodie behind on purpose. The first time you stop checking your phone because they are right there. We laugh. The car feels bigger than it is.
+
+Then my head flips back to the list. Money. Teams. Deadlines. The idea that could be everything if I stop dragging my feet. It happens fast. It always happens fast. Happy. Sad. Calm. Fear. Hope. Shame. Confidence. Repeat. It rolls through like weather. Sunshine that changes to rain without a cloud in the sky. I try to hold one feeling, and it slides out of my hands.
+
+The Truth
+
+Toronto creeps closer on the signs. The day folds into a darker blue. I turn the volume down to hear my thoughts and it doesn't help. She leans her head back. The road keeps coming.
+
+Here is the truth I can live with. A person can carry all of it at once. Joy sitting next to doubt. Hunger sitting next to peace. The future shouting while the present whispers. Sometimes the point is not to fix the mix. Sometimes the point is to keep driving and let the feelings lap over each other like lanes on the highway. You choose the next exit. You keep your hands steady. You get where you said you'd go.
+
+If someone asks how I felt on that drive, I could say one word and it would lie. The real answer is a handful of stations changing under one hand. Love song. Work call. Prayer. Plan. Silence. Laugh. Repeat. And somehow it all belongs.
+
+---
+
+## Contact Information
+
+- Website: https://johnowolabi.com
+- Email: johnowolabi80@gmail.com
+- Twitter: https://twitter.com/johnowolabi_
+- Instagram: https://instagram.com/johnowolabi_
+
+## Newsletter
+
+Subscribe at: https://buttondown.email/owolabi

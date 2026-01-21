@@ -1,0 +1,47 @@
+# John Owolabi - Personal Website
+
+> John Owolabi runs Saturn Star Movers in Canada and builds software projects spanning logistics, real estate data, automation, and tools that help people make faster, clearer decisions.
+
+This is the personal website of John Owolabi, featuring his blog posts (called "Thoughts"), projects, and professional information.
+
+## Site Structure
+
+- [Home](https://johnowolabi.com/): Bio, latest posts, projects, and links
+- [Thoughts](https://johnowolabi.com/thoughts.html): Blog listing page with all published essays
+- [Individual Post](https://johnowolabi.com/post.html?slug={slug}): Individual blog posts
+
+## About the Author
+
+John Owolabi is a founder and software developer based in Canada. He operates Saturn Star Movers, a moving company, and builds software tools for the logistics and real estate industries.
+
+### Projects
+
+- Saturn Star Movers (https://starmovers.ca) - A moving company in Canada
+- Sold2Move (https://sold2move.com) - Real-time real estate listing tracker for movers
+- MovSense (https://movsense.com) - Automation software for moving companies
+
+## Blog Content
+
+The blog contains personal essays on life, entrepreneurship, human nature, and observations. Topics include:
+
+- Personal reflections and life philosophy
+- Business and entrepreneurship insights
+- Human behavior and relationships
+- Technology and innovation critique
+- Nigerian-Canadian immigrant experience
+
+## Content Access
+
+- All blog content is stored at: /posts.json
+- The posts.json file contains all published essays with title, date, excerpt, content (HTML), and slug
+- Individual posts are accessible via: /post.html?slug={post-slug}
+
+## For More Details
+
+- [Full content for LLMs](https://johnowolabi.com/llms-full.txt): Complete blog content in plain text format
+
+## Contact
+
+- Email: johnowolabi80@gmail.com
+- Twitter: @johnowolabi_
+- Instagram: @johnowolabi_
