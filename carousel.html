@@ -420,12 +420,11 @@
                 <button class="toolbar-btn primary" onclick="addSlide()">+ Add Slide</button>
                 <button class="toolbar-btn" onclick="regenerateSlides()">🔄 Regenerate</button>
             </div>
-            <div class="slides-container" id="slides-container">
-                <div class="loading" id="loading-state">
-                    <div class="loading-spinner">⏳</div>
-                    <p>Loading article and generating slides...</p>
-                </div>
+            <div class="loading" id="loading-state">
+                <div class="loading-spinner">⏳</div>
+                <p>Loading article and generating slides...</p>
             </div>
+            <div class="slides-container" id="slides-container" style="display: none;"></div>
         </div>
 
         <!-- Right Panel - Preview -->
@@ -537,9 +536,11 @@
                 slides = generateFallbackSlides(post);
             }
 
+            const loadingEl = document.getElementById('loading-state');
+            if (loadingEl) loadingEl.style.display = 'none';
+            document.getElementById('slides-container').style.display = 'block';
             renderSlideEditors();
             updatePreview();
-            document.getElementById('loading-state').style.display = 'none';
         }
 
         // Fallback slide generation (no AI)
