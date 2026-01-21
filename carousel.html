@@ -581,7 +581,8 @@
             updatePreview();
         }
 
-        // Split article into slides - ONE PARAGRAPH PER SLIDE, use all 20 if needed
+        // Split article into slides - TEXT DICTATES THE SLIDES
+        // If a paragraph is too long, split it. Never cut off text.
         function splitArticleIntoSlides(post) {
             // Convert HTML to text, with subheadings triggering new slides
             let content = post.content
@@ -599,13 +600,12 @@
                 .trim();
 
             // Split into paragraphs (double newline = paragraph break)
-            // Also split at heading markers
             let paragraphs = content
                 .split(/\n\n+/)
                 .map(p => p.trim())
                 .filter(p => p.length > 0 && p !== '|||BREAK|||');
 
-            // Also handle heading markers that might be in the middle
+            // Handle heading markers that might be in the middle
             let allParagraphs = [];
             for (const para of paragraphs) {
                 if (para.includes('|||BREAK|||')) {
@@ -617,27 +617,65 @@
             }
             paragraphs = allParagraphs;
 
+            // Max words that fit comfortably on one slide (~120 words)
+            const MAX_WORDS_PER_SLIDE = 120;
             const MAX_SLIDES = 20;
+
+            // Split long paragraphs into chunks that fit on slides
+            let chunks = [];
+            for (const para of paragraphs) {
+                const words = para.split(/\s+/);
+
+                if (words.length <= MAX_WORDS_PER_SLIDE) {
+                    // Paragraph fits on one slide
+                    chunks.push(para);
+                } else {
+                    // Split long paragraph at sentence boundaries
+                    const sentences = para.match(/[^.!?]+[.!?]+/g) || [para];
+                    let currentChunk = [];
+                    let currentWordCount = 0;
+
+                    for (const sentence of sentences) {
+                        const sentenceWords = sentence.trim().split(/\s+/).length;
+
+                        if (currentWordCount + sentenceWords > MAX_WORDS_PER_SLIDE && currentChunk.length > 0) {
+                            // Current chunk is full, save it and start new one
+                            chunks.push(currentChunk.join(' ').trim());
+                            currentChunk = [sentence.trim()];
+                            currentWordCount = sentenceWords;
+                        } else {
+                            currentChunk.push(sentence.trim());
+                            currentWordCount += sentenceWords;
+                        }
+                    }
+
+                    // Don't forget the last chunk
+                    if (currentChunk.length > 0) {
+                        chunks.push(currentChunk.join(' ').trim());
+                    }
+                }
+            }
+
             const result = [];
 
-            // If 20 or fewer paragraphs: ONE paragraph per slide
-            if (paragraphs.length <= MAX_SLIDES) {
-                paragraphs.forEach((para, index) => {
+            // If chunks fit within MAX_SLIDES, use one chunk per slide
+            if (chunks.length <= MAX_SLIDES) {
+                chunks.forEach((chunk, index) => {
                     let type = 'content';
                     if (index === 0) type = 'title';
-                    else if (index === paragraphs.length - 1) type = 'cta';
-                    result.push({ type, text: para });
+                    else if (index === chunks.length - 1) type = 'cta';
+                    result.push({ type, text: chunk });
                 });
             }
-            // If more than 20 paragraphs: combine some to fit into 20
+            // If too many chunks, combine some to fit into MAX_SLIDES
             else {
-                const parasPerSlide = Math.ceil(paragraphs.length / MAX_SLIDES);
+                const chunksPerSlide = Math.ceil(chunks.length / MAX_SLIDES);
 
-                for (let i = 0; i < MAX_SLIDES && i * parasPerSlide < paragraphs.length; i++) {
-                    const start = i * parasPerSlide;
-                    const end = Math.min(start + parasPerSlide, paragraphs.length);
-                    const slideParas = paragraphs.slice(start, end);
-                    const slideText = slideParas.join('\n\n');
+                for (let i = 0; i < MAX_SLIDES && i * chunksPerSlide < chunks.length; i++) {
+                    const start = i * chunksPerSlide;
+                    const end = Math.min(start + chunksPerSlide, chunks.length);
+                    const slideChunks = chunks.slice(start, end);
+                    const slideText = slideChunks.join('\n\n');
 
                     let type = 'content';
                     if (i === 0) type = 'title';
