@@ -491,9 +491,10 @@
                     <button onclick="nextSlide()" id="next-btn">Next →</button>
                 </div>
                 <div class="download-buttons">
-                    <button class="toolbar-btn" onclick="downloadCurrentSlide()">💾 This Slide</button>
-                    <button class="toolbar-btn" onclick="downloadAllSlides()">📦 All Slides</button>
-                    <button class="toolbar-btn primary" onclick="downloadBothThemes()">🎨 Both Themes</button>
+                    <button class="toolbar-btn" onclick="downloadCurrentSlide()">💾 Slide</button>
+                    <button class="toolbar-btn" onclick="downloadAllSlides()">📦 All</button>
+                    <button class="toolbar-btn" onclick="downloadBothThemes()">🎨 Both</button>
+                    <button class="toolbar-btn primary" onclick="postToInstagram()" id="instagram-btn">📸 Post to IG</button>
                 </div>
             </div>
 
@@ -1044,6 +1045,104 @@
             } catch (error) {
                 console.error('Download both themes failed:', error);
                 alert('Failed to download. Please try again.');
+            }
+        }
+
+        // Post carousel directly to Instagram
+        async function postToInstagram() {
+            const btn = document.getElementById('instagram-btn');
+            const originalText = btn.textContent;
+
+            if (!confirm('Post this carousel to Instagram?')) return;
+
+            try {
+                btn.textContent = '⏳ Uploading...';
+                btn.disabled = true;
+
+                const preview = document.getElementById('slide-preview');
+                const originalSlide = currentSlide;
+                const imageUrls = [];
+
+                // Generate and upload each slide image
+                for (let i = 0; i < slides.length; i++) {
+                    btn.textContent = `⏳ ${i + 1}/${slides.length}...`;
+
+                    currentSlide = i;
+                    updatePreview();
+                    await new Promise(resolve => setTimeout(resolve, 150));
+
+                    // Generate image
+                    const canvas = await html2canvas(preview, {
+                        scale: 2.67,
+                        backgroundColor: null,
+                        logging: false
+                    });
+
+                    const base64Data = canvas.toDataURL('image/png');
+
+                    // Upload to GitHub to get public URL
+                    const uploadResponse = await fetch('/.netlify/functions/upload-image', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            filename: `carousel-${postData?.slug || 'post'}-${i + 1}.png`,
+                            content: base64Data,
+                            contentType: 'image/png'
+                        })
+                    });
+
+                    if (!uploadResponse.ok) {
+                        throw new Error(`Failed to upload slide ${i + 1}`);
+                    }
+
+                    const uploadData = await uploadResponse.json();
+                    imageUrls.push(uploadData.url);
+
+                    // Small delay between uploads
+                    await new Promise(resolve => setTimeout(resolve, 200));
+                }
+
+                // Restore preview
+                currentSlide = originalSlide;
+                updatePreview();
+                updateEditorHighlight();
+
+                btn.textContent = '⏳ Posting...';
+
+                // Build caption
+                const caption = `${postData?.title || ''}\n\n` +
+                    `Read the full article at johnowolabi.com\n\n` +
+                    `#writing #blog #thoughts`;
+
+                // Post to Instagram
+                const postResponse = await fetch('/.netlify/functions/instagram-post', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        images: imageUrls,
+                        caption: caption
+                    })
+                });
+
+                const postData2 = await postResponse.json();
+
+                if (!postResponse.ok) {
+                    if (postData2.setup) {
+                        alert('Instagram not configured yet.\n\n' + postData2.message);
+                    } else {
+                        throw new Error(postData2.error || 'Failed to post');
+                    }
+                    return;
+                }
+
+                alert('🎉 Posted to Instagram successfully!');
+
+            } catch (error) {
+                console.error('Instagram posting failed:', error);
+                alert('Failed to post to Instagram: ' + error.message);
+            } finally {
+                btn.textContent = originalText;
+                btn.disabled = false;
             }
         }
 
