@@ -543,7 +543,7 @@
             updatePreview();
         }
 
-        // Fallback slide generation (no AI)
+        // Fallback slide generation (no AI) - includes FULL article text
         function generateFallbackSlides(post) {
             const plainText = post.content
                 .replace(/<h[23][^>]*>(.*?)<\/h[23]>/gi, '\n\n$1\n\n')
@@ -559,32 +559,63 @@
                 .replace(/&#39;/g, "'")
                 .trim();
 
-            const paragraphs = plainText.split(/\n\n+/).filter(p => p.trim().length > 0);
+            // Split into sentences for better breaking
+            const sentences = plainText.split(/(?<=[.!?])\s+/).filter(s => s.trim().length > 0);
+            const totalWords = plainText.split(/\s+/).length;
+
+            // Calculate optimal number of slides (max 20, ~70 words per slide)
+            const MAX_SLIDES = 20;
+            const WORDS_PER_SLIDE = 70;
+            const optimalSlides = Math.min(MAX_SLIDES, Math.max(3, Math.ceil(totalWords / WORDS_PER_SLIDE)));
+            const targetWordsPerSlide = Math.ceil(totalWords / (optimalSlides - 1)); // -1 for title slide
+
             const result = [];
-
-            // Title slide with first paragraph
-            result.push({
-                type: 'title',
-                text: paragraphs[0] || ''
-            });
-
-            // Content slides (group paragraphs to ~100 words each)
             let currentText = '';
-            for (let i = 1; i < paragraphs.length; i++) {
-                const para = paragraphs[i];
-                const wordCount = (currentText + ' ' + para).split(/\s+/).length;
+            let currentWordCount = 0;
+            let isFirstSlide = true;
 
-                if (wordCount > 100 && currentText) {
+            for (let i = 0; i < sentences.length; i++) {
+                const sentence = sentences[i];
+                const sentenceWords = sentence.split(/\s+/).length;
+
+                // First slide is the title slide
+                if (isFirstSlide) {
+                    currentText += (currentText ? ' ' : '') + sentence;
+                    currentWordCount += sentenceWords;
+
+                    // Title slide: ~60-80 words or first 2-3 sentences
+                    if (currentWordCount >= 60 || (currentWordCount >= 40 && i >= 1)) {
+                        result.push({ type: 'title', text: currentText.trim() });
+                        currentText = '';
+                        currentWordCount = 0;
+                        isFirstSlide = false;
+                    }
+                    continue;
+                }
+
+                // Check if adding this sentence exceeds target
+                if (currentWordCount + sentenceWords > targetWordsPerSlide && currentText && result.length < MAX_SLIDES - 1) {
                     result.push({ type: 'content', text: currentText.trim() });
-                    currentText = para;
+                    currentText = sentence;
+                    currentWordCount = sentenceWords;
                 } else {
-                    currentText += (currentText ? '\n\n' : '') + para;
+                    currentText += (currentText ? ' ' : '') + sentence;
+                    currentWordCount += sentenceWords;
                 }
             }
 
-            // Add remaining text as final slide
-            if (currentText) {
+            // Handle remaining text
+            if (isFirstSlide && currentText) {
+                // Very short article - just one title slide
+                result.push({ type: 'title', text: currentText.trim() });
+            } else if (currentText) {
+                // Add remaining as CTA slide
                 result.push({ type: 'cta', text: currentText.trim() });
+            }
+
+            // Make sure last slide is marked as CTA
+            if (result.length > 1 && result[result.length - 1].type !== 'cta') {
+                result[result.length - 1].type = 'cta';
             }
 
             return result;

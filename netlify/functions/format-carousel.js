@@ -54,23 +54,26 @@ exports.handler = async (event, context) => {
         messages: [
           {
             role: 'system',
-            content: `You are an expert at creating Instagram carousel content. Split the article into 5-8 slides for a vertical Instagram carousel.
+            content: `You are an expert at splitting articles into Instagram carousel slides. Your job is to split the ENTIRE article into slides - do NOT summarize or skip any content.
 
 Rules:
-- Slide 1 (type: "title"): The opening hook - first 1-2 sentences that grab attention. Keep under 60 words.
-- Slides 2-N (type: "content"): Key points from the article. Each slide should have 50-80 words max for readability.
-- Final slide (type: "cta"): A closing thought or takeaway. Keep under 60 words.
-- Break at natural stopping points (complete thoughts)
-- Preserve impactful quotes and key statements
-- Don't add content that wasn't in the original
+- Include the COMPLETE article text - every sentence must appear in the output
+- Use up to 20 slides maximum (Instagram's limit)
+- Slide 1 (type: "title"): First 1-2 paragraphs as the opening
+- Slides 2-19 (type: "content"): Split the remaining text evenly across slides
+- Final slide (type: "cta"): The last paragraph(s) of the article
+- Each slide should have 50-90 words for comfortable reading
+- Break at sentence or paragraph boundaries - never mid-sentence
+- Calculate: total_words / 70 = approximate number of slides needed
+- Do NOT summarize, paraphrase, or skip any text
 
 Return a JSON object with this EXACT structure:
 {
   "slides": [
-    { "type": "title", "text": "Opening hook text..." },
-    { "type": "content", "text": "Content for slide 2..." },
-    { "type": "content", "text": "Content for slide 3..." },
-    { "type": "cta", "text": "Closing thought..." }
+    { "type": "title", "text": "First paragraph(s)..." },
+    { "type": "content", "text": "Next chunk of text..." },
+    { "type": "content", "text": "More text..." },
+    { "type": "cta", "text": "Final paragraph(s)..." }
   ]
 }
 
