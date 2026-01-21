@@ -501,8 +501,8 @@
 
                 postData = post;
 
-                // Generate slides using AI
-                await generateSlidesFromContent(post);
+                // Split article into slides
+                generateSlidesFromContent(post);
 
             } catch (error) {
                 console.error('Error loading post:', error);
@@ -510,31 +510,9 @@
             }
         }
 
-        // Generate slides using AI
-        async function generateSlidesFromContent(post) {
-            try {
-                const response = await fetch('/.netlify/functions/format-carousel', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        title: post.title,
-                        date: post.date,
-                        content: post.content
-                    })
-                });
-
-                if (!response.ok) {
-                    throw new Error('Failed to generate slides');
-                }
-
-                const result = await response.json();
-                slides = result.slides;
-
-            } catch (error) {
-                console.error('AI generation failed, using fallback:', error);
-                // Fallback: simple paragraph splitting
-                slides = generateFallbackSlides(post);
-            }
+        // Generate slides - NO AI, just split the exact text
+        function generateSlidesFromContent(post) {
+            slides = splitArticleIntoSlides(post);
 
             const loadingEl = document.getElementById('loading-state');
             if (loadingEl) loadingEl.style.display = 'none';
@@ -543,11 +521,12 @@
             updatePreview();
         }
 
-        // Fallback slide generation (no AI) - includes FULL article text
-        function generateFallbackSlides(post) {
+        // Split article into slides - EXACT TEXT, NO CHANGES
+        function splitArticleIntoSlides(post) {
+            // Convert HTML to plain text (preserving exact wording)
             const plainText = post.content
                 .replace(/<h[23][^>]*>(.*?)<\/h[23]>/gi, '\n\n$1\n\n')
-                .replace(/<blockquote[^>]*><p>(.*?)<\/p><\/blockquote>/gi, '\n"$1"\n')
+                .replace(/<blockquote[^>]*><p>(.*?)<\/p><\/blockquote>/gi, '"$1"')
                 .replace(/<p[^>]*>(.*?)<\/p>/gi, '$1\n\n')
                 .replace(/<br\s*\/?>/gi, '\n')
                 .replace(/<[^>]+>/g, '')
@@ -557,65 +536,63 @@
                 .replace(/&gt;/g, '>')
                 .replace(/&quot;/g, '"')
                 .replace(/&#39;/g, "'")
+                .replace(/\n{3,}/g, '\n\n')
                 .trim();
 
-            // Split into sentences for better breaking
-            const sentences = plainText.split(/(?<=[.!?])\s+/).filter(s => s.trim().length > 0);
             const totalWords = plainText.split(/\s+/).length;
 
-            // Calculate optimal number of slides (max 20, ~70 words per slide)
+            // Calculate slides needed (max 20, target ~65 words per slide for readability)
             const MAX_SLIDES = 20;
-            const WORDS_PER_SLIDE = 70;
-            const optimalSlides = Math.min(MAX_SLIDES, Math.max(3, Math.ceil(totalWords / WORDS_PER_SLIDE)));
-            const targetWordsPerSlide = Math.ceil(totalWords / (optimalSlides - 1)); // -1 for title slide
+            const WORDS_PER_SLIDE = 65;
+            const slidesNeeded = Math.min(MAX_SLIDES, Math.max(2, Math.ceil(totalWords / WORDS_PER_SLIDE)));
+            const wordsPerSlide = Math.ceil(totalWords / slidesNeeded);
 
+            // Split text into words
+            const words = plainText.split(/\s+/);
             const result = [];
-            let currentText = '';
-            let currentWordCount = 0;
-            let isFirstSlide = true;
 
-            for (let i = 0; i < sentences.length; i++) {
-                const sentence = sentences[i];
-                const sentenceWords = sentence.split(/\s+/).length;
+            let wordIndex = 0;
+            for (let slideNum = 0; slideNum < slidesNeeded && wordIndex < words.length; slideNum++) {
+                let slideWords = [];
+                let targetEnd = wordIndex + wordsPerSlide;
 
-                // First slide is the title slide
-                if (isFirstSlide) {
-                    currentText += (currentText ? ' ' : '') + sentence;
-                    currentWordCount += sentenceWords;
+                // Collect words for this slide
+                while (wordIndex < words.length && wordIndex < targetEnd) {
+                    slideWords.push(words[wordIndex]);
+                    wordIndex++;
+                }
 
-                    // Title slide: ~60-80 words or first 2-3 sentences
-                    if (currentWordCount >= 60 || (currentWordCount >= 40 && i >= 1)) {
-                        result.push({ type: 'title', text: currentText.trim() });
-                        currentText = '';
-                        currentWordCount = 0;
-                        isFirstSlide = false;
+                // Try to end at a sentence boundary (., !, ?)
+                // Look ahead up to 15 words to find one
+                if (wordIndex < words.length && slideNum < slidesNeeded - 1) {
+                    let lookAhead = 0;
+                    while (lookAhead < 15 && wordIndex + lookAhead < words.length) {
+                        const word = words[wordIndex + lookAhead];
+                        slideWords.push(word);
+                        lookAhead++;
+                        wordIndex++;
+                        if (word.match(/[.!?]"?$/)) {
+                            break; // Found sentence end
+                        }
                     }
-                    continue;
                 }
 
-                // Check if adding this sentence exceeds target
-                if (currentWordCount + sentenceWords > targetWordsPerSlide && currentText && result.length < MAX_SLIDES - 1) {
-                    result.push({ type: 'content', text: currentText.trim() });
-                    currentText = sentence;
-                    currentWordCount = sentenceWords;
-                } else {
-                    currentText += (currentText ? ' ' : '') + sentence;
-                    currentWordCount += sentenceWords;
+                // Collect any remaining words for the last slide
+                if (slideNum === slidesNeeded - 1) {
+                    while (wordIndex < words.length) {
+                        slideWords.push(words[wordIndex]);
+                        wordIndex++;
+                    }
                 }
-            }
 
-            // Handle remaining text
-            if (isFirstSlide && currentText) {
-                // Very short article - just one title slide
-                result.push({ type: 'title', text: currentText.trim() });
-            } else if (currentText) {
-                // Add remaining as CTA slide
-                result.push({ type: 'cta', text: currentText.trim() });
-            }
+                const slideText = slideWords.join(' ');
 
-            // Make sure last slide is marked as CTA
-            if (result.length > 1 && result[result.length - 1].type !== 'cta') {
-                result[result.length - 1].type = 'cta';
+                // Determine slide type
+                let type = 'content';
+                if (slideNum === 0) type = 'title';
+                else if (slideNum === slidesNeeded - 1 || wordIndex >= words.length) type = 'cta';
+
+                result.push({ type, text: slideText });
             }
 
             return result;
@@ -697,19 +674,11 @@
             updatePreview();
         }
 
-        // Regenerate slides from AI
-        async function regenerateSlides() {
+        // Regenerate slides (re-split the text)
+        function regenerateSlides() {
             if (!postData) return;
-
-            document.getElementById('slides-container').innerHTML = `
-                <div class="loading">
-                    <div class="loading-spinner">⏳</div>
-                    <p>Regenerating slides...</p>
-                </div>
-            `;
-
             currentSlide = 0;
-            await generateSlidesFromContent(postData);
+            generateSlidesFromContent(postData);
         }
 
         // Navigate slides
