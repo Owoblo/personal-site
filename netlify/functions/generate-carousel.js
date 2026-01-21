@@ -137,17 +137,17 @@ async function generateSlideImages(slides, title, date, theme) {
   const images = [];
   const totalSlides = slides.length;
 
-  // Theme colors
+  // Theme colors (using hex only - Sharp doesn't support rgba well)
   const colors = theme === 'dark' ? {
     background: '#1a1a1a',
     text: '#e0e0e0',
     textSecondary: '#a0a0a0',
-    gridColor: 'rgba(255, 255, 255, 0.015)'
+    gridLine: '#252525'
   } : {
     background: '#F0EEE6',
     text: '#2c2c2c',
     textSecondary: '#666666',
-    gridColor: 'rgba(0, 0, 0, 0.025)'
+    gridLine: '#e5e3db'
   };
 
   for (let i = 0; i < slides.length; i++) {
@@ -175,6 +175,21 @@ async function generateSlideImages(slides, title, date, theme) {
   return images;
 }
 
+// Generate grid lines for background (sparse grid for subtle texture)
+function generateGridLines(colors) {
+  const lines = [];
+  const spacing = 40; // Sparse grid
+  // Vertical lines
+  for (let x = 0; x <= WIDTH; x += spacing) {
+    lines.push(`<line x1="${x}" y1="0" x2="${x}" y2="${HEIGHT}" stroke="${colors.gridLine}" stroke-width="1"/>`);
+  }
+  // Horizontal lines
+  for (let y = 0; y <= HEIGHT; y += spacing) {
+    lines.push(`<line x1="0" y1="${y}" x2="${WIDTH}" y2="${y}" stroke="${colors.gridLine}" stroke-width="1"/>`);
+  }
+  return lines.join('\n');
+}
+
 // Generate SVG for title slide
 function generateTitleSlideSVG(title, date, introText, slideNumber, totalSlides, colors) {
   const wrappedTitle = wrapText(title, 24);
@@ -194,47 +209,25 @@ function generateTitleSlideSVG(title, date, introText, slideNumber, totalSlides,
 
   const titleTextElements = titleLines.map((line, index) => {
     const y = titleStartY + (index * titleLineHeight);
-    return `<text x="${PADDING}" y="${y}" style="font-family: 'Georgia', 'Times New Roman', serif; font-size: ${titleFontSize}px; font-weight: bold; fill: ${colors.text};">${escapeXml(line)}</text>`;
-  }).join('\n');
+    return `<text x="${PADDING}" y="${y}" font-family="Georgia, serif" font-size="${titleFontSize}" font-weight="bold" fill="${colors.text}">${escapeXml(line)}</text>`;
+  }).join('\n      ');
 
   const introTextElements = introLines.map((line, index) => {
     const y = introStartY + (index * 38);
-    return `<text x="${PADDING}" y="${y}" style="font-family: 'Georgia', 'Times New Roman', serif; font-size: 26px; font-weight: 300; fill: ${colors.text};">${escapeXml(line)}</text>`;
-  }).join('\n');
+    return `<text x="${PADDING}" y="${y}" font-family="Georgia, serif" font-size="26" font-weight="300" fill="${colors.text}">${escapeXml(line)}</text>`;
+  }).join('\n      ');
 
-  return `
-    <svg width="${WIDTH}" height="${HEIGHT}" xmlns="http://www.w3.org/2000/svg">
-      <!-- Background -->
-      <rect width="${WIDTH}" height="${HEIGHT}" fill="${colors.background}"/>
-
-      <!-- Grid pattern -->
-      <defs>
-        <pattern id="grid" width="4" height="4" patternUnits="userSpaceOnUse">
-          <path d="M 4 0 L 0 0 0 4" fill="none" stroke="${colors.gridColor}" stroke-width="1"/>
-        </pattern>
-      </defs>
-      <rect width="${WIDTH}" height="${HEIGHT}" fill="url(#grid)"/>
-
-      <!-- Author name -->
-      <text x="${PADDING}" y="100" style="font-family: 'Georgia', 'Times New Roman', serif; font-size: 28px; font-style: italic; fill: ${colors.text};">${escapeXml(AUTHOR)}</text>
-
-      <!-- Theme toggle icon (decorative) -->
-      <circle cx="${WIDTH - PADDING - 30}" cy="90" r="12" fill="${colors.text}"/>
-      <rect x="${WIDTH - PADDING - 60}" y="78" width="60" height="24" rx="12" fill="none" stroke="${colors.text}" stroke-width="2"/>
-
-      <!-- Title -->
-      ${titleTextElements}
-
-      <!-- Date -->
-      <text x="${PADDING}" y="${dateY}" style="font-family: 'Georgia', 'Times New Roman', serif; font-size: 24px; font-style: italic; fill: ${colors.textSecondary};">${escapeXml(formattedDate)}</text>
-
-      <!-- Intro text -->
-      ${introTextElements}
-
-      <!-- Slide indicator -->
-      <text x="${WIDTH / 2}" y="${HEIGHT - 60}" text-anchor="middle" style="font-family: 'Georgia', 'Times New Roman', serif; font-size: 20px; fill: ${colors.textSecondary};">${slideNumber} / ${totalSlides}</text>
-    </svg>
-  `;
+  return `<svg width="${WIDTH}" height="${HEIGHT}" xmlns="http://www.w3.org/2000/svg">
+  <rect width="${WIDTH}" height="${HEIGHT}" fill="${colors.background}"/>
+  ${generateGridLines(colors)}
+  <text x="${PADDING}" y="100" font-family="Georgia, serif" font-size="28" font-style="italic" fill="${colors.text}">${escapeXml(AUTHOR)}</text>
+  <circle cx="${WIDTH - PADDING - 30}" cy="90" r="12" fill="${colors.text}"/>
+  <rect x="${WIDTH - PADDING - 60}" y="78" width="60" height="24" rx="12" fill="none" stroke="${colors.text}" stroke-width="2"/>
+  ${titleTextElements}
+  <text x="${PADDING}" y="${dateY}" font-family="Georgia, serif" font-size="24" font-style="italic" fill="${colors.textSecondary}">${escapeXml(formattedDate)}</text>
+  ${introTextElements}
+  <text x="${WIDTH / 2}" y="${HEIGHT - 60}" text-anchor="middle" font-family="Georgia, serif" font-size="20" fill="${colors.textSecondary}">${slideNumber} / ${totalSlides}</text>
+</svg>`;
 }
 
 // Generate SVG for content slide
@@ -250,43 +243,21 @@ function generateContentSlideSVG(text, slideNumber, totalSlides, colors, isCta =
 
   const textElements = lines.map((line, index) => {
     const y = startY + (index * lineHeight);
-    return `<text x="${PADDING}" y="${y}" style="font-family: 'Georgia', 'Times New Roman', serif; font-size: ${fontSize}px; font-weight: 300; fill: ${colors.text};">${escapeXml(line)}</text>`;
-  }).join('\n');
+    return `<text x="${PADDING}" y="${y}" font-family="Georgia, serif" font-size="${fontSize}" font-weight="300" fill="${colors.text}">${escapeXml(line)}</text>`;
+  }).join('\n  ');
 
-  const ctaElement = isCta ? `
-    <text x="${PADDING}" y="${HEIGHT - 140}" style="font-family: 'Georgia', 'Times New Roman', serif; font-size: 22px; fill: ${colors.textSecondary};">Read more at johnowolabi.com</text>
-  ` : '';
+  const ctaElement = isCta ? `<text x="${PADDING}" y="${HEIGHT - 140}" font-family="Georgia, serif" font-size="22" fill="${colors.textSecondary}">Read more at johnowolabi.com</text>` : '';
 
-  return `
-    <svg width="${WIDTH}" height="${HEIGHT}" xmlns="http://www.w3.org/2000/svg">
-      <!-- Background -->
-      <rect width="${WIDTH}" height="${HEIGHT}" fill="${colors.background}"/>
-
-      <!-- Grid pattern -->
-      <defs>
-        <pattern id="grid" width="4" height="4" patternUnits="userSpaceOnUse">
-          <path d="M 4 0 L 0 0 0 4" fill="none" stroke="${colors.gridColor}" stroke-width="1"/>
-        </pattern>
-      </defs>
-      <rect width="${WIDTH}" height="${HEIGHT}" fill="url(#grid)"/>
-
-      <!-- Author name -->
-      <text x="${PADDING}" y="100" style="font-family: 'Georgia', 'Times New Roman', serif; font-size: 28px; font-style: italic; fill: ${colors.text};">${escapeXml(AUTHOR)}</text>
-
-      <!-- Theme toggle icon (decorative) -->
-      <circle cx="${WIDTH - PADDING - 30}" cy="90" r="12" fill="${colors.text}"/>
-      <rect x="${WIDTH - PADDING - 60}" y="78" width="60" height="24" rx="12" fill="none" stroke="${colors.text}" stroke-width="2"/>
-
-      <!-- Content text -->
-      ${textElements}
-
-      <!-- CTA if applicable -->
-      ${ctaElement}
-
-      <!-- Slide indicator -->
-      <text x="${WIDTH / 2}" y="${HEIGHT - 60}" text-anchor="middle" style="font-family: 'Georgia', 'Times New Roman', serif; font-size: 20px; fill: ${colors.textSecondary};">${slideNumber} / ${totalSlides}</text>
-    </svg>
-  `;
+  return `<svg width="${WIDTH}" height="${HEIGHT}" xmlns="http://www.w3.org/2000/svg">
+  <rect width="${WIDTH}" height="${HEIGHT}" fill="${colors.background}"/>
+  ${generateGridLines(colors)}
+  <text x="${PADDING}" y="100" font-family="Georgia, serif" font-size="28" font-style="italic" fill="${colors.text}">${escapeXml(AUTHOR)}</text>
+  <circle cx="${WIDTH - PADDING - 30}" cy="90" r="12" fill="${colors.text}"/>
+  <rect x="${WIDTH - PADDING - 60}" y="78" width="60" height="24" rx="12" fill="none" stroke="${colors.text}" stroke-width="2"/>
+  ${textElements}
+  ${ctaElement}
+  <text x="${WIDTH / 2}" y="${HEIGHT - 60}" text-anchor="middle" font-family="Georgia, serif" font-size="20" fill="${colors.textSecondary}">${slideNumber} / ${totalSlides}</text>
+</svg>`;
 }
 
 // Helper function to wrap text
