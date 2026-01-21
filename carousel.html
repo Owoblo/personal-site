@@ -521,11 +521,11 @@
             updatePreview();
         }
 
-        // Split article into slides - EXACT TEXT, NO CHANGES
+        // Split article into slides - EXACT TEXT, subheadings = new slide
         function splitArticleIntoSlides(post) {
-            // Convert HTML to plain text (preserving exact wording)
-            const plainText = post.content
-                .replace(/<h[23][^>]*>(.*?)<\/h[23]>/gi, '\n\n$1\n\n')
+            // Mark subheadings with a special delimiter, then remove the heading text
+            let content = post.content
+                .replace(/<h[23][^>]*>.*?<\/h[23]>/gi, '\n\n|||NEWSLIDE|||\n\n')
                 .replace(/<blockquote[^>]*><p>(.*?)<\/p><\/blockquote>/gi, '"$1"')
                 .replace(/<p[^>]*>(.*?)<\/p>/gi, '$1\n\n')
                 .replace(/<br\s*\/?>/gi, '\n')
@@ -539,60 +539,67 @@
                 .replace(/\n{3,}/g, '\n\n')
                 .trim();
 
-            const totalWords = plainText.split(/\s+/).length;
+            // Split by the heading markers first
+            const sections = content.split('|||NEWSLIDE|||').map(s => s.trim()).filter(s => s.length > 0);
 
-            // Calculate slides needed (max 20, target ~65 words per slide for readability)
             const MAX_SLIDES = 20;
             const WORDS_PER_SLIDE = 65;
-            const slidesNeeded = Math.min(MAX_SLIDES, Math.max(2, Math.ceil(totalWords / WORDS_PER_SLIDE)));
-            const wordsPerSlide = Math.ceil(totalWords / slidesNeeded);
-
-            // Split text into words
-            const words = plainText.split(/\s+/);
             const result = [];
 
-            let wordIndex = 0;
-            for (let slideNum = 0; slideNum < slidesNeeded && wordIndex < words.length; slideNum++) {
-                let slideWords = [];
-                let targetEnd = wordIndex + wordsPerSlide;
+            for (let sectionIndex = 0; sectionIndex < sections.length; sectionIndex++) {
+                const sectionText = sections[sectionIndex];
+                const sectionWords = sectionText.split(/\s+/);
+                const sectionWordCount = sectionWords.length;
 
-                // Collect words for this slide
-                while (wordIndex < words.length && wordIndex < targetEnd) {
-                    slideWords.push(words[wordIndex]);
-                    wordIndex++;
-                }
+                // How many slides does this section need?
+                const slidesForSection = Math.max(1, Math.ceil(sectionWordCount / WORDS_PER_SLIDE));
+                const wordsPerSlideInSection = Math.ceil(sectionWordCount / slidesForSection);
 
-                // Try to end at a sentence boundary (., !, ?)
-                // Look ahead up to 15 words to find one
-                if (wordIndex < words.length && slideNum < slidesNeeded - 1) {
-                    let lookAhead = 0;
-                    while (lookAhead < 15 && wordIndex + lookAhead < words.length) {
-                        const word = words[wordIndex + lookAhead];
-                        slideWords.push(word);
-                        lookAhead++;
+                let wordIndex = 0;
+                for (let i = 0; i < slidesForSection && result.length < MAX_SLIDES; i++) {
+                    let slideWords = [];
+                    let targetEnd = wordIndex + wordsPerSlideInSection;
+
+                    // Collect words for this slide
+                    while (wordIndex < sectionWords.length && wordIndex < targetEnd) {
+                        slideWords.push(sectionWords[wordIndex]);
                         wordIndex++;
-                        if (word.match(/[.!?]"?$/)) {
-                            break; // Found sentence end
+                    }
+
+                    // Try to end at a sentence boundary
+                    if (wordIndex < sectionWords.length && i < slidesForSection - 1) {
+                        let lookAhead = 0;
+                        while (lookAhead < 15 && wordIndex < sectionWords.length) {
+                            const word = sectionWords[wordIndex];
+                            slideWords.push(word);
+                            lookAhead++;
+                            wordIndex++;
+                            if (word.match(/[.!?]"?$/)) {
+                                break;
+                            }
                         }
                     }
-                }
 
-                // Collect any remaining words for the last slide
-                if (slideNum === slidesNeeded - 1) {
-                    while (wordIndex < words.length) {
-                        slideWords.push(words[wordIndex]);
-                        wordIndex++;
+                    // Last slide of section gets remaining words
+                    if (i === slidesForSection - 1) {
+                        while (wordIndex < sectionWords.length) {
+                            slideWords.push(sectionWords[wordIndex]);
+                            wordIndex++;
+                        }
+                    }
+
+                    if (slideWords.length > 0) {
+                        const slideText = slideWords.join(' ');
+                        let type = 'content';
+                        if (result.length === 0) type = 'title';
+                        result.push({ type, text: slideText });
                     }
                 }
+            }
 
-                const slideText = slideWords.join(' ');
-
-                // Determine slide type
-                let type = 'content';
-                if (slideNum === 0) type = 'title';
-                else if (slideNum === slidesNeeded - 1 || wordIndex >= words.length) type = 'cta';
-
-                result.push({ type, text: slideText });
+            // Mark last slide as CTA
+            if (result.length > 1) {
+                result[result.length - 1].type = 'cta';
             }
 
             return result;
