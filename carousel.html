@@ -617,8 +617,8 @@
             }
             paragraphs = allParagraphs;
 
-            // Max words that fit comfortably on one slide (~120 words)
-            const MAX_WORDS_PER_SLIDE = 120;
+            // Max words that fit comfortably on one slide (~60 words for easy reading)
+            const MAX_WORDS_PER_SLIDE = 60;
             const MAX_SLIDES = 20;
 
             // Split long paragraphs into chunks that fit on slides
@@ -923,28 +923,31 @@
             });
         }
 
-        // Add line breaks for readability (every ~18-22 words or at sentence end)
+        // Add line breaks for readability - break at each sentence for airy feel
         function addLineBreaks(text) {
-            const words = text.split(' ');
+            // Split by sentences
+            const sentences = text.match(/[^.!?]+[.!?]+/g) || [text];
             let result = [];
-            let lineWords = [];
+            let currentGroup = [];
             let wordCount = 0;
 
-            for (const word of words) {
-                lineWords.push(word);
-                wordCount++;
+            for (const sentence of sentences) {
+                const trimmed = sentence.trim();
+                const sentenceWords = trimmed.split(/\s+/).length;
 
-                // Break after ~20 words or at sentence end
-                const isSentenceEnd = word.match(/[.!?]"?$/);
-                if (wordCount >= 18 && (isSentenceEnd || wordCount >= 22)) {
-                    result.push(lineWords.join(' '));
-                    lineWords = [];
+                currentGroup.push(trimmed);
+                wordCount += sentenceWords;
+
+                // Group 1-2 sentences together (~15-25 words), then break
+                if (wordCount >= 15 || currentGroup.length >= 2) {
+                    result.push(currentGroup.join(' '));
+                    currentGroup = [];
                     wordCount = 0;
                 }
             }
 
-            if (lineWords.length > 0) {
-                result.push(lineWords.join(' '));
+            if (currentGroup.length > 0) {
+                result.push(currentGroup.join(' '));
             }
 
             return result.join('<br><br>');
