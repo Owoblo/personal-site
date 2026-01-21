@@ -147,6 +147,46 @@
             color: #dc3545;
         }
 
+        .slide-drag {
+            cursor: grab;
+            color: #999;
+            font-size: 14px;
+            padding: 0 8px 0 0;
+            user-select: none;
+        }
+
+        .slide-drag:hover {
+            color: #666;
+        }
+
+        .slide-actions {
+            display: flex;
+            gap: 5px;
+            align-items: center;
+        }
+
+        .slide-move {
+            background: none;
+            border: none;
+            color: #999;
+            cursor: pointer;
+            font-size: 14px;
+            padding: 2px 5px;
+        }
+
+        .slide-move:hover {
+            color: var(--colors--accent);
+        }
+
+        .slide-editor.dragging {
+            opacity: 0.5;
+        }
+
+        .slide-editor.drag-over {
+            border-color: var(--colors--accent);
+            background: rgba(0, 100, 255, 0.05);
+        }
+
         .slide-content {
             padding: 0;
         }
@@ -341,9 +381,24 @@
         }
 
         .slide-cta {
+            margin-top: 15px;
+            display: none;
+        }
+
+        .slide-cta.visible {
+            display: block;
+        }
+
+        .slide-cta .cta-main {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--colors--text);
+            margin-bottom: 4px;
+        }
+
+        .slide-cta .cta-sub {
             font-size: 11px;
             color: var(--colors--text-secondary);
-            margin-top: 10px;
         }
 
         /* Loading State */
@@ -436,8 +491,9 @@
                     <button onclick="nextSlide()" id="next-btn">Next →</button>
                 </div>
                 <div class="download-buttons">
-                    <button class="toolbar-btn" onclick="downloadCurrentSlide()">💾 Download</button>
-                    <button class="toolbar-btn primary" onclick="downloadAllSlides()">📦 Download All</button>
+                    <button class="toolbar-btn" onclick="downloadCurrentSlide()">💾 This Slide</button>
+                    <button class="toolbar-btn" onclick="downloadAllSlides()">📦 All Slides</button>
+                    <button class="toolbar-btn primary" onclick="downloadBothThemes()">🎨 Both Themes</button>
                 </div>
             </div>
 
@@ -458,7 +514,10 @@
                     </div>
                     <div class="slide-bottom">
                         <div class="slide-indicator" id="preview-slide-indicator">1 / 1</div>
-                        <div class="slide-cta" id="preview-cta"></div>
+                        <div class="slide-cta" id="preview-cta">
+                            <div class="cta-main"></div>
+                            <div class="cta-sub"></div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -613,10 +672,17 @@
             slides.forEach((slide, index) => {
                 const editor = document.createElement('div');
                 editor.className = 'slide-editor' + (index === currentSlide ? ' active' : '');
+                editor.draggable = true;
+                editor.dataset.index = index;
                 editor.innerHTML = `
                     <div class="slide-header">
+                        <span class="slide-drag" title="Drag to reorder">⋮⋮</span>
                         <span class="slide-label">Slide ${index + 1}${slide.type === 'title' ? ' (Title)' : slide.type === 'cta' ? ' (CTA)' : ''}</span>
-                        ${slides.length > 1 ? `<button class="slide-delete" onclick="deleteSlide(${index})" title="Delete slide">×</button>` : ''}
+                        <div class="slide-actions">
+                            ${index > 0 ? `<button class="slide-move" onclick="moveSlide(${index}, -1)" title="Move up">↑</button>` : ''}
+                            ${index < slides.length - 1 ? `<button class="slide-move" onclick="moveSlide(${index}, 1)" title="Move down">↓</button>` : ''}
+                            ${slides.length > 1 ? `<button class="slide-delete" onclick="deleteSlide(${index})" title="Delete">×</button>` : ''}
+                        </div>
                     </div>
                     <div class="slide-content">
                         <textarea
@@ -626,8 +692,74 @@
                         >${slide.text}</textarea>
                     </div>
                 `;
+
+                // Drag events
+                editor.addEventListener('dragstart', handleDragStart);
+                editor.addEventListener('dragover', handleDragOver);
+                editor.addEventListener('drop', handleDrop);
+                editor.addEventListener('dragend', handleDragEnd);
+
                 container.appendChild(editor);
             });
+        }
+
+        // Drag and drop handlers
+        let draggedIndex = null;
+
+        function handleDragStart(e) {
+            draggedIndex = parseInt(e.target.dataset.index);
+            e.target.classList.add('dragging');
+        }
+
+        function handleDragOver(e) {
+            e.preventDefault();
+            const editor = e.target.closest('.slide-editor');
+            if (editor) {
+                editor.classList.add('drag-over');
+            }
+        }
+
+        function handleDrop(e) {
+            e.preventDefault();
+            const editor = e.target.closest('.slide-editor');
+            if (editor && draggedIndex !== null) {
+                const targetIndex = parseInt(editor.dataset.index);
+                if (draggedIndex !== targetIndex) {
+                    reorderSlide(draggedIndex, targetIndex);
+                }
+            }
+        }
+
+        function handleDragEnd(e) {
+            document.querySelectorAll('.slide-editor').forEach(el => {
+                el.classList.remove('dragging', 'drag-over');
+            });
+            draggedIndex = null;
+        }
+
+        // Move slide up or down
+        function moveSlide(index, direction) {
+            const newIndex = index + direction;
+            if (newIndex >= 0 && newIndex < slides.length) {
+                reorderSlide(index, newIndex);
+            }
+        }
+
+        // Reorder slides
+        function reorderSlide(fromIndex, toIndex) {
+            const [removed] = slides.splice(fromIndex, 1);
+            slides.splice(toIndex, 0, removed);
+
+            // Update types (first = title, last = cta)
+            slides.forEach((s, i) => {
+                if (i === 0) s.type = 'title';
+                else if (i === slides.length - 1) s.type = 'cta';
+                else s.type = 'content';
+            });
+
+            currentSlide = toIndex;
+            renderSlideEditors();
+            updatePreview();
         }
 
         // Update slide content
@@ -728,16 +860,18 @@
                 previewDate.style.display = 'none';
             }
 
-            previewText.textContent = slide.text;
+            // Add line breaks every ~20 words for readability
+            previewText.innerHTML = addLineBreaks(slide.text);
             previewIndicator.textContent = `${currentSlide + 1} / ${slides.length}`;
             navIndicator.textContent = `${currentSlide + 1} / ${slides.length}`;
 
             // CTA on last slide
             if (slide.type === 'cta') {
-                previewCta.textContent = 'Read more at johnowolabi.com';
-                previewCta.style.display = 'block';
+                previewCta.classList.add('visible');
+                previewCta.querySelector('.cta-main').textContent = 'Follow for more insights';
+                previewCta.querySelector('.cta-sub').textContent = 'johnowolabi.com';
             } else {
-                previewCta.style.display = 'none';
+                previewCta.classList.remove('visible');
             }
 
             // Update nav buttons
@@ -760,6 +894,33 @@
                 month: 'long',
                 day: 'numeric'
             });
+        }
+
+        // Add line breaks for readability (every ~18-22 words or at sentence end)
+        function addLineBreaks(text) {
+            const words = text.split(' ');
+            let result = [];
+            let lineWords = [];
+            let wordCount = 0;
+
+            for (const word of words) {
+                lineWords.push(word);
+                wordCount++;
+
+                // Break after ~20 words or at sentence end
+                const isSentenceEnd = word.match(/[.!?]"?$/);
+                if (wordCount >= 18 && (isSentenceEnd || wordCount >= 22)) {
+                    result.push(lineWords.join(' '));
+                    lineWords = [];
+                    wordCount = 0;
+                }
+            }
+
+            if (lineWords.length > 0) {
+                result.push(lineWords.join(' '));
+            }
+
+            return result.join('<br><br>');
         }
 
         // Download current slide as PNG
@@ -819,6 +980,70 @@
             } catch (error) {
                 console.error('Download all failed:', error);
                 alert('Failed to download slides. Please try downloading individually.');
+            }
+        }
+
+        // Download all slides in BOTH light and dark themes
+        async function downloadBothThemes() {
+            const preview = document.getElementById('slide-preview');
+            const originalSlide = currentSlide;
+            const originalTheme = currentTheme;
+
+            try {
+                // Download light theme
+                changeTheme('light');
+                document.getElementById('theme-select').value = 'light';
+
+                for (let i = 0; i < slides.length; i++) {
+                    currentSlide = i;
+                    updatePreview();
+                    await new Promise(resolve => setTimeout(resolve, 100));
+
+                    const canvas = await html2canvas(preview, {
+                        scale: 2.67,
+                        backgroundColor: null,
+                        logging: false
+                    });
+
+                    const link = document.createElement('a');
+                    link.download = `${postData?.slug || 'slide'}-light-${i + 1}.png`;
+                    link.href = canvas.toDataURL('image/png');
+                    link.click();
+                    await new Promise(resolve => setTimeout(resolve, 200));
+                }
+
+                // Download dark theme
+                changeTheme('dark');
+                document.getElementById('theme-select').value = 'dark';
+
+                for (let i = 0; i < slides.length; i++) {
+                    currentSlide = i;
+                    updatePreview();
+                    await new Promise(resolve => setTimeout(resolve, 100));
+
+                    const canvas = await html2canvas(preview, {
+                        scale: 2.67,
+                        backgroundColor: null,
+                        logging: false
+                    });
+
+                    const link = document.createElement('a');
+                    link.download = `${postData?.slug || 'slide'}-dark-${i + 1}.png`;
+                    link.href = canvas.toDataURL('image/png');
+                    link.click();
+                    await new Promise(resolve => setTimeout(resolve, 200));
+                }
+
+                // Restore original state
+                changeTheme(originalTheme);
+                document.getElementById('theme-select').value = originalTheme;
+                currentSlide = originalSlide;
+                updatePreview();
+                updateEditorHighlight();
+
+            } catch (error) {
+                console.error('Download both themes failed:', error);
+                alert('Failed to download. Please try again.');
             }
         }
 
