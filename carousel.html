@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Carousel Editor - John Owolabi</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <style>
+        :root {
+            --colors--background: #F0EEE6;
+            --colors--text: #2c2c2c;
+            --colors--text-secondary: #666666;
+            --colors--border: #d4d2ca;
+            --colors--accent: #0064ff;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Lora", Georgia, serif;
+            margin: 0;
+            padding: 0;
+            background: #f5f5f5;
+            color: var(--colors--text);
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background: white;
+            border-bottom: 1px solid #e0e0e0;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 1.3em;
+            font-weight: 600;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        /* Main Layout */
+        .main-container {
+            display: flex;
+            height: calc(100vh - 60px);
+        }
+
+        /* Left Panel - Editor */
+        .editor-panel {
+            width: 40%;
+            background: white;
+            border-right: 1px solid #e0e0e0;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .editor-toolbar {
+            padding: 15px 20px;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .toolbar-btn {
+            padding: 8px 12px;
+            border: 1px solid #e0e0e0;
+            background: white;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 14px;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+
+        .toolbar-btn:hover {
+            background: #f5f5f5;
+        }
+
+        .toolbar-btn.primary {
+            background: var(--colors--accent);
+            color: white;
+            border-color: var(--colors--accent);
+        }
+
+        .toolbar-btn.primary:hover {
+            opacity: 0.9;
+        }
+
+        .slides-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .slide-editor {
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            overflow: hidden;
+        }
+
+        .slide-editor.active {
+            border-color: var(--colors--accent);
+            box-shadow: 0 0 0 2px rgba(0, 100, 255, 0.1);
+        }
+
+        .slide-header {
+            background: #f9f9f9;
+            padding: 10px 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .slide-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #666;
+        }
+
+        .slide-delete {
+            background: none;
+            border: none;
+            color: #999;
+            cursor: pointer;
+            font-size: 18px;
+            padding: 0 5px;
+        }
+
+        .slide-delete:hover {
+            color: #dc3545;
+        }
+
+        .slide-content {
+            padding: 0;
+        }
+
+        .slide-content textarea {
+            width: 100%;
+            border: none;
+            padding: 15px;
+            font-family: inherit;
+            font-size: 15px;
+            line-height: 1.6;
+            resize: none;
+            min-height: 120px;
+        }
+
+        .slide-content textarea:focus {
+            outline: none;
+        }
+
+        /* Right Panel - Preview */
+        .preview-panel {
+            width: 60%;
+            background: #e8e8e8;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 30px;
+            overflow-y: auto;
+        }
+
+        .preview-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            max-width: 500px;
+            margin-bottom: 20px;
+        }
+
+        .preview-nav {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .preview-nav button {
+            background: white;
+            border: 1px solid #ccc;
+            padding: 8px 15px;
+            cursor: pointer;
+            border-radius: 4px;
+            font-family: inherit;
+        }
+
+        .preview-nav button:hover {
+            background: #f5f5f5;
+        }
+
+        .preview-nav button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .preview-indicator {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .download-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        /* Slide Preview Frame */
+        .preview-frame {
+            width: 100%;
+            max-width: 405px; /* 1080 / 2.67 for display */
+            aspect-ratio: 4 / 5;
+            background: var(--colors--background);
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* The actual slide content */
+        .slide-preview {
+            width: 100%;
+            height: 100%;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            background-color: var(--colors--background);
+            background-image:
+                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 0, 0, .015) 2px, rgba(0, 0, 0, .015) 4px),
+                repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(0, 0, 0, .015) 2px, rgba(0, 0, 0, .015) 4px);
+        }
+
+        .slide-preview.dark {
+            --colors--background: #1a1a1a;
+            --colors--text: #e0e0e0;
+            --colors--text-secondary: #a0a0a0;
+            background-color: #1a1a1a;
+            background-image:
+                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255, 255, 255, .01) 2px, rgba(255, 255, 255, .01) 4px),
+                repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(255, 255, 255, .01) 2px, rgba(255, 255, 255, .01) 4px);
+        }
+
+        .slide-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .slide-author {
+            font-size: 14px;
+            font-style: italic;
+            color: var(--colors--text);
+        }
+
+        .slide-toggle {
+            display: flex;
+            align-items: center;
+        }
+
+        .slide-toggle-track {
+            width: 36px;
+            height: 18px;
+            border: 1.5px solid var(--colors--text);
+            border-radius: 100px;
+            position: relative;
+        }
+
+        .slide-toggle-thumb {
+            width: 12px;
+            height: 12px;
+            background: var(--colors--text);
+            border-radius: 50%;
+            position: absolute;
+            top: 2px;
+            right: 3px;
+        }
+
+        .slide-preview.dark .slide-toggle-track {
+            background: var(--colors--text);
+        }
+
+        .slide-preview.dark .slide-toggle-thumb {
+            background: var(--colors--background);
+            left: 3px;
+            right: auto;
+        }
+
+        .slide-body {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .slide-title {
+            font-size: 28px;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 15px;
+            color: var(--colors--text);
+        }
+
+        .slide-date {
+            font-size: 12px;
+            font-style: italic;
+            color: var(--colors--text-secondary);
+            margin-bottom: 20px;
+        }
+
+        .slide-text {
+            font-size: 14px;
+            line-height: 1.7;
+            color: var(--colors--text);
+            font-weight: 400;
+        }
+
+        .slide-bottom {
+            text-align: center;
+            padding-top: 20px;
+        }
+
+        .slide-indicator {
+            font-size: 12px;
+            color: var(--colors--text-secondary);
+        }
+
+        .slide-cta {
+            font-size: 11px;
+            color: var(--colors--text-secondary);
+            margin-top: 10px;
+        }
+
+        /* Loading State */
+        .loading {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            color: #666;
+        }
+
+        .loading-spinner {
+            font-size: 24px;
+            margin-bottom: 15px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Theme Toggle in Header */
+        .theme-toggle {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+        }
+
+        .theme-toggle select {
+            padding: 6px 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-family: inherit;
+            background: white;
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .main-container {
+                flex-direction: column;
+            }
+            .editor-panel, .preview-panel {
+                width: 100%;
+                height: 50vh;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Carousel Editor</h1>
+        <div class="header-actions">
+            <div class="theme-toggle">
+                <label>Theme:</label>
+                <select id="theme-select" onchange="changeTheme(this.value)">
+                    <option value="light">Light</option>
+                    <option value="dark">Dark</option>
+                </select>
+            </div>
+            <a href="create.html" class="toolbar-btn">← Back to Admin</a>
+        </div>
+    </div>
+
+    <div class="main-container">
+        <!-- Left Panel - Editor -->
+        <div class="editor-panel">
+            <div class="editor-toolbar">
+                <button class="toolbar-btn" onclick="formatSelection('bold')" title="Bold"><strong>B</strong></button>
+                <button class="toolbar-btn" onclick="formatSelection('italic')" title="Italic"><em>I</em></button>
+                <span style="color: #ccc;">|</span>
+                <button class="toolbar-btn primary" onclick="addSlide()">+ Add Slide</button>
+                <button class="toolbar-btn" onclick="regenerateSlides()">🔄 Regenerate</button>
+            </div>
+            <div class="slides-container" id="slides-container">
+                <div class="loading" id="loading-state">
+                    <div class="loading-spinner">⏳</div>
+                    <p>Loading article and generating slides...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Panel - Preview -->
+        <div class="preview-panel">
+            <div class="preview-header">
+                <div class="preview-nav">
+                    <button onclick="prevSlide()" id="prev-btn">← Prev</button>
+                    <span class="preview-indicator" id="preview-indicator">1 / 1</span>
+                    <button onclick="nextSlide()" id="next-btn">Next →</button>
+                </div>
+                <div class="download-buttons">
+                    <button class="toolbar-btn" onclick="downloadCurrentSlide()">💾 Download</button>
+                    <button class="toolbar-btn primary" onclick="downloadAllSlides()">📦 Download All</button>
+                </div>
+            </div>
+
+            <div class="preview-frame">
+                <div class="slide-preview" id="slide-preview">
+                    <div class="slide-top">
+                        <span class="slide-author">John Owolabi</span>
+                        <div class="slide-toggle">
+                            <div class="slide-toggle-track">
+                                <div class="slide-toggle-thumb"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slide-body">
+                        <div class="slide-title" id="preview-title"></div>
+                        <div class="slide-date" id="preview-date"></div>
+                        <div class="slide-text" id="preview-text"></div>
+                    </div>
+                    <div class="slide-bottom">
+                        <div class="slide-indicator" id="preview-slide-indicator">1 / 1</div>
+                        <div class="slide-cta" id="preview-cta"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let slides = [];
+        let currentSlide = 0;
+        let postData = null;
+        let currentTheme = 'light';
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', async () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const slug = urlParams.get('slug');
+
+            if (!slug) {
+                alert('No post slug provided. Please access this page from the Blog Admin.');
+                window.location.href = 'create.html';
+                return;
+            }
+
+            await loadPostAndGenerateSlides(slug);
+        });
+
+        // Load post from posts.json and generate slides
+        async function loadPostAndGenerateSlides(slug) {
+            try {
+                // Load posts.json
+                const response = await fetch('posts.json');
+                const data = await response.json();
+                const post = data.posts.find(p => p.slug === slug);
+
+                if (!post) {
+                    alert('Post not found: ' + slug);
+                    window.location.href = 'create.html';
+                    return;
+                }
+
+                postData = post;
+
+                // Generate slides using AI
+                await generateSlidesFromContent(post);
+
+            } catch (error) {
+                console.error('Error loading post:', error);
+                alert('Failed to load post: ' + error.message);
+            }
+        }
+
+        // Generate slides using AI
+        async function generateSlidesFromContent(post) {
+            try {
+                const response = await fetch('/.netlify/functions/format-carousel', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        title: post.title,
+                        date: post.date,
+                        content: post.content
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to generate slides');
+                }
+
+                const result = await response.json();
+                slides = result.slides;
+
+            } catch (error) {
+                console.error('AI generation failed, using fallback:', error);
+                // Fallback: simple paragraph splitting
+                slides = generateFallbackSlides(post);
+            }
+
+            renderSlideEditors();
+            updatePreview();
+            document.getElementById('loading-state').style.display = 'none';
+        }
+
+        // Fallback slide generation (no AI)
+        function generateFallbackSlides(post) {
+            const plainText = post.content
+                .replace(/<h[23][^>]*>(.*?)<\/h[23]>/gi, '\n\n$1\n\n')
+                .replace(/<blockquote[^>]*><p>(.*?)<\/p><\/blockquote>/gi, '\n"$1"\n')
+                .replace(/<p[^>]*>(.*?)<\/p>/gi, '$1\n\n')
+                .replace(/<br\s*\/?>/gi, '\n')
+                .replace(/<[^>]+>/g, '')
+                .replace(/&nbsp;/g, ' ')
+                .replace(/&amp;/g, '&')
+                .replace(/&lt;/g, '<')
+                .replace(/&gt;/g, '>')
+                .replace(/&quot;/g, '"')
+                .replace(/&#39;/g, "'")
+                .trim();
+
+            const paragraphs = plainText.split(/\n\n+/).filter(p => p.trim().length > 0);
+            const result = [];
+
+            // Title slide with first paragraph
+            result.push({
+                type: 'title',
+                text: paragraphs[0] || ''
+            });
+
+            // Content slides (group paragraphs to ~100 words each)
+            let currentText = '';
+            for (let i = 1; i < paragraphs.length; i++) {
+                const para = paragraphs[i];
+                const wordCount = (currentText + ' ' + para).split(/\s+/).length;
+
+                if (wordCount > 100 && currentText) {
+                    result.push({ type: 'content', text: currentText.trim() });
+                    currentText = para;
+                } else {
+                    currentText += (currentText ? '\n\n' : '') + para;
+                }
+            }
+
+            // Add remaining text as final slide
+            if (currentText) {
+                result.push({ type: 'cta', text: currentText.trim() });
+            }
+
+            return result;
+        }
+
+        // Render slide editors in left panel
+        function renderSlideEditors() {
+            const container = document.getElementById('slides-container');
+            container.innerHTML = '';
+
+            slides.forEach((slide, index) => {
+                const editor = document.createElement('div');
+                editor.className = 'slide-editor' + (index === currentSlide ? ' active' : '');
+                editor.innerHTML = `
+                    <div class="slide-header">
+                        <span class="slide-label">Slide ${index + 1}${slide.type === 'title' ? ' (Title)' : slide.type === 'cta' ? ' (CTA)' : ''}</span>
+                        ${slides.length > 1 ? `<button class="slide-delete" onclick="deleteSlide(${index})" title="Delete slide">×</button>` : ''}
+                    </div>
+                    <div class="slide-content">
+                        <textarea
+                            placeholder="Enter slide content..."
+                            oninput="updateSlideContent(${index}, this.value)"
+                            onfocus="selectSlide(${index})"
+                        >${slide.text}</textarea>
+                    </div>
+                `;
+                container.appendChild(editor);
+            });
+        }
+
+        // Update slide content
+        function updateSlideContent(index, text) {
+            slides[index].text = text;
+            if (index === currentSlide) {
+                updatePreview();
+            }
+        }
+
+        // Select slide
+        function selectSlide(index) {
+            currentSlide = index;
+            updatePreview();
+            updateEditorHighlight();
+        }
+
+        // Update editor highlight
+        function updateEditorHighlight() {
+            document.querySelectorAll('.slide-editor').forEach((el, i) => {
+                el.classList.toggle('active', i === currentSlide);
+            });
+        }
+
+        // Add new slide
+        function addSlide() {
+            slides.push({
+                type: 'content',
+                text: ''
+            });
+            renderSlideEditors();
+            currentSlide = slides.length - 1;
+            updatePreview();
+
+            // Focus the new slide's textarea
+            setTimeout(() => {
+                const textareas = document.querySelectorAll('.slide-editor textarea');
+                textareas[textareas.length - 1].focus();
+            }, 100);
+        }
+
+        // Delete slide
+        function deleteSlide(index) {
+            if (slides.length <= 1) return;
+
+            slides.splice(index, 1);
+            if (currentSlide >= slides.length) {
+                currentSlide = slides.length - 1;
+            }
+            renderSlideEditors();
+            updatePreview();
+        }
+
+        // Regenerate slides from AI
+        async function regenerateSlides() {
+            if (!postData) return;
+
+            document.getElementById('slides-container').innerHTML = `
+                <div class="loading">
+                    <div class="loading-spinner">⏳</div>
+                    <p>Regenerating slides...</p>
+                </div>
+            `;
+
+            currentSlide = 0;
+            await generateSlidesFromContent(postData);
+        }
+
+        // Navigate slides
+        function prevSlide() {
+            if (currentSlide > 0) {
+                currentSlide--;
+                updatePreview();
+                updateEditorHighlight();
+            }
+        }
+
+        function nextSlide() {
+            if (currentSlide < slides.length - 1) {
+                currentSlide++;
+                updatePreview();
+                updateEditorHighlight();
+            }
+        }
+
+        // Update preview
+        function updatePreview() {
+            const slide = slides[currentSlide];
+            if (!slide) return;
+
+            const previewTitle = document.getElementById('preview-title');
+            const previewDate = document.getElementById('preview-date');
+            const previewText = document.getElementById('preview-text');
+            const previewIndicator = document.getElementById('preview-slide-indicator');
+            const navIndicator = document.getElementById('preview-indicator');
+            const previewCta = document.getElementById('preview-cta');
+
+            // Title slide shows title and date
+            if (slide.type === 'title' && postData) {
+                previewTitle.textContent = postData.title;
+                previewTitle.style.display = 'block';
+                previewDate.textContent = formatDate(postData.date);
+                previewDate.style.display = 'block';
+            } else {
+                previewTitle.style.display = 'none';
+                previewDate.style.display = 'none';
+            }
+
+            previewText.textContent = slide.text;
+            previewIndicator.textContent = `${currentSlide + 1} / ${slides.length}`;
+            navIndicator.textContent = `${currentSlide + 1} / ${slides.length}`;
+
+            // CTA on last slide
+            if (slide.type === 'cta') {
+                previewCta.textContent = 'Read more at johnowolabi.com';
+                previewCta.style.display = 'block';
+            } else {
+                previewCta.style.display = 'none';
+            }
+
+            // Update nav buttons
+            document.getElementById('prev-btn').disabled = currentSlide === 0;
+            document.getElementById('next-btn').disabled = currentSlide === slides.length - 1;
+        }
+
+        // Change theme
+        function changeTheme(theme) {
+            currentTheme = theme;
+            const preview = document.getElementById('slide-preview');
+            preview.classList.toggle('dark', theme === 'dark');
+        }
+
+        // Format date
+        function formatDate(dateStr) {
+            const date = new Date(dateStr);
+            return date.toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+        }
+
+        // Download current slide as PNG
+        async function downloadCurrentSlide() {
+            const preview = document.getElementById('slide-preview');
+
+            try {
+                const canvas = await html2canvas(preview, {
+                    scale: 2.67, // Scale up to get 1080x1350
+                    backgroundColor: null,
+                    logging: false
+                });
+
+                const link = document.createElement('a');
+                link.download = `${postData?.slug || 'slide'}-${currentSlide + 1}.png`;
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            } catch (error) {
+                console.error('Download failed:', error);
+                alert('Failed to download slide. Please try taking a screenshot manually.');
+            }
+        }
+
+        // Download all slides as PNGs
+        async function downloadAllSlides() {
+            const preview = document.getElementById('slide-preview');
+            const originalSlide = currentSlide;
+
+            try {
+                for (let i = 0; i < slides.length; i++) {
+                    currentSlide = i;
+                    updatePreview();
+
+                    // Wait for render
+                    await new Promise(resolve => setTimeout(resolve, 100));
+
+                    const canvas = await html2canvas(preview, {
+                        scale: 2.67,
+                        backgroundColor: null,
+                        logging: false
+                    });
+
+                    const link = document.createElement('a');
+                    link.download = `${postData?.slug || 'slide'}-${i + 1}.png`;
+                    link.href = canvas.toDataURL('image/png');
+                    link.click();
+
+                    // Small delay between downloads
+                    await new Promise(resolve => setTimeout(resolve, 300));
+                }
+
+                // Restore original slide
+                currentSlide = originalSlide;
+                updatePreview();
+                updateEditorHighlight();
+
+            } catch (error) {
+                console.error('Download all failed:', error);
+                alert('Failed to download slides. Please try downloading individually.');
+            }
+        }
+
+        // Format selection (basic implementation)
+        function formatSelection(type) {
+            const activeTextarea = document.querySelector('.slide-editor.active textarea');
+            if (!activeTextarea) return;
+
+            const start = activeTextarea.selectionStart;
+            const end = activeTextarea.selectionEnd;
+            const text = activeTextarea.value;
+            const selected = text.substring(start, end);
+
+            if (!selected) {
+                alert('Please select some text to format.');
+                return;
+            }
+
+            let formatted;
+            if (type === 'bold') {
+                formatted = `**${selected}**`;
+            } else if (type === 'italic') {
+                formatted = `*${selected}*`;
+            }
+
+            activeTextarea.value = text.substring(0, start) + formatted + text.substring(end);
+            slides[currentSlide].text = activeTextarea.value;
+            updatePreview();
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.target.tagName === 'TEXTAREA') return;
+
+            if (e.key === 'ArrowLeft') {
+                prevSlide();
+            } else if (e.key === 'ArrowRight') {
+                nextSlide();
+            }
+        });
+    </script>
+</body>
+</html>
