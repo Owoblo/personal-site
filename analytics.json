@@ -4529,6 +4529,12 @@
       "timestamp": "2026-01-22T23:28:34.502Z",
       "referrer": "https://l.instagram.com/",
       "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36 OPR/125.0.0.0"
+    },
+    {
+      "page": "/",
+      "timestamp": "2026-01-22T23:53:45.780Z",
+      "referrer": "direct",
+      "userAgent": "Mozilla/5.0 (compatible; AhrefsBot/7.0; +http://ahrefs.com/robot/)"
     }
   ]
 }
