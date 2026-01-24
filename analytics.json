@@ -5237,6 +5237,12 @@
       "timestamp": "2026-01-24T04:50:51.769Z",
       "referrer": "http://m.facebook.com",
       "userAgent": "Instagram 412.0.0.17.89 (iPhone14,2; iOS 26_1; en_US; en; scale=3.00; 1170x2532; 859471633) AppleWebKit/420+"
+    },
+    {
+      "page": "/",
+      "timestamp": "2026-01-24T04:51:16.372Z",
+      "referrer": "direct",
+      "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/131.0.6778.0 Safari/537.36"
     }
   ]
 }
