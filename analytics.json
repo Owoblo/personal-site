@@ -6659,6 +6659,12 @@
       "timestamp": "2026-01-26T22:38:21.600Z",
       "referrer": "https://johnowolabi.com/post.html?slug=trapped-in-time-my-14-hour-airport-saga",
       "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36"
+    },
+    {
+      "page": "/",
+      "timestamp": "2026-01-26T22:38:40.177Z",
+      "referrer": "direct",
+      "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/131.0.6778.0 Safari/537.36"
     }
   ]
 }
