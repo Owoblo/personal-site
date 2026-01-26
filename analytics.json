@@ -6701,6 +6701,12 @@
       "timestamp": "2026-01-26T22:41:27.703Z",
       "referrer": "direct",
       "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/131.0.6778.0 Safari/537.36"
+    },
+    {
+      "page": "/",
+      "timestamp": "2026-01-26T22:41:51.536Z",
+      "referrer": "direct",
+      "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/131.0.6778.0 Safari/537.36"
     }
   ]
 }
