@@ -8201,6 +8201,12 @@
       "timestamp": "2026-02-02T03:37:46.024Z",
       "referrer": "https://johnowolabi.com/post.html?slug=the-art-of-easing-it",
       "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_6_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.6 Mobile/15E148 Safari/604.1"
+    },
+    {
+      "page": "/thoughts",
+      "timestamp": "2026-02-02T03:37:52.296Z",
+      "referrer": "https://johnowolabi.com/index.html",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_6_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.6 Mobile/15E148 Safari/604.1"
     }
   ]
 }
