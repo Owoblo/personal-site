@@ -8273,6 +8273,12 @@
       "timestamp": "2026-02-02T20:05:04.114Z",
       "referrer": "direct",
       "userAgent": "Mozilla/5.0 (Linux; Android 6.0.1; Nexus 5X Build/MMB29P) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.7499.192 Mobile Safari/537.36 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)"
+    },
+    {
+      "page": "/",
+      "timestamp": "2026-02-02T23:41:54.442Z",
+      "referrer": "direct",
+      "userAgent": "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; bingbot/2.0; +http://www.bing.com/bingbot.htm) Chrome/136.0.0.0 Safari/537.36"
     }
   ]
 }
