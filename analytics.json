@@ -8639,6 +8639,12 @@
       "timestamp": "2026-02-05T17:42:18.902Z",
       "referrer": "https://johnowolabi.com/thoughts",
       "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36"
+    },
+    {
+      "page": "/thoughts",
+      "timestamp": "2026-02-05T17:42:44.782Z",
+      "referrer": "https://johnowolabi.com/?utm_source=ig&utm_medium=social&utm_content=link_in_bio&fbclid=PAZXh0bgNhZW0CMTEAc3J0YwZhcHBfaWQMMjU2MjgxMDQwNTU4AAGngZWKR4EI53hyoRz35S4rkdso5iJShTPhsZOlSx5gnxa3cCdozN9YBQCiFRA_aem_0Zc2IZQX-ofyN2GoX1n7JA",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36"
     }
   ]
 }
