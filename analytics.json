@@ -8567,6 +8567,12 @@
       "timestamp": "2026-02-05T03:05:20.777Z",
       "referrer": "https://johnowolabi.com/",
       "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_3_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/144.0.7559.95 Mobile/15E148 Safari/604.1"
+    },
+    {
+      "page": "/?fbclid=IwZXh0bgNhZW0CMTEAc3J0YwZhcHBfaWQMMjU2MjgxMDQwNTU4AAEeaVkHhjq-OI1I3LScbOJhkssocuUtzenfb416044yBI-P0D0hJGwfDvPXUxc_aem_yN3oQMwVehLlPWRW5kirqw",
+      "timestamp": "2026-02-05T03:17:33.209Z",
+      "referrer": "https://www.facebook.com/",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36"
     }
   ]
 }
