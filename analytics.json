@@ -8939,6 +8939,12 @@
       "timestamp": "2026-02-08T08:56:03.806Z",
       "referrer": "direct",
       "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
+    },
+    {
+      "page": "/?fbclid=IwZXh0bgNhZW0CMTEAc3J0YwZhcHBfaWQMMjU2MjgxMDQwNTU4AAEerfersNePijQkhgROEUehOUOZtZVjjFSBtuSdLlPkqSFtO9xi8jyd1NhLez4_aem_XEI1LJ68NvvDWqlW5zKknA",
+      "timestamp": "2026-02-08T09:20:43.764Z",
+      "referrer": "https://www.facebook.com/",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 Edg/144.0.0.0"
     }
   ]
 }
