@@ -8993,6 +8993,12 @@
       "timestamp": "2026-02-09T06:03:20.474Z",
       "referrer": "https://t.co/",
       "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_3_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.3 Mobile/15E148 Safari/604.1"
+    },
+    {
+      "page": "/",
+      "timestamp": "2026-02-09T10:04:46.783Z",
+      "referrer": "direct",
+      "userAgent": "Mozilla/5.0 (Linux; Android 6.0.1; Nexus 5X Build/MMB29P) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.7559.109 Mobile Safari/537.36 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)"
     }
   ]
 }
