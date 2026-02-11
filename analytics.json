@@ -9107,6 +9107,12 @@
       "timestamp": "2026-02-11T12:31:37.160Z",
       "referrer": "direct",
       "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
+    },
+    {
+      "page": "/?utm_source=ig&utm_medium=social&utm_content=link_in_bio&fbclid=PAZXh0bgNhZW0CMTEAc3J0YwZhcHBfaWQPMTI0MDI0NTc0Mjg3NDE0AAGnPgNlegXH9pmHL4uAk5IIEtVhQsu4SAV_HZf3I8oMkWFNkMerRdLxCHwVYy0_aem_LrI70ogYJfNzJmIfA52WUg",
+      "timestamp": "2026-02-11T14:15:21.135Z",
+      "referrer": "https://l.instagram.com/",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 17_4_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/21E236 Instagram 333.0.4.29.95 (iPhone14,3; iOS 17_4_1; en_NL; en; scale=3.00; 1284x2778; 603983235)"
     }
   ]
 }
