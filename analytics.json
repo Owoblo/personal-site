@@ -9113,6 +9113,12 @@
       "timestamp": "2026-02-11T14:15:21.135Z",
       "referrer": "https://l.instagram.com/",
       "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 17_4_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/21E236 Instagram 333.0.4.29.95 (iPhone14,3; iOS 17_4_1; en_NL; en; scale=3.00; 1284x2778; 603983235)"
+    },
+    {
+      "page": "/?utm_source=ig&utm_medium=social&utm_content=link_in_bio&fbclid=PAZXh0bgNhZW0CMTEAc3J0YwZhcHBfaWQPMTI0MDI0NTc0Mjg3NDE0AAGnvYrkmgsobPoAqrcIN58IU0b4qZH8RTDUzp4HYJqd5oL9pdms48dzppjMQ4s_aem_ZwOKDbZoTS5VumWniDplCQ",
+      "timestamp": "2026-02-11T15:38:10.470Z",
+      "referrer": "direct",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_3_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/22D82 Instagram 415.1.0.24.68 (iPhone17,4; iOS 18_3_2; en_US; en; scale=3.00; 1290x2796; IABMV/1; 876143997) Safari/604.1"
     }
   ]
 }
