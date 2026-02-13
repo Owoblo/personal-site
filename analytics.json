@@ -9215,6 +9215,12 @@
       "timestamp": "2026-02-13T15:41:49.200Z",
       "referrer": "https://johnowolabi.com/",
       "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36"
+    },
+    {
+      "page": "/",
+      "timestamp": "2026-02-13T15:41:50.139Z",
+      "referrer": "https://johnowolabi.com/",
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36"
     }
   ]
 }
