@@ -9491,6 +9491,12 @@
       "timestamp": "2026-02-19T01:57:54.181Z",
       "referrer": "https://www.google.com/",
       "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.2 Mobile/15E148 Safari/604.1"
+    },
+    {
+      "page": "/?utm_source=ig&utm_medium=social&utm_content=link_in_bio&fbclid=PAZXh0bgNhZW0CMTEAc3J0YwZhcHBfaWQPMTI0MDI0NTc0Mjg3NDE0AAGn0dmvPe6EKL2KdxaklHiaLstsfQ_cI09AyzM8UBkpW61TJ9ECVqKOIV1iriU_aem_oDVecp9AdT_X19LsCjc8Og",
+      "timestamp": "2026-02-19T02:16:27.864Z",
+      "referrer": "direct",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/23C71 Safari/604.1 Instagram 416.1.0.27.68 (iPhone15,2; iOS 26_2_1; en_US; en; scale=3.00; 1179x2556; IABMV/1; 881475720)"
     }
   ]
 }
