@@ -9497,6 +9497,12 @@
       "timestamp": "2026-02-19T02:16:27.864Z",
       "referrer": "direct",
       "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/23C71 Safari/604.1 Instagram 416.1.0.27.68 (iPhone15,2; iOS 26_2_1; en_US; en; scale=3.00; 1179x2556; IABMV/1; 881475720)"
+    },
+    {
+      "page": "/?fbclid=IwZXh0bgNhZW0CMTEAc3J0YwZhcHBfaWQMMjU2MjgxMDQwNTU4AAEeRV578CCXCQr0SMSP5sBGggwH_39B4lEPJX3uPMTMMw4sRuLNTtkXiJJL7lE_aem_6azbD1Oqc_Vwn_aLZ6oyXg",
+      "timestamp": "2026-02-19T02:46:42.616Z",
+      "referrer": "https://www.facebook.com/",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; WOW64; rv:58.0) Gecko/20100101 Firefox/59.0"
     }
   ]
 }
