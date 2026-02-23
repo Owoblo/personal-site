@@ -9713,6 +9713,12 @@
       "timestamp": "2026-02-22T19:08:19.968Z",
       "referrer": "direct",
       "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
+    },
+    {
+      "page": "/",
+      "timestamp": "2026-02-23T00:16:07.457Z",
+      "referrer": "direct",
+      "userAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Mobile Safari/537.36"
     }
   ]
 }
