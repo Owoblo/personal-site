@@ -11591,6 +11591,12 @@
       "timestamp": "2026-03-06T00:00:58.853Z",
       "referrer": "https://t.co/",
       "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 16_4_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.4 Mobile/15E148 Safari/604.1"
+    },
+    {
+      "page": "/",
+      "timestamp": "2026-03-06T00:26:47.194Z",
+      "referrer": "direct",
+      "userAgent": "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; bingbot/2.0; +http://www.bing.com/bingbot.htm) Chrome/136.0.0.0 Safari/537.36"
     }
   ]
 }
