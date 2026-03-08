@@ -11729,6 +11729,12 @@
       "timestamp": "2026-03-08T12:47:51.491Z",
       "referrer": "direct",
       "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
+    },
+    {
+      "page": "/",
+      "timestamp": "2026-03-08T14:29:34.221Z",
+      "referrer": "direct",
+      "userAgent": "Mozilla/5.0 (compatible; AhrefsBot/7.0; +http://ahrefs.com/robot/)"
     }
   ]
 }
