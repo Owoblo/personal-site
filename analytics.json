@@ -11669,6 +11669,12 @@
       "timestamp": "2026-03-07T23:12:03.946Z",
       "referrer": "direct",
       "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4 Safari/605.1.15 (Applebot/0.1; +http://www.apple.com/go/applebot)"
+    },
+    {
+      "page": "/?fbclid=IwZXh0bgNhZW0CMTEAc3J0YwZhcHBfaWQMMjU2MjgxMDQwNTU4AAEeseIDeqpP-T1_OPObmNZq-JmYWwIjWyAxmaPL6EPVD99MgU36zdeXBGmdimg_aem_wF7JtN4CVaI4Xb07FUu3Ug",
+      "timestamp": "2026-03-08T02:34:02.422Z",
+      "referrer": "https://www.facebook.com/",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36"
     }
   ]
 }
