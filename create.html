@@ -1292,7 +1292,7 @@
                 const base64 = await fileToBase64(file);
 
                 // Upload to GitHub via Netlify function
-                const response = await fetch('/.netlify/functions/upload-image', {
+                const response = await fetch('/api/upload-image', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -1448,7 +1448,7 @@
             generateStatus.textContent = 'Generating title, excerpt, and formatting content...';
 
             try {
-                const response = await fetch('/.netlify/functions/format-content', {
+                const response = await fetch('/api/format-content', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ text: rawText })
@@ -1637,7 +1637,7 @@
                 posts = posts.filter(p => p.id !== id);
 
                 // Save to GitHub
-                const response = await fetch('/.netlify/functions/save-post', {
+                const response = await fetch('/api/save-post', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ posts })
@@ -1715,7 +1715,7 @@
                 }
 
                 // Save to GitHub
-                const response = await fetch('/.netlify/functions/save-post', {
+                const response = await fetch('/api/save-post', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ posts })

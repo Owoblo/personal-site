@@ -1,0 +1,6 @@
+OPENAI_API_KEY=sk-your-api-key-here
+ADMIN_PASSWORD=your-secure-password-here
+GITHUB_TOKEN=ghp_your-token-here
+GITHUB_REPO=Owoblo/personal-site
+INSTAGRAM_ACCESS_TOKEN=your-instagram-access-token-here
+INSTAGRAM_BUSINESS_ID=your-instagram-business-id-here

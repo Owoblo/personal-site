@@ -1,0 +1,77 @@
+export async function onRequestPost(context) {
+  const headers = { 'Content-Type': 'application/json' };
+
+  try {
+    const { text } = await context.request.json();
+
+    if (!text) {
+      return new Response(JSON.stringify({ error: 'No text provided' }), { status: 400, headers });
+    }
+
+    const apiKey = context.env.OPENAI_API_KEY;
+
+    if (!apiKey) {
+      return new Response(JSON.stringify({ error: 'OpenAI API key not configured' }), { status: 500, headers });
+    }
+
+    const response = await fetch('https://api.openai.com/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${apiKey}`,
+      },
+      body: JSON.stringify({
+        model: 'gpt-4o-mini',
+        messages: [
+          {
+            role: 'system',
+            content: `You are an expert blog post generator. Analyze the raw article text and generate:
+
+1. **Title Options**: Generate 4 different compelling title variations (5-10 words each) that capture different angles of the article
+2. **Excerpt**: A 1-2 sentence summary (under 200 characters) that entices readers
+3. **Formatted Content**: The article formatted with beautiful HTML markup:
+   - Add <h2> tags for main section headings (analyze content to identify natural sections)
+   - Add <h3> tags for subsections when appropriate
+   - Use <strong> or <b> for emphasis on important words/phrases
+   - Use <em> or <i> for subtle emphasis or foreign words
+   - Use <blockquote><p>...</p></blockquote> for impactful quotes, key statements, or powerful conclusions
+   - Wrap paragraphs in <p> tags
+   - Maintain the author's voice and tone - don't change the writing style
+   - Don't add any content that wasn't in the original text
+   - Preserve the natural flow and line breaks
+
+Return a JSON object with this EXACT structure:
+{
+  "titleOptions": ["Title Option 1", "Title Option 2", "Title Option 3", "Title Option 4"],
+  "excerpt": "A compelling 1-2 sentence summary under 200 characters.",
+  "content": "<p>The full formatted HTML content...</p>"
+}
+
+Return ONLY valid JSON, nothing else.`,
+          },
+          { role: 'user', content: text },
+        ],
+        temperature: 0.3,
+        response_format: { type: 'json_object' },
+      }),
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.error?.message || 'OpenAI API request failed');
+    }
+
+    const data = await response.json();
+    const result = JSON.parse(data.choices[0].message.content.trim());
+
+    return new Response(
+      JSON.stringify({ titleOptions: result.titleOptions, excerpt: result.excerpt, content: result.content }),
+      { status: 200, headers }
+    );
+  } catch (error) {
+    return new Response(JSON.stringify({ error: error.message || 'Failed to generate post' }), {
+      status: 500,
+      headers,
+    });
+  }
+}

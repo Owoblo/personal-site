@@ -1070,7 +1070,7 @@
                     const base64Data = canvas.toDataURL('image/png');
 
                     // Upload to GitHub to get public URL
-                    const uploadResponse = await fetch('/.netlify/functions/upload-image', {
+                    const uploadResponse = await fetch('/api/upload-image', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
@@ -1104,7 +1104,7 @@
                     `#writing #blog #thoughts`;
 
                 // Post to Instagram
-                const postResponse = await fetch('/.netlify/functions/instagram-post', {
+                const postResponse = await fetch('/api/instagram-post', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({

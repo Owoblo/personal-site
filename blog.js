@@ -153,7 +153,7 @@
         // Update Open Graph image with dynamic image
         const ogImage = document.querySelector('meta[property="og:image"]');
         if (ogImage) {
-            const dynamicImageUrl = `https://johnowolabi.com/.netlify/functions/og-image?title=${encodeURIComponent(post.title)}`;
+            const dynamicImageUrl = `https://johnowolabi.com/api/og-image?title=${encodeURIComponent(post.title)}`;
             ogImage.setAttribute('content', dynamicImageUrl);
         }
 
@@ -177,7 +177,7 @@
         // Update Twitter Card image with dynamic image
         const twitterImage = document.querySelector('meta[name="twitter:image"]');
         if (twitterImage) {
-            const dynamicImageUrl = `https://johnowolabi.com/.netlify/functions/og-image?title=${encodeURIComponent(post.title)}`;
+            const dynamicImageUrl = `https://johnowolabi.com/api/og-image?title=${encodeURIComponent(post.title)}`;
             twitterImage.setAttribute('content', dynamicImageUrl);
         }
 

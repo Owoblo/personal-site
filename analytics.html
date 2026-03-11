@@ -81,6 +81,10 @@
 
         <section>
             <h2>Analytics</h2>
+            <p style="opacity: 0.7; margin-bottom: 16px;">
+                This page shows the legacy snapshot stored in <code>analytics.json</code>. For live traffic after the
+                Cloudflare Pages migration, use Cloudflare Web Analytics.
+            </p>
             <div id="analytics-content" class="loading">Loading analytics...</div>
         </section>
     </div>
@@ -136,7 +140,7 @@
                 const views = data.views || [];
 
                 if (views.length === 0) {
-                    document.getElementById('analytics-content').innerHTML = '<p style="opacity: 0.7;">No views recorded yet.</p>';
+                    document.getElementById('analytics-content').innerHTML = '<p style="opacity: 0.7;">No legacy analytics snapshot is available.</p>';
                     return;
                 }
 
@@ -221,7 +225,7 @@
             } catch (error) {
                 console.error('Error loading analytics:', error);
                 document.getElementById('analytics-content').innerHTML =
-                    '<p style="opacity: 0.7;">No analytics data available yet. Views will appear here once people visit your site.</p>';
+                    '<p style="opacity: 0.7;">No legacy analytics snapshot is available. Use Cloudflare Web Analytics for live traffic data after deployment.</p>';
             }
         }
 
