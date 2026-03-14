@@ -12011,6 +12011,12 @@
       "timestamp": "2026-03-14T06:13:07.839Z",
       "referrer": "https://johnowolabi.com/thoughts",
       "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36"
+    },
+    {
+      "page": "/",
+      "timestamp": "2026-03-14T09:59:45.526Z",
+      "referrer": "direct",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36"
     }
   ]
 }
