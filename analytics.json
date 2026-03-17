@@ -12197,6 +12197,12 @@
       "timestamp": "2026-03-17T00:08:24.924Z",
       "referrer": "direct",
       "userAgent": "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; Googlebot/2.1; +http://www.google.com/bot.html) Chrome/145.0.7632.116 Safari/537.36"
+    },
+    {
+      "page": "/",
+      "timestamp": "2026-03-17T00:08:26.124Z",
+      "referrer": "direct",
+      "userAgent": "Mozilla/5.0 (Linux; Android 6.0.1; Nexus 5X Build/MMB29P) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.7632.116 Mobile Safari/537.36 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)"
     }
   ]
 }
