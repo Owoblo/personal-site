@@ -12383,6 +12383,12 @@
       "timestamp": "2026-03-19T16:54:53.849Z",
       "referrer": "https://l.instagram.com/",
       "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 17_6_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/21G93 Instagram 359.0.0.37.88 (iPhone15,4; iOS 17_6_1; en_US; en; scale=3.00; 1179x2556; 666576740; IABMV/1)"
+    },
+    {
+      "page": "/",
+      "timestamp": "2026-03-19T19:46:33.093Z",
+      "referrer": "https://www.google.com/",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
     }
   ]
 }
