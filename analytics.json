@@ -12455,6 +12455,12 @@
       "timestamp": "2026-03-20T09:16:20.256Z",
       "referrer": "direct",
       "userAgent": "\"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36\""
+    },
+    {
+      "page": "/",
+      "timestamp": "2026-03-20T10:46:52.047Z",
+      "referrer": "direct",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36"
     }
   ]
 }
