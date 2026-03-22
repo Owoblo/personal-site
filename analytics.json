@@ -12557,6 +12557,12 @@
       "timestamp": "2026-03-22T19:36:06.245Z",
       "referrer": "direct",
       "userAgent": "Mozilla/5.0 (Linux; Android 13; SM-A037U) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Mobile Safari/537.36"
+    },
+    {
+      "page": "/",
+      "timestamp": "2026-03-22T20:15:36.068Z",
+      "referrer": "direct",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36"
     }
   ]
 }
