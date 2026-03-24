@@ -12689,6 +12689,12 @@
       "timestamp": "2026-03-24T20:36:59.435Z",
       "referrer": "direct",
       "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 26_3_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/145.0.7632.108 Mobile/15E148 Safari/604.1"
+    },
+    {
+      "page": "/thoughts",
+      "timestamp": "2026-03-24T20:51:24.331Z",
+      "referrer": "https://johnowolabi.com/",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 26_3_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/145.0.7632.108 Mobile/15E148 Safari/604.1"
     }
   ]
 }
