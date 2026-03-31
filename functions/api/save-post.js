@@ -72,9 +72,34 @@ export async function onRequestPost(context) {
     }
 
     const result = await updateResponse.json();
+    const deployHookUrl = context.env.CLOUDFLARE_DEPLOY_HOOK_URL;
+    let deployTriggered = false;
+
+    if (deployHookUrl) {
+      const deployResponse = await fetch(deployHookUrl, {
+        method: 'POST',
+        headers: {
+          'User-Agent': 'Cloudflare-Pages-Function',
+        },
+      });
+
+      if (!deployResponse.ok) {
+        const deployText = await deployResponse.text();
+        throw new Error(`GitHub updated, but deploy trigger failed: ${deployResponse.status} ${deployText}`);
+      }
+
+      deployTriggered = true;
+    }
 
     return new Response(
-      JSON.stringify({ success: true, message: 'Post saved to GitHub successfully!', commit: result.commit }),
+      JSON.stringify({
+        success: true,
+        message: deployTriggered
+          ? 'Post saved to GitHub and deployment triggered successfully!'
+          : 'Post saved to GitHub successfully! Deployment hook not configured.',
+        commit: result.commit,
+        deployTriggered,
+      }),
       { status: 200, headers }
     );
   } catch (error) {

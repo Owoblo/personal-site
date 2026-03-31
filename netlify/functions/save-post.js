@@ -87,13 +87,34 @@ exports.handler = async (event, context) => {
     }
 
     const result = await updateResponse.json();
+    const deployHookUrl = process.env.CLOUDFLARE_DEPLOY_HOOK_URL;
+    let deployTriggered = false;
+
+    if (deployHookUrl) {
+      const deployResponse = await fetch(deployHookUrl, {
+        method: 'POST',
+        headers: {
+          'User-Agent': 'Netlify-Function'
+        }
+      });
+
+      if (!deployResponse.ok) {
+        const deployText = await deployResponse.text();
+        throw new Error(`GitHub updated, but deploy trigger failed: ${deployResponse.status} ${deployText}`);
+      }
+
+      deployTriggered = true;
+    }
 
     return {
       statusCode: 200,
       body: JSON.stringify({
         success: true,
-        message: 'Post saved to GitHub successfully!',
-        commit: result.commit
+        message: deployTriggered
+          ? 'Post saved to GitHub and deployment triggered successfully!'
+          : 'Post saved to GitHub successfully! Deployment hook not configured.',
+        commit: result.commit,
+        deployTriggered
       })
     };
 

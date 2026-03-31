@@ -20,6 +20,7 @@ This repo is ready to deploy as a static Cloudflare Pages project with Pages Fun
 
 - `INSTAGRAM_ACCESS_TOKEN`
 - `INSTAGRAM_BUSINESS_ID`
+- `CLOUDFLARE_DEPLOY_HOOK_URL` to trigger a fresh Pages deploy after saving a post from the admin UI
 
 ## Important notes
 
