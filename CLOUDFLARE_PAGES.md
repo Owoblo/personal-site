@@ -25,6 +25,7 @@ This repo is ready to deploy as a static Cloudflare Pages project with Pages Fun
 ## Important notes
 
 - `_routes.json` restricts Functions execution to `/api/*` so the rest of the site stays static-first.
+- `posts.json` is served through a Pages Function so the live site always reads the latest GitHub-backed post data, even on direct-upload projects.
 - The build script copies only publishable static assets into `dist/`, which prevents `node_modules` from being deployed during Git-based Pages builds.
 - `analytics.js` no longer posts page views into GitHub. Use Cloudflare Web Analytics from the Pages dashboard.
 - `analytics.html` now acts as a legacy snapshot view for `analytics.json`, not live traffic reporting.
