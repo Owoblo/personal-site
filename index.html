@@ -71,13 +71,29 @@
             </div>
         </header>
 
-        <section class="bio">
-            <p>
-                John Owolabi runs <a href="https://starmovers.ca" target="_blank">Saturn Star Movers</a> and realized
-                most moving companies operate like it's 1995. So he's building the software stack the industry should
-                have had decades ago. His work spans real estate data, logistics automation, and tools that turn manual
-                chaos into scalable systems. <a href="#" id="bio-more-toggle" onclick="toggleBio(event)">More</a>
+        <main>
+        <section class="bio" aria-labelledby="bio-heading">
+            <p class="eyebrow" id="bio-heading">Founder · builder · writer</p>
+            <p class="bio-lede">
+                John Owolabi runs <a href="https://starmovers.ca" target="_blank" rel="noopener">Saturn Star Movers</a>
+                and realized most moving companies operate like it's 1995. So he's building the software stack the
+                industry should have had decades ago. His work spans
+                <button class="story-link" type="button" data-story="real-estate" aria-expanded="false">real estate data</button>,
+                <button class="story-link" type="button" data-story="automation" aria-expanded="false">logistics automation</button>,
+                and tools that turn manual chaos into
+                <button class="story-link" type="button" data-story="systems" aria-expanded="false">scalable systems</button>.
+                <button class="text-button" type="button" id="bio-more-toggle" aria-expanded="false" aria-controls="bio-extended">More</button>
             </p>
+
+            <aside class="story-note" id="story-note" aria-live="polite" hidden>
+                <div>
+                    <p class="story-note-label" id="story-note-label"></p>
+                    <p class="story-note-copy" id="story-note-copy"></p>
+                </div>
+                <a class="story-note-action" id="story-note-action" href="#">Explore <span aria-hidden="true">↗</span></a>
+                <button class="story-note-close" id="story-note-close" type="button" aria-label="Close note">×</button>
+            </aside>
+
             <div id="bio-extended" class="bio-extended">
                 <p>
                     He focuses on systems, not noise, and prefers solving real problems over talking about them.
@@ -99,8 +115,16 @@
             </div>
         </section>
 
-        <section>
+        <nav class="thread-index" aria-label="Explore John's work">
+            <span>Explore</span>
+            <a href="https://starmovers.ca" target="_blank" rel="noopener">Company</a>
+            <a href="#building">Products</a>
+            <a href="thoughts.html">Writing</a>
+        </nav>
+
+        <section class="thoughts-preview">
             <h2><a href="thoughts.html">Thoughts</a></h2>
+            <p class="section-intro">I write to understand the systems I'm building—and the things life refuses to make simple.</p>
             <ul id="blog-posts">
                 <!-- Posts will be loaded dynamically -->
                 <li class="loading-state">Loading posts...</li>
@@ -108,7 +132,7 @@
             <p style="margin-top: 15px;"><a href="thoughts.html">View all</a></p>
         </section>
 
-        <section class="projects-section">
+        <section class="projects-section" id="building">
             <h2>Built / Building</h2>
             <ul>
                 <li><a href="https://starmovers.ca" target="_blank">Saturn Star Movers</a> — A moving company in Canada,
@@ -120,15 +144,6 @@
                 <li><a href="https://movsense.com" target="_blank">MovSense</a> — Most moving companies still dispatch
                     with clipboards and spreadsheets. MovSense is the automation software they should have been using
                     all along.</li>
-            </ul>
-        </section>
-
-        <section>
-            <h2>Ideas I Want to See</h2>
-            <ul>
-                <li>Better tools for small business operations</li>
-                <li>Transparent pricing in the moving industry</li>
-                <li>Smarter scheduling systems that actually work</li>
             </ul>
         </section>
 
@@ -145,6 +160,7 @@
                 <button type="submit">Subscribe</button>
             </form>
         </section>
+        </main>
 
         <section>
             <h2>Links</h2>
@@ -164,19 +180,80 @@
 
     <script>
         // Expandable bio functionality
-        function toggleBio(event) {
-            event.preventDefault();
+        function toggleBio() {
             const extended = document.getElementById('bio-extended');
             const toggle = document.getElementById('bio-more-toggle');
 
             if (extended.classList.contains('expanded')) {
                 extended.classList.remove('expanded');
                 toggle.textContent = 'More';
+                toggle.setAttribute('aria-expanded', 'false');
             } else {
                 extended.classList.add('expanded');
                 toggle.textContent = 'Less';
+                toggle.setAttribute('aria-expanded', 'true');
             }
         }
+
+        document.getElementById('bio-more-toggle').addEventListener('click', toggleBio);
+
+        // Contextual notes turn the biography into an index without interrupting the reading flow.
+        (function () {
+            const stories = {
+                'real-estate': {
+                    label: 'Real estate data',
+                    copy: 'Sold2Move tracks listings and sales so moving companies can find demand before it becomes obvious.',
+                    href: 'https://sold2move.com',
+                    action: 'Visit Sold2Move'
+                },
+                automation: {
+                    label: 'Logistics automation',
+                    copy: 'MovSense is the operating layer John is building for dispatch, scheduling, and the work that spreadsheets were never meant to run.',
+                    href: 'https://movsense.com',
+                    action: 'Visit MovSense'
+                },
+                systems: {
+                    label: 'Scalable systems',
+                    copy: 'A note on the designed rules, defaults, and incentives hiding underneath what looks accidental.',
+                    href: 'post.html?slug=unlocking-the-secrets-of-engineered-experiences',
+                    action: 'Read Everything is Engineered'
+                }
+            };
+            const note = document.getElementById('story-note');
+            const label = document.getElementById('story-note-label');
+            const copy = document.getElementById('story-note-copy');
+            const action = document.getElementById('story-note-action');
+            const triggers = Array.from(document.querySelectorAll('.story-link'));
+
+            function closeNote() {
+                note.hidden = true;
+                triggers.forEach((trigger) => trigger.setAttribute('aria-expanded', 'false'));
+            }
+
+            triggers.forEach((trigger) => {
+                trigger.addEventListener('click', () => {
+                    const story = stories[trigger.dataset.story];
+                    const wasOpen = trigger.getAttribute('aria-expanded') === 'true';
+                    closeNote();
+                    if (wasOpen) return;
+                    label.textContent = story.label;
+                    copy.textContent = story.copy;
+                    action.href = story.href;
+                    action.textContent = story.action + ' ↗';
+                    if (story.href.startsWith('http')) {
+                        action.target = '_blank';
+                        action.rel = 'noopener';
+                    } else {
+                        action.removeAttribute('target');
+                        action.removeAttribute('rel');
+                    }
+                    note.hidden = false;
+                    trigger.setAttribute('aria-expanded', 'true');
+                });
+            });
+
+            document.getElementById('story-note-close').addEventListener('click', closeNote);
+        })();
 
         // Dark/Light mode toggle functionality
         (function () {
