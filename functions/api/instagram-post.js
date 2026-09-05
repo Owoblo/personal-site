@@ -1,12 +1,16 @@
 const GRAPH_API_URL = 'https://graph.facebook.com/v18.0';
 
+import { requireAdmin } from '../_lib/auth.js';
+
 export async function onRequestPost(context) {
+  const unauthorized = await requireAdmin(context);
+  if (unauthorized) return unauthorized;
   const headers = { 'Content-Type': 'application/json' };
 
   try {
     const { images, caption } = await context.request.json();
 
-    if (!images || images.length === 0) {
+    if (!Array.isArray(images) || images.length < 2 || images.length > 10 || images.some((url) => typeof url !== 'string' || !/^https:\/\//.test(url))) {
       return new Response(JSON.stringify({ error: 'No images provided' }), { status: 400, headers });
     }
 

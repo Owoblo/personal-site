@@ -1,10 +1,14 @@
+import { requireAdmin } from '../_lib/auth.js';
+
 export async function onRequestPost(context) {
+  const unauthorized = await requireAdmin(context);
+  if (unauthorized) return unauthorized;
   const headers = { 'Content-Type': 'application/json' };
 
   try {
     const { text } = await context.request.json();
 
-    if (!text) {
+    if (!text || typeof text !== 'string' || text.length > 100_000) {
       return new Response(JSON.stringify({ error: 'No text provided' }), { status: 400, headers });
     }
 

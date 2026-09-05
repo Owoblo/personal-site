@@ -500,9 +500,40 @@
             background: #dbeafe;
             color: #1a1a1a;
         }
+
+        .auth-gate { position: fixed; inset: 0; z-index: 5000; display: grid; place-items: center; padding: 20px; background: #f7f7f5; }
+        .auth-gate[hidden] { display: none; }
+        .auth-card { width: min(100%, 420px); padding: 34px; border: 1px solid #e5e5e5; border-radius: 16px; background: white; box-shadow: 0 20px 60px rgba(0,0,0,.08); }
+        .auth-card h1 { margin: 0 0 8px; font-size: 1.7rem; }
+        .auth-card p { margin: 0 0 24px; color: #666; font-size: .95rem; }
+        .auth-error { min-height: 20px; margin-top: 12px; color: #b91c1c; font-size: .88rem; }
+        .save-state { min-height: 20px; margin: -6px 0 14px; color: #6b6b6b; font-size: .82rem; text-align: right; }
+
+        @media (max-width: 680px) {
+            .create-container { padding: 20px 12px; }
+            .header { align-items: flex-start; margin-bottom: 24px; }
+            .section { padding: 20px 16px; }
+            .tabs { overflow-x: auto; }
+            .tab { flex: 0 0 auto; padding: 12px 16px; }
+            .editor-toolbar { position: static; }
+            .word-count { width: 100%; margin-left: 0; }
+            .actions .btn { flex: 1; text-align: center; }
+        }
     </style>
 </head>
 <body>
+    <div class="auth-gate" id="auth-gate">
+        <form class="auth-card" id="auth-form">
+            <h1>Writer's room</h1>
+            <p>Enter your admin password to open the publishing canvas.</p>
+            <div class="form-group">
+                <label for="admin-password">Password</label>
+                <input id="admin-password" type="password" autocomplete="current-password" required autofocus>
+            </div>
+            <button class="btn btn-primary" id="auth-submit" type="submit">Unlock</button>
+            <div class="auth-error" id="auth-error" role="alert" aria-live="polite"></div>
+        </form>
+    </div>
     <div class="create-container">
         <div class="header">
             <h1>Blog Admin</h1>
@@ -513,8 +544,8 @@
 
         <!-- Tabs -->
         <div class="tabs">
-            <button class="tab active" onclick="switchTab('create')">Create New Post</button>
-            <button class="tab" onclick="switchTab('manage')">Manage Posts</button>
+            <button class="tab active" onclick="switchTab('create', event)">Create New Post</button>
+            <button class="tab" onclick="switchTab('manage', event)">Manage Posts</button>
         </div>
 
         <!-- Create Tab Content -->
@@ -614,6 +645,7 @@
                 <textarea id="post-content" required style="min-height: 250px; font-family: inherit; font-size: 1em; line-height: 1.6;"></textarea>
                 <small id="content-view-hint">Plain text view - HTML tags hidden for easier editing.</small>
             </div>
+            <div class="save-state" id="save-state" role="status" aria-live="polite"></div>
 
             <div class="actions">
                 <button class="btn" onclick="showPreview()">👁️ Preview</button>
@@ -695,10 +727,10 @@
         let cursorPosition = 0; // Track cursor position for link insertion
 
         // Switch tabs
-        function switchTab(tabName) {
+        function switchTab(tabName, clickEvent) {
             // Update tab buttons
             document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
-            event.target.classList.add('active');
+            if (clickEvent) clickEvent.currentTarget.classList.add('active');
 
             // Update tab content
             document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
@@ -957,6 +989,10 @@
 
             if (!linkText || !linkUrl) {
                 alert('Please enter both link text and URL.');
+                return;
+            }
+            if (!/^(https?:\/\/|mailto:)/i.test(linkUrl)) {
+                alert('Use a complete http(s) or mailto URL.');
                 return;
             }
 
@@ -1504,6 +1540,7 @@
                 editorView = 'text'; // Set to text view
                 document.getElementById('post-date').value = new Date().toISOString().split('T')[0];
                 document.getElementById('post-status').value = 'draft'; // Default to draft for new posts
+                updatePublishButtonLabel();
 
                 // Generate new ID
                 currentPostId = posts.length > 0 ? Math.max(...posts.map(p => p.id)) + 1 : 1;
@@ -1556,6 +1593,7 @@
             } else {
                 content = document.getElementById('post-content').value;
             }
+            content = sanitizeContent(content);
 
             if (!title || !content) {
                 alert('Please fill in title and content first.');
@@ -1613,7 +1651,7 @@
             document.getElementById('review-section').classList.remove('hidden');
 
             // Update button text
-            document.getElementById('publish-btn').textContent = 'Update Post';
+            updatePublishButtonLabel();
 
             // Switch to create tab
             document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
@@ -1633,14 +1671,14 @@
             try {
                 showAlert('Deleting post...', 'info');
 
-                // Remove post from array
-                posts = posts.filter(p => p.id !== id);
+                // Keep local state unchanged until persistence succeeds.
+                const nextPosts = posts.filter(p => p.id !== id);
 
                 // Save to GitHub
                 const response = await fetch('/api/save-post', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ posts })
+                    body: JSON.stringify({ posts: nextPosts })
                 });
 
                 if (!response.ok) {
@@ -1648,6 +1686,7 @@
                     throw new Error(error.error || 'Failed to delete');
                 }
 
+                posts = nextPosts;
                 showAlert('✓ Post deleted! Your site will update in ~30 seconds.', 'success');
                 renderPostsList();
 
@@ -1672,6 +1711,7 @@
             } else {
                 content = document.getElementById('post-content').value.trim();
             }
+            content = sanitizeContent(content);
 
             const status = document.getElementById('post-status').value;
 
@@ -1680,18 +1720,30 @@
                 return;
             }
 
+            if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug)) {
+                showAlert('Use a lowercase URL slug with words separated by hyphens.', 'warning');
+                document.getElementById('post-slug').focus();
+                return;
+            }
+            if (posts.some(post => post.slug === slug && post.id !== currentPostId)) {
+                showAlert('That URL slug is already used by another post.', 'warning');
+                document.getElementById('post-slug').focus();
+                return;
+            }
+
             const publishBtn = document.getElementById('publish-btn');
             publishBtn.disabled = true;
-            publishBtn.textContent = isEditing ? '⏳ Updating...' : '⏳ Publishing...';
+                publishBtn.textContent = isEditing ? '⏳ Updating...' : (status === 'published' ? '⏳ Publishing...' : '⏳ Saving...');
 
             try {
                 showAlert(isEditing ? 'Updating post...' : 'Publishing post to GitHub...', 'info');
 
+                let nextPosts = [...posts];
                 if (isEditing) {
                     // Update existing post
-                    const postIndex = posts.findIndex(p => p.id === currentPostId);
+                    const postIndex = nextPosts.findIndex(p => p.id === currentPostId);
                     if (postIndex >= 0) {
-                        posts[postIndex] = {
+                        nextPosts[postIndex] = {
                             id: currentPostId,
                             title,
                             slug,
@@ -1700,10 +1752,10 @@
                             content,
                             status
                         };
-                    }
+                    } else throw new Error('The post being edited no longer exists. Refresh and try again.');
                 } else {
                     // Add new post
-                    posts.push({
+                    nextPosts.push({
                         id: currentPostId,
                         title,
                         slug,
@@ -1718,7 +1770,7 @@
                 const response = await fetch('/api/save-post', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ posts })
+                    body: JSON.stringify({ posts: nextPosts })
                 });
 
                 if (!response.ok) {
@@ -1726,7 +1778,14 @@
                     throw new Error(error.error || 'Failed to save');
                 }
 
-                showAlert(isEditing ? '✓ Post updated! Your site will update in ~30 seconds.' : '✓ Post published! Your site will update in ~30 seconds. Check it on the Thoughts page.', 'success');
+                posts = nextPosts;
+                clearWorkingDraft();
+                const successMessage = isEditing
+                    ? '✓ Post updated successfully.'
+                    : status === 'published'
+                        ? '✓ Post published! Your site will update shortly.'
+                        : '✓ Draft saved successfully.';
+                showAlert(successMessage, 'success');
 
                 // Reset form and go back to create tab
                 setTimeout(() => {
@@ -1738,7 +1797,7 @@
                     currentPostId = null;
                     editorView = 'text';
                     htmlContent = '';
-                    document.getElementById('publish-btn').textContent = 'Publish Post';
+                    updatePublishButtonLabel();
 
                     // Reset view toggle buttons
                     const buttons = document.querySelectorAll('.view-toggle button');
@@ -1755,7 +1814,7 @@
                 console.error('Error:', error);
                 showAlert('✗ Failed to save: ' + error.message, 'warning');
                 publishBtn.disabled = false;
-                publishBtn.textContent = isEditing ? 'Update Post' : 'Publish Post';
+                updatePublishButtonLabel();
             }
         }
 
@@ -1763,6 +1822,7 @@
         function cancel() {
             if (confirm('Are you sure? Your changes will be lost.')) {
                 document.getElementById('raw-text').value = '';
+                clearWorkingDraft();
                 document.getElementById('paste-section').classList.remove('hidden');
                 document.getElementById('review-section').classList.add('hidden');
                 document.getElementById('preview-section').classList.add('hidden');
@@ -1801,8 +1861,151 @@
             return div.innerHTML;
         }
 
-        // Initialize
-        loadPosts();
+        function sanitizeContent(html) {
+            const allowedTags = new Set(['P', 'BR', 'H2', 'H3', 'STRONG', 'B', 'EM', 'I', 'S', 'DEL', 'BLOCKQUOTE', 'UL', 'OL', 'LI', 'A', 'IMG']);
+            const documentFragment = new DOMParser().parseFromString(`<div>${html}</div>`, 'text/html').body.firstElementChild;
+            Array.from(documentFragment.querySelectorAll('*')).forEach((element) => {
+                if (!allowedTags.has(element.tagName)) {
+                    element.replaceWith(...element.childNodes);
+                    return;
+                }
+                const href = element.getAttribute('href') || '';
+                const src = element.getAttribute('src') || '';
+                const alt = element.getAttribute('alt') || '';
+                Array.from(element.attributes).forEach((attribute) => element.removeAttribute(attribute.name));
+                if (element.tagName === 'A') {
+                    if (/^(https?:\/\/|mailto:|\/)/i.test(href)) element.setAttribute('href', href);
+                }
+                if (element.tagName === 'IMG') {
+                    if (/^(https:\/\/|\/images\/)/i.test(src)) {
+                        element.setAttribute('src', src);
+                        element.setAttribute('alt', alt);
+                        element.setAttribute('loading', 'lazy');
+                    } else element.remove();
+                }
+            });
+            return documentFragment.innerHTML;
+        }
+
+        function updatePublishButtonLabel() {
+            const status = document.getElementById('post-status').value;
+            const button = document.getElementById('publish-btn');
+            if (isEditing) button.textContent = status === 'draft' ? 'Update Draft' : 'Update Post';
+            else button.textContent = status === 'published' ? 'Publish Post' : status === 'archived' ? 'Save Archived' : 'Save Draft';
+        }
+
+        document.getElementById('post-status').addEventListener('change', updatePublishButtonLabel);
+
+        const WORKING_DRAFT_KEY = 'john-writing-canvas-draft-v1';
+        let draftTimer;
+
+        function saveWorkingDraft() {
+            const draft = {
+                savedAt: Date.now(),
+                rawText: document.getElementById('raw-text').value,
+                title: document.getElementById('post-title').value,
+                slug: document.getElementById('post-slug').value,
+                date: document.getElementById('post-date').value,
+                status: document.getElementById('post-status').value,
+                excerpt: document.getElementById('post-excerpt').value,
+                content: document.getElementById('post-content').value,
+                editorView,
+                currentPostId,
+                isEditing,
+                reviewing: !document.getElementById('review-section').classList.contains('hidden')
+            };
+            if (!draft.rawText && !draft.title && !draft.content) return;
+            localStorage.setItem(WORKING_DRAFT_KEY, JSON.stringify(draft));
+            const state = document.getElementById('save-state');
+            if (state) state.textContent = `Recovered locally · saved ${new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}`;
+        }
+
+        function queueWorkingDraft() {
+            clearTimeout(draftTimer);
+            draftTimer = setTimeout(saveWorkingDraft, 600);
+        }
+
+        function clearWorkingDraft() {
+            clearTimeout(draftTimer);
+            localStorage.removeItem(WORKING_DRAFT_KEY);
+            const state = document.getElementById('save-state');
+            if (state) state.textContent = '';
+        }
+
+        function restoreWorkingDraft() {
+            let draft;
+            try { draft = JSON.parse(localStorage.getItem(WORKING_DRAFT_KEY)); } catch (_) { return; }
+            if (!draft || Date.now() - draft.savedAt > 7 * 24 * 60 * 60 * 1000) return;
+            if (!confirm('A locally saved writing draft was found. Restore it?')) return;
+            document.getElementById('raw-text').value = draft.rawText || '';
+            document.getElementById('post-title').value = draft.title || '';
+            document.getElementById('post-slug').value = draft.slug || '';
+            document.getElementById('post-date').value = draft.date || '';
+            document.getElementById('post-status').value = draft.status || 'draft';
+            document.getElementById('post-excerpt').value = draft.excerpt || '';
+            document.getElementById('post-content').value = draft.content || '';
+            currentPostId = draft.currentPostId;
+            isEditing = Boolean(draft.isEditing);
+            editorView = 'text';
+            if (draft.reviewing) {
+                document.getElementById('paste-section').classList.add('hidden');
+                document.getElementById('review-section').classList.remove('hidden');
+                updatePublishButtonLabel();
+                if (draft.editorView === 'html') switchEditorView('html');
+            }
+            updateWordCount();
+            document.getElementById('save-state').textContent = 'Recovered local draft';
+        }
+
+        document.querySelectorAll('#create-tab input, #create-tab textarea, #create-tab select').forEach((field) => {
+            field.addEventListener('input', queueWorkingDraft);
+            field.addEventListener('change', queueWorkingDraft);
+        });
+
+        // Authenticate before loading any administrative data.
+        async function initializeAdmin() {
+            try {
+                const response = await fetch('/api/verify-password', { credentials: 'same-origin' });
+                const data = await response.json();
+                if (data.authenticated) {
+                    document.getElementById('auth-gate').hidden = true;
+                    await loadPosts();
+                    restoreWorkingDraft();
+                }
+            } catch (error) {
+                document.getElementById('auth-error').textContent = 'Could not check the session. Try again.';
+            }
+        }
+
+        document.getElementById('auth-form').addEventListener('submit', async (submitEvent) => {
+            submitEvent.preventDefault();
+            const button = document.getElementById('auth-submit');
+            const error = document.getElementById('auth-error');
+            button.disabled = true;
+            button.textContent = 'Checking…';
+            error.textContent = '';
+            try {
+                const response = await fetch('/api/verify-password', {
+                    method: 'POST',
+                    credentials: 'same-origin',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ password: document.getElementById('admin-password').value })
+                });
+                const data = await response.json();
+                if (!response.ok || !data.valid) throw new Error(data.error || 'Invalid password');
+                document.getElementById('auth-gate').hidden = true;
+                document.getElementById('admin-password').value = '';
+                await loadPosts();
+                restoreWorkingDraft();
+            } catch (authError) {
+                error.textContent = authError.message;
+            } finally {
+                button.disabled = false;
+                button.textContent = 'Unlock';
+            }
+        });
+
+        initializeAdmin();
 
         // Add event listener for word count updates
         document.getElementById('post-content').addEventListener('input', updateWordCount);

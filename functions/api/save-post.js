@@ -1,14 +1,30 @@
+import { requireAdmin } from '../_lib/auth.js';
+
 export async function onRequestPost(context) {
+  const unauthorized = await requireAdmin(context);
+  if (unauthorized) return unauthorized;
   const headers = { 'Content-Type': 'application/json' };
 
   try {
     const { posts } = await context.request.json();
 
-    if (!posts || !Array.isArray(posts)) {
+    if (!posts || !Array.isArray(posts) || posts.length > 1000) {
       return new Response(JSON.stringify({ error: 'Invalid posts data' }), {
         status: 400,
         headers,
       });
+    }
+
+    const slugs = new Set();
+    for (const post of posts) {
+      if (!post || !Number.isSafeInteger(post.id) || typeof post.title !== 'string' ||
+          typeof post.slug !== 'string' || !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(post.slug) ||
+          typeof post.date !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(post.date) ||
+          typeof post.excerpt !== 'string' || typeof post.content !== 'string' ||
+          !['published', 'draft', 'archived'].includes(post.status || 'published') || slugs.has(post.slug)) {
+        return new Response(JSON.stringify({ error: 'Invalid or duplicate post data' }), { status: 400, headers });
+      }
+      slugs.add(post.slug);
     }
 
     const githubToken = context.env.GITHUB_TOKEN;

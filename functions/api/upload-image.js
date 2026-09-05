@@ -1,4 +1,8 @@
+import { requireAdmin } from '../_lib/auth.js';
+
 export async function onRequestPost(context) {
+  const unauthorized = await requireAdmin(context);
+  if (unauthorized) return unauthorized;
   const headers = { 'Content-Type': 'application/json' };
 
   try {
@@ -6,6 +10,11 @@ export async function onRequestPost(context) {
 
     if (!filename || !content) {
       return new Response(JSON.stringify({ error: 'Missing filename or content' }), { status: 400, headers });
+    }
+
+    const allowedTypes = new Set(['image/jpeg', 'image/png', 'image/webp', 'image/gif']);
+    if (!allowedTypes.has(contentType) || content.length > 14_000_000) {
+      return new Response(JSON.stringify({ error: 'Use a JPG, PNG, WebP, or GIF image under 10 MB' }), { status: 400, headers });
     }
 
     const githubToken = context.env.GITHUB_TOKEN;
@@ -24,7 +33,8 @@ export async function onRequestPost(context) {
     const branch = 'main';
 
     const timestamp = Date.now();
-    const ext = filename.split('.').pop();
+    const extensions = { 'image/jpeg': 'jpg', 'image/png': 'png', 'image/webp': 'webp', 'image/gif': 'gif' };
+    const ext = extensions[contentType];
     const safeName = filename.replace(/[^a-zA-Z0-9.-]/g, '-').replace(/\.[^.]+$/, '');
     const uniqueFilename = `${safeName}-${timestamp}.${ext}`;
     const filePath = `images/${uniqueFilename}`;

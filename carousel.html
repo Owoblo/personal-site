@@ -440,13 +440,28 @@
 
         /* Responsive */
         @media (max-width: 900px) {
+            .header { padding: 12px 14px; align-items: flex-start; gap: 12px; }
+            .header-actions { flex-wrap: wrap; justify-content: flex-end; }
             .main-container {
                 flex-direction: column;
+                height: auto;
             }
             .editor-panel, .preview-panel {
                 width: 100%;
-                height: 50vh;
+                height: auto;
             }
+            .editor-panel { max-height: 58vh; }
+            .preview-panel { min-height: 70vh; padding: 20px 12px; }
+            .preview-header { flex-direction: column; align-items: stretch; gap: 12px; }
+            .preview-nav, .download-buttons { flex-wrap: wrap; }
+            .preview-frame { transform: scale(.72); transform-origin: top center; margin-bottom: -170px; }
+        }
+
+        @media (max-width: 420px) {
+            .header h1 { font-size: 1.05em; }
+            .theme-toggle label { display: none; }
+            .toolbar-btn { padding: 7px 9px; font-size: 12px; }
+            .preview-frame { transform: scale(.63); margin-bottom: -230px; }
         }
     </style>
 </head>
@@ -676,7 +691,7 @@
                             placeholder="Enter slide content..."
                             oninput="updateSlideContent(${index}, this.value)"
                             onfocus="selectSlide(${index})"
-                        >${slide.text}</textarea>
+                        >${escapeHtml(slide.text)}</textarea>
                     </div>
                 `;
 
@@ -885,6 +900,7 @@
 
         // Add line breaks for readability - break at each sentence for airy feel
         function addLineBreaks(text) {
+            text = escapeHtml(text);
             // Split by sentences
             const sentences = text.match(/[^.!?]+[.!?]+/g) || [text];
             let result = [];
@@ -911,6 +927,12 @@
             }
 
             return result.join('<br><br>');
+        }
+
+        function escapeHtml(text) {
+            const element = document.createElement('div');
+            element.textContent = text;
+            return element.innerHTML;
         }
 
         // Download current slide as PNG
