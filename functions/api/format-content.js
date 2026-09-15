@@ -33,16 +33,15 @@ export async function onRequestPost(context) {
 
 1. **Title Options**: Generate 4 different compelling title variations (5-10 words each) that capture different angles of the article
 2. **Excerpt**: A 1-2 sentence summary (under 200 characters) that entices readers
-3. **Formatted Content**: The article formatted with beautiful HTML markup:
-   - Add <h2> tags for main section headings (analyze content to identify natural sections)
-   - Add <h3> tags for subsections when appropriate
-   - Use <strong> or <b> for emphasis on important words/phrases
-   - Use <em> or <i> for subtle emphasis or foreign words
-   - Use <blockquote><p>...</p></blockquote> for impactful quotes, key statements, or powerful conclusions
-   - Wrap paragraphs in <p> tags
-   - Maintain the author's voice and tone - don't change the writing style
-   - Don't add any content that wasn't in the original text
-   - Preserve the natural flow and line breaks
+3. **Formatted Content**: Return a publication-ready HTML article, not a plain-text transcription.
+   - Wrap every paragraph in <p> tags.
+   - Find the genuine changes of idea and introduce them with <h2> tags. Use <h3> only for a real sub-point. Do not add headings merely to decorate the page.
+   - Make the structure visually intentional: for an article longer than 500 words, use 2–5 <h2> headings where the source has genuine thematic shifts.
+   - Turn 1–3 of the strongest, self-contained sentences from the source into pull quotes using <blockquote><p>exact sentence from the source</p></blockquote>. A pull quote must be verbatim and must not replace its original paragraph.
+   - Use <strong> for decisive phrases sparingly (normally no more than once every two paragraphs). Use <em> only where the author's voice benefits from it.
+   - Use <ul>/<ol>/<li> when the source is already a list or contains a clear sequence; never invent list items.
+   - Preserve the author's words, meaning, paragraph order, and tone. You may add HTML tags only; do not rewrite, add facts, or manufacture quotations.
+   - Do not return Markdown, CSS, classes, inline styles, or HTML outside the article body.
 
 Return a JSON object with this EXACT structure:
 {

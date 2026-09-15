@@ -612,8 +612,8 @@
                 <label for="post-content">Content *</label>
                 <div class="editor-toolbar">
                     <div class="view-toggle">
-                        <button type="button" class="active" onclick="switchEditorView('text')">Text</button>
-                        <button type="button" onclick="switchEditorView('html')">HTML</button>
+                        <button type="button" onclick="switchEditorView('text')">Plain text</button>
+                        <button type="button" class="active" onclick="switchEditorView('html')">Formatted HTML</button>
                     </div>
                     <div class="toolbar-divider"></div>
                     <button type="button" class="btn btn-icon" onclick="formatText('bold')" title="Bold"><strong>B</strong></button>
@@ -643,7 +643,7 @@
                     <span class="word-count">0 words</span>
                 </div>
                 <textarea id="post-content" required style="min-height: 250px; font-family: inherit; font-size: 1em; line-height: 1.6;"></textarea>
-                <small id="content-view-hint">Plain text view - HTML tags hidden for easier editing.</small>
+                <small id="content-view-hint">Formatted HTML view - AI formatting is preserved when you publish.</small>
             </div>
             <div class="save-state" id="save-state" role="status" aria-live="polite"></div>
 
@@ -722,7 +722,7 @@
         let posts = [];
         let currentPostId = null;
         let isEditing = false;
-        let editorView = 'text'; // 'text' or 'html'
+        let editorView = 'html'; // 'text' or 'html'
         let htmlContent = ''; // Store HTML version when in text view
         let cursorPosition = 0; // Track cursor position for link insertion
 
@@ -1535,9 +1535,9 @@
 
                 // Auto-fill other fields
                 document.getElementById('post-excerpt').value = data.excerpt;
-                htmlContent = data.content; // Store HTML version
-                document.getElementById('post-content').value = htmlToText(data.content); // Show text view by default
-                editorView = 'text'; // Set to text view
+                htmlContent = data.content;
+                document.getElementById('post-content').value = data.content;
+                editorView = 'html';
                 document.getElementById('post-date').value = new Date().toISOString().split('T')[0];
                 document.getElementById('post-status').value = 'draft'; // Default to draft for new posts
                 updatePublishButtonLabel();
@@ -1545,10 +1545,14 @@
                 // Generate new ID
                 currentPostId = posts.length > 0 ? Math.max(...posts.map(p => p.id)) + 1 : 1;
 
-                // Reset view toggle buttons to text view
+                // Keep the AI's publication-ready HTML intact by default.
                 const buttons = document.querySelectorAll('.view-toggle button');
-                buttons[0].classList.add('active');
-                buttons[1].classList.remove('active');
+                buttons[0].classList.remove('active');
+                buttons[1].classList.add('active');
+                document.getElementById('post-content').style.fontFamily = 'monospace';
+                document.getElementById('post-content').style.fontSize = '0.9em';
+                document.getElementById('post-content').style.lineHeight = '1.4';
+                document.getElementById('content-view-hint').textContent = 'Formatted HTML view - AI formatting is preserved when you publish.';
 
                 // Show review section
                 document.getElementById('paste-section').classList.add('hidden');
@@ -1636,15 +1640,19 @@
             document.getElementById('post-slug').value = post.slug;
             document.getElementById('post-date').value = post.date;
             document.getElementById('post-excerpt').value = post.excerpt;
-            htmlContent = post.content; // Store HTML version
-            document.getElementById('post-content').value = htmlToText(post.content); // Show text view by default
-            editorView = 'text'; // Set to text view
+            htmlContent = post.content;
+            document.getElementById('post-content').value = post.content;
+            editorView = 'html';
             document.getElementById('post-status').value = post.status || 'published'; // Default to published for legacy posts
 
-            // Reset view toggle buttons to text view
+            // Existing HTML must remain intact unless the editor explicitly switches views.
             const buttons = document.querySelectorAll('.view-toggle button');
-            buttons[0].classList.add('active');
-            buttons[1].classList.remove('active');
+            buttons[0].classList.remove('active');
+            buttons[1].classList.add('active');
+            document.getElementById('post-content').style.fontFamily = 'monospace';
+            document.getElementById('post-content').style.fontSize = '0.9em';
+            document.getElementById('post-content').style.lineHeight = '1.4';
+            document.getElementById('content-view-hint').textContent = 'Formatted HTML view - AI formatting is preserved when you publish.';
 
             // Hide paste section, show review section
             document.getElementById('paste-section').classList.add('hidden');
