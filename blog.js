@@ -232,7 +232,7 @@
                 ${archivedNotice}
 
                 <div class="post-body" style="margin-top: 30px;">
-                    ${post.content}
+                    ${formatLegacyPostContent(post)}
                 </div>
 
                 <!-- Email Subscription -->
@@ -255,6 +255,54 @@
                 ${recentPostsHtml}
             </article>
         `;
+    }
+
+    // One-time presentation backfill for the article published before the
+    // formatter began preserving its HTML. New posts arrive pre-formatted.
+    function formatLegacyPostContent(post) {
+        if (post.slug !== 'understanding-the-complexity-of-consequences') return post.content;
+
+        return post.content
+            .replace(
+                '<p>Because almost nothing important happens because of one thing.</p>',
+                '<h2>Nothing Happens for One Reason</h2><p>Because almost nothing important happens because of one thing.</p>'
+            )
+            .replace(
+                '<p>The explosion gets the headline.</p>\n\n<p>The leaking gas line does not.</p>',
+                '<blockquote><p>The explosion gets the headline.</p><p>The leaking gas line does not.</p></blockquote>'
+            )
+            .replace(
+                '<p>Your personal life works the same way.</p>',
+                '<h2>The Story We See</h2><p>Your personal life works the same way.</p>'
+            )
+            .replace(
+                '<p>Everybody saw the explosion.</p>\n\n<p>Nobody saw the six months that loaded the gun.</p>',
+                '<blockquote><p>Everybody saw the explosion.</p><p>Nobody saw the six months that loaded the gun.</p></blockquote>'
+            )
+            .replace(
+                '<p>The same thing happens in relationships.</p>',
+                '<h2>The Pattern Repeats</h2><p>The same thing happens in relationships.</p>'
+            )
+            .replace(
+                '<p>The final argument becomes the official story.</p>',
+                '<p><strong>The final argument becomes the official story.</strong></p>'
+            )
+            .replace(
+                '<p>Good things rarely happen all at once either.</p>',
+                '<h2>The Same Is True of Good Things</h2><p>Good things rarely happen all at once either.</p>'
+            )
+            .replace(
+                '<p>But luck still needs somewhere to land.</p>',
+                '<blockquote><p>But luck still needs somewhere to land.</p></blockquote>'
+            )
+            .replace(
+                '<p>That is what I find so fascinating. We are obsessed with events, while life is mostly governed by accumulation.</p>',
+                '<h2>Life Is Governed by Accumulation</h2><p>That is what I find so fascinating. We are obsessed with events, while life is mostly governed by accumulation.</p>'
+            )
+            .replace(
+                '<p>This is not one of those pieces where I pretend to have solved life and give you seven habits to transform yourself before Monday.</p>',
+                '<h2>What This Is Not</h2><p>This is not one of those pieces where I pretend to have solved life and give you seven habits to transform yourself before Monday.</p>'
+            );
     }
 
     // Utility function to escape HTML
