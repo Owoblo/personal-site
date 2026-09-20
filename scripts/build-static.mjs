@@ -26,6 +26,7 @@ const topLevelFiles = [
   "posts.json",
   "robots.txt",
   "styles.css",
+  "toc.js",
 ];
 
 const topLevelDirectories = ["fonts", "images", "posts"];
@@ -181,7 +182,7 @@ function renderPostPage(post, allPosts) {
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="/styles.css?v=20260920-1">
 
     <link rel="canonical" href="${escapeHtml(canonical)}">
 
@@ -240,24 +241,13 @@ function renderPostPage(post, allPosts) {
             </article>
         </div>
 
-        <hr />
-
-        <section>
-            <h2>Subscribe</h2>
-            <p>
-                Get new posts in your inbox. No spam, ever.
-            </p>
-            <form action="https://buttondown.email/api/emails/embed-subscribe/johnowolabi" method="post"
-                target="popupwindow" onsubmit="window.open('https://buttondown.email/johnowolabi', 'popupwindow')"
-                class="newsletter-form-group">
-                <input type="email" name="email" placeholder="Your email address" required aria-label="Email address" />
-                <button type="submit">Subscribe</button>
-            </form>
-        </section>
     </div>
 
     <!-- Blog Posts Loader -->
     <script src="/blog.js?v=2"></script>
+
+    <!-- Table of contents sidebar (article pages, wide screens) -->
+    <script src="/toc.js?v=20260920-1"></script>
 
     <!-- Analytics Tracker -->
     <script src="/analytics.js"></script>

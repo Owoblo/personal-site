@@ -1280,3 +1280,80 @@ dialog.modal::backdrop {
         transition-duration: .01ms !important;
     }
 }
+
+/* ------------------------------------------------------------------
+   Table of contents sidebar (article pages, wide screens only)
+   ------------------------------------------------------------------ */
+.post-toc {
+    display: none;
+}
+
+@media (min-width: 1100px) {
+    /* Make room for the sidebar; the header spans the full width above it. */
+    body.has-toc .container {
+        max-width: 1040px;
+    }
+
+    .post-layout {
+        display: grid;
+        grid-template-columns: 200px minmax(0, 680px);
+        gap: 72px;
+        justify-content: center;
+        align-items: start;
+    }
+
+    .post-toc {
+        display: block;
+        position: sticky;
+        top: 48px;
+        max-height: calc(100vh - 96px);
+        overflow-y: auto;
+        padding-top: 6px;
+    }
+
+    .post-toc-title {
+        margin: 0 0 14px;
+        font-size: 0.78em;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        opacity: 0.55;
+    }
+
+    .post-toc ol {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .post-toc li {
+        margin: 0 0 4px;
+        font-size: 0.92em;
+        line-height: 1.5;
+    }
+
+    .post-toc a {
+        display: block;
+        padding: 3px 0 3px 14px;
+        border-left: 2px solid transparent;
+        color: var(--colors--link);
+        opacity: 0.55;
+        text-decoration: none;
+        transition: opacity 0.15s ease, border-color 0.15s ease;
+    }
+
+    .post-toc a:hover {
+        opacity: 0.9;
+    }
+
+    .post-toc a.is-active {
+        opacity: 1;
+        color: var(--colors--text);
+        border-left-color: var(--colors--text);
+        font-weight: 600;
+    }
+
+    /* Keep anchor jumps from hiding the heading at the very top. */
+    .post-body h2 {
+        scroll-margin-top: 24px;
+    }
+}
