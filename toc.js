@@ -72,11 +72,11 @@
 
         var list = document.createElement('ol');
         var linkById = {};
-        headings.forEach(function (h) {
+        headings.forEach(function (h, i) {
             var li = document.createElement('li');
             var a = document.createElement('a');
             a.href = '#' + h.id;
-            a.textContent = cleanLabel(h.textContent);
+            a.textContent = (i + 1) + '. ' + cleanLabel(h.textContent);
             a.addEventListener('click', function (e) {
                 e.preventDefault();
                 var target = document.getElementById(h.id);
