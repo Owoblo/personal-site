@@ -296,8 +296,16 @@ input:-webkit-autofill:focus {
 .container {
     max-width: 680px;
     margin: 0 auto;
-    padding: 25px 40px 80px;
+    padding: 25px 40px 56px;
     position: relative;
+}
+
+/* Colophon: intentional ending for the page. */
+.colophon {
+    margin-top: 56px;
+    font-size: 12px;
+    letter-spacing: .04em;
+    opacity: .68;
 }
 
 /* Row/col gap modifiers */
@@ -356,6 +364,16 @@ input:-webkit-autofill:focus {
     border: none;
     opacity: 0.7;
     color: var(--colors--text);
+}
+
+/* Focus ring for keyboard users only; never sticks after a mouse click. */
+.site-title:focus {
+    outline: none;
+}
+
+.site-title:focus-visible {
+    outline: 2px solid var(--colors--primary-accent);
+    outline-offset: 3px;
 }
 
 .post-header {
@@ -484,7 +502,7 @@ p {
     font-weight: 600 !important;
     letter-spacing: .13em;
     text-transform: uppercase;
-    opacity: .58;
+    opacity: .72;
 }
 
 .bio-lede {
@@ -498,13 +516,26 @@ p {
     display: inline;
     padding: 0 0 1px;
     border: 0;
-    border-bottom: 1px solid currentColor;
+    border-bottom: 1px dotted currentColor;
     color: inherit;
     background: transparent;
     font: inherit;
     line-height: inherit;
     cursor: pointer;
     transition: opacity .2s ease, background-color .2s ease;
+}
+
+/* Expander affordance: dotted underline + toggle marker so these
+   don't masquerade as hyperlinks. */
+.story-link::after {
+    content: "+";
+    margin-left: 4px;
+    font-size: .8em;
+    opacity: .65;
+}
+
+.story-link[aria-expanded="true"]::after {
+    content: "\2212";
 }
 
 .story-link:hover,
@@ -577,7 +608,6 @@ p {
 }
 
 .thread-index span {
-    margin-right: auto;
     opacity: .5;
     text-transform: uppercase;
     letter-spacing: .08em;
@@ -605,6 +635,21 @@ p {
 .bio-extended.expanded {
     max-height: 1000px;
     opacity: 1;
+}
+
+/* Expanded bio paragraphs match the intro lede size so the
+   expansion doesn't read like a rendering bug. */
+.bio-extended p {
+    font-size: clamp(20px, 3.2vw, 25px);
+    line-height: 1.65;
+    letter-spacing: -.018em;
+}
+
+/* Keep the pull-quote's own scale. */
+.bio-extended .key-statement {
+    font-size: 19px;
+    line-height: 1.75;
+    letter-spacing: normal;
 }
 
 /* Loading states */
@@ -735,7 +780,7 @@ section:last-child {
 
 .newsletter-form-group input::placeholder {
     color: var(--colors--text);
-    opacity: .48;
+    opacity: .72;
 }
 
 .newsletter-form-group button {
@@ -1045,6 +1090,11 @@ dialog.modal::backdrop {
     .bio-lede {
         font-size: 20px !important;
         line-height: 1.65 !important;
+    }
+
+    .bio-extended p {
+        font-size: 20px;
+        line-height: 1.65;
     }
 
     .story-note {
