@@ -84,7 +84,7 @@
         const html = sortedPosts.map(post => {
             return `
                 <li>
-                    <a href="post.html?slug=${encodeURIComponent(post.slug)}">${escapeHtml(post.title)}</a>
+                    <a href="/post/${encodeURIComponent(post.slug)}/">${escapeHtml(post.title)}</a>
                 </li>
             `;
         }).join('');
@@ -100,6 +100,15 @@
 
         const urlParams = new URLSearchParams(window.location.search);
         const slug = urlParams.get('slug');
+
+        // Old ?slug= URLs now live at /post/<slug>/ — send readers there.
+        if (slug) {
+            window.location.replace(`/post/${encodeURIComponent(slug)}/`);
+            return;
+        }
+
+        // Prerendered static pages already contain the article; leave them alone.
+        if (container.querySelector('article')) return;
 
         if (!slug) {
             container.innerHTML = '<p>Post not found.</p>';
@@ -201,7 +210,7 @@
                 month: 'short'
             });
             return `<li style="margin-bottom: 12px;">
-                            <a href="post.html?slug=${encodeURIComponent(p.slug)}">${escapeHtml(p.title)}</a>
+                            <a href="/post/${encodeURIComponent(p.slug)}/">${escapeHtml(p.title)}</a>
                             <span style="opacity: 0.6; font-size: 0.9em;"> (${pFormattedDate})</span>
                         </li>`;
         }).join('')}
