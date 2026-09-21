@@ -218,7 +218,7 @@ function renderPostPage(post, allPosts) {
   const canonical = `${SITE}/post/${post.slug}/`;
   const title = `${post.title} | John Owolabi`;
   const description = trimDescription(post.excerpt || post.title);
-  const ogImage = `${SITE}/og/${post.slug}.png`;
+  const ogImage = `${SITE}/og/${post.slug}.png?v=20260921-2`;
 
   const jsonLd = JSON.stringify({
     "@context": "https://schema.org",
