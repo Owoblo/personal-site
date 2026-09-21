@@ -160,15 +160,15 @@ function ogSvg(title) {
 
   // Name, Dario-style: big and bold at the top
   const name = "John Owolabi";
-  const nameFontSize = 88;
+  const nameFontSize = 104;
 
-  // Title below the name, regular serif
-  const titleFontSize = 68;
-  const titleLineHeight = titleFontSize * 1.25;
-  const lines = ogWrapText(title, 26).slice(0, 3);
+  // Title below the name, regular serif, clearly subordinate
+  const titleFontSize = 58;
+  const titleLineHeight = titleFontSize * 1.3;
+  const lines = ogWrapText(title, 30).slice(0, 3);
 
-  const nameY = 200;
-  const titleStartY = nameY + 90;
+  const nameY = 210;
+  const titleStartY = nameY + 110;
 
   const titleTextElements = lines
     .map((line, index) => {
