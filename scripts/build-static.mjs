@@ -1,5 +1,6 @@
 import { cp, mkdir, readdir, readFile, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
+import { Resvg } from "@resvg/resvg-js";
 
 const rootDir = process.cwd();
 const distDir = path.join(rootDir, "dist");
@@ -120,13 +121,81 @@ const published = (postsData.posts || [])
   .filter((p) => (p.status || "published") === "published" && p.slug)
   .sort((a, b) => new Date(b.date) - new Date(a.date));
 
+// ---------------------------------------------------------------- OG images
+// X/Twitter and other crawlers cannot render SVG link previews, so each
+// post gets a real 1200x630 PNG generated at build time. The design mirrors
+// functions/api/og-image.js (kept for dynamic use).
+
+function ogWrapText(text, maxLength) {
+  const words = text.split(" ");
+  const lines = [];
+  let currentLine = "";
+  for (const word of words) {
+    const testLine = currentLine ? `${currentLine} ${word}` : word;
+    if (testLine.length <= maxLength) {
+      currentLine = testLine;
+    } else {
+      if (currentLine) lines.push(currentLine);
+      currentLine = word;
+    }
+  }
+  if (currentLine) lines.push(currentLine);
+  return lines;
+}
+
+function ogEscapeXml(text) {
+  return text
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&apos;");
+}
+
+function ogSvg(title) {
+  const width = 1200;
+  const height = 630;
+  const lines = ogWrapText(title, 28).slice(0, 4);
+  const titleFontSize = lines.length > 2 ? 60 : 72;
+  const lineHeight = titleFontSize * 1.3;
+  const totalHeight = lines.length * lineHeight;
+  const startY = (height - totalHeight) / 2 - 40;
+  const fontFamily = "Georgia, 'Noto Serif', 'DejaVu Serif', serif";
+
+  const titleTextElements = lines
+    .map((line, index) => {
+      const y = startY + index * lineHeight;
+      return `<text x="100" y="${y}" style="font-family: ${fontFamily}; font-size: ${titleFontSize}px; font-weight: bold; fill: #1a1a1a;">${ogEscapeXml(line)}</text>`;
+    })
+    .join("\n");
+
+  return `<svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg">
+  <rect width="${width}" height="${height}" fill="#E8E4DC"/>
+  <line x1="0" y1="${height - 200}" x2="250" y2="${height}" stroke="#6B9BD1" stroke-width="2"/>
+  <line x1="400" y1="0" x2="${width}" y2="0" stroke="#6B9BD1" stroke-width="2"/>
+  <line x1="${width - 250}" y1="${height}" x2="${width}" y2="${height - 100}" stroke="#6B9BD1" stroke-width="2"/>
+  ${titleTextElements}
+  <text x="100" y="${height - 80}" style="font-family: ${fontFamily}; font-size: 32px; fill: #666;">John Owolabi</text>
+</svg>`;
+}
+
+async function writeOgPng(post) {
+  const resvg = new Resvg(ogSvg(post.title), {
+    fitTo: { mode: "width", value: 1200 },
+  });
+  const png = resvg.render().asPng();
+  const dir = path.join(distDir, "og");
+  await mkdir(dir, { recursive: true });
+  await writeFile(path.join(dir, `${post.slug}.png`), png);
+}
+
 // ---------------------------------------------------------------- post pages
 
 function renderPostPage(post, allPosts) {
   const canonical = `${SITE}/post/${post.slug}/`;
   const title = `${post.title} | John Owolabi`;
   const description = trimDescription(post.excerpt || post.title);
-  const ogImage = `${SITE}/api/og-image?title=${encodeURIComponent(post.title)}`;
+  const ogImage = `${SITE}/og/${post.slug}.png`;
 
   const jsonLd = JSON.stringify({
     "@context": "https://schema.org",
@@ -401,9 +470,11 @@ for (const post of published) {
     renderPostPage(post, published),
     "utf8"
   );
+  await writeOgPng(post);
   postCount++;
 }
 console.log(`Generated ${postCount} static post pages`);
+console.log(`Generated ${postCount} OG preview PNGs`);
 
 // Prerendered thoughts page
 const thoughtsSrc = await readFile(
