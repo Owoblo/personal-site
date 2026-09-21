@@ -155,33 +155,56 @@ function ogEscapeXml(text) {
 function ogSvg(title) {
   const width = 1200;
   const height = 630;
-  const lines = ogWrapText(title, 28).slice(0, 4);
-  const titleFontSize = lines.length > 2 ? 60 : 72;
-  const lineHeight = titleFontSize * 1.3;
-  const totalHeight = lines.length * lineHeight;
-  const startY = (height - totalHeight) / 2 - 40;
-  const fontFamily = "Georgia, 'Noto Serif', 'DejaVu Serif', serif";
+  const padX = 100;
+  const fontFamily = "Lora, Georgia, serif";
+
+  // Name, Dario-style: big and bold at the top
+  const name = "John Owolabi";
+  const nameFontSize = 88;
+
+  // Title below the name, regular serif
+  const titleFontSize = 68;
+  const titleLineHeight = titleFontSize * 1.25;
+  const lines = ogWrapText(title, 26).slice(0, 3);
+
+  const nameY = 200;
+  const titleStartY = nameY + 90;
 
   const titleTextElements = lines
     .map((line, index) => {
-      const y = startY + index * lineHeight;
-      return `<text x="100" y="${y}" style="font-family: ${fontFamily}; font-size: ${titleFontSize}px; font-weight: bold; fill: #1a1a1a;">${ogEscapeXml(line)}</text>`;
+      const y = titleStartY + index * titleLineHeight;
+      return `<text x="${padX}" y="${y}" style="font-family: ${fontFamily}; font-size: ${titleFontSize}px; fill: #1a1a1a;">${ogEscapeXml(line)}</text>`;
     })
     .join("\n");
 
+  // Bottom pill caption, Dario-style
+  const pillLabel = `${name} \u2014 ${title}`;
+  const pillFontSize = 30;
+  const pillPadX = 36;
+  const pillPadY = 20;
+  const pillText = pillLabel.length > 52 ? pillLabel.slice(0, 49) + "\u2026" : pillLabel;
+  const pillWidth = pillText.length * (pillFontSize * 0.58) + pillPadX * 2;
+  const pillHeight = pillFontSize + pillPadY * 2;
+  const pillX = padX;
+  const pillY = height - 60 - pillHeight;
+
   return `<svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg">
-  <rect width="${width}" height="${height}" fill="#E8E4DC"/>
-  <line x1="0" y1="${height - 200}" x2="250" y2="${height}" stroke="#6B9BD1" stroke-width="2"/>
-  <line x1="400" y1="0" x2="${width}" y2="0" stroke="#6B9BD1" stroke-width="2"/>
-  <line x1="${width - 250}" y1="${height}" x2="${width}" y2="${height - 100}" stroke="#6B9BD1" stroke-width="2"/>
+  <rect width="${width}" height="${height}" fill="#F0EEE6"/>
+  <text x="${padX}" y="${nameY}" style="font-family: ${fontFamily}; font-size: ${nameFontSize}px; font-weight: bold; fill: #1a1a1a;">${ogEscapeXml(name)}</text>
   ${titleTextElements}
-  <text x="100" y="${height - 80}" style="font-family: ${fontFamily}; font-size: 32px; fill: #666;">John Owolabi</text>
+  <rect x="${pillX}" y="${pillY}" width="${pillWidth}" height="${pillHeight}" rx="${pillHeight / 2}" fill="#1c1c1c"/>
+  <text x="${pillX + pillPadX}" y="${pillY + pillPadY + pillFontSize * 0.78}" style="font-family: ${fontFamily}; font-size: ${pillFontSize}px; fill: #ffffff;">${ogEscapeXml(pillText)}</text>
 </svg>`;
 }
 
 async function writeOgPng(post) {
   const resvg = new Resvg(ogSvg(post.title), {
     fitTo: { mode: "width", value: 1200 },
+    font: {
+      fontFiles: [path.join(rootDir, "assets", "fonts", "Lora-Variable.ttf")],
+      loadSystemFonts: false,
+      defaultFontFamily: "Lora",
+    },
   });
   const png = resvg.render().asPng();
   const dir = path.join(distDir, "og");
