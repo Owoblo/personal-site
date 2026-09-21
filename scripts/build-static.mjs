@@ -10,6 +10,7 @@ const SITE = "https://johnowolabi.com";
 const topLevelFiles = [
   "11.png",
   "404.html",
+  "_routes.json",
   "analytics.html",
   "analytics.js",
   "analytics.json",
