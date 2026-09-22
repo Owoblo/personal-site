@@ -31,7 +31,8 @@ export async function onRequestPost(context) {
             role: 'system',
             content: `You are an expert blog post generator. Analyze the raw article text and generate:
 
-1. **Title Options**: Generate 4 different compelling title variations (5-10 words each) that capture different angles of the article
+1. **Title Options**: Generate 4 different compelling title variations (5-10 words each) that capture different angles of the article.
+   - TITLE RULE (hard): Don't name the topic. Name the thought. A good title sounds like a realization a person might have driving home at 11 p.m. — e.g. "You Don't Lose Everyone at Once", "Maybe I'm Not Behind", "The Explosion Gets the Headline". A bad title describes the subject like an essay assignment — e.g. "Confronting Mortality: A Personal Reflection". Never use the "Confronting X: A Y Reflection" pattern. Prefer the sentence that made the author stop and think, not a summary of the subject.
 2. **Excerpt**: A 1-2 sentence summary (under 200 characters) that entices readers
 3. **Formatted Content**: Return a publication-ready HTML article, not a plain-text transcription.
    - Wrap every paragraph in <p> tags.

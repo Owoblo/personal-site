@@ -11,6 +11,7 @@ const SITE = "https://johnowolabi.com";
 const topLevelFiles = [
   "11.png",
   "404.html",
+  "_redirects",
   "_routes.json",
   "analytics.html",
   "analytics.js",
