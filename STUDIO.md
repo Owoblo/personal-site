@@ -41,7 +41,7 @@ The Email sequence view previews eligible readers and allows enabling/pausing ca
 
 The worker processes new publications first, queues catch-up separately, checks consent before sending, enforces at most one thought per reader per 24 hours, and skips already-submitted or uncertain copies of the same thought. Pending, unsubscribed, bounced, and complained contacts do not enter the reading sequence. Per-reader leases prevent parallel sends from bypassing the daily pace.
 
-A separate one-time confirmation reminder is available for pending subscriptions between 3 and 180 days old. It does not activate the contact; only following the confirmation link does. Its send marker is claimed before the provider call so an ambiguous timeout does not trigger another automatic reminder. Very old pending subscriptions remain dormant.
+A separate one-time confirmation reminder is available for pending subscriptions between 3 and 180 days old. Starting reminders selects the current cohort; later signups do not silently join that batch. The studio can pause reminders. A reminder does not activate the contact; only following the confirmation link does. Its send marker is claimed before the provider call so an ambiguous timeout does not trigger another automatic reminder. Very old pending subscriptions remain dormant.
 
 ## Social link previews
 

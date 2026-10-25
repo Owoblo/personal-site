@@ -111,16 +111,24 @@ export async function sendConfirmationReminders(env) {
   if (!config || JSON.parse(config.data).enabled !== true) return 0;
   const { results } = await db
     .prepare(
-      "SELECT c.id,c.email,c.created_at FROM newsletter_contacts c LEFT JOIN newsletter_preferences p ON p.contact_id=c.id WHERE c.status='pending' AND c.created_at>=? AND c.created_at<? AND p.reminder_sent_at IS NULL AND c.source!='owner-test' LIMIT 1",
+      "SELECT c.id,c.email,c.created_at FROM newsletter_contacts c LEFT JOIN newsletter_preferences p ON p.contact_id=c.id WHERE c.status='pending' AND c.created_at>=? AND c.created_at<? AND c.created_at<=? AND p.reminder_sent_at IS NULL AND c.source!='owner-test' LIMIT 1",
     )
     .bind(
       new Date(Date.now() - 180 * 86400000).toISOString(),
       new Date(Date.now() - 3 * 86400000).toISOString(),
+      JSON.parse(config.data).before || new Date().toISOString(),
     )
     .all();
   let sent = 0;
   for (const contact of results) {
-    const suppressed=await suppressionReason(env,contact.email);if(suppressed){await db.prepare('UPDATE newsletter_contacts SET status=? WHERE id=?').bind(suppressed==='COMPLAINT'?'complained':'bounced',contact.id).run();continue;}
+    const suppressed = await suppressionReason(env, contact.email);
+    if (suppressed) {
+      await db
+        .prepare("UPDATE newsletter_contacts SET status=? WHERE id=?")
+        .bind(suppressed === "COMPLAINT" ? "complained" : "bounced", contact.id)
+        .run();
+      continue;
+    }
     const now = new Date().toISOString(),
       token = randomToken();
     const claimed = await db

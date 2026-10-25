@@ -27,6 +27,11 @@ import {
 } from "../functions/_lib/reading-sequence.mjs";
 import { processSesOutbox } from "../functions/_lib/ses-outbox.mjs";
 import { deliveryLinks } from "../functions/_lib/email-engagement.mjs";
+import { unsubscribeUrl } from "../functions/_lib/newsletter-store.mjs";
+import {
+  onRequestGet as preferencesGet,
+  onRequestPost as preferencesPost,
+} from "../functions/api/unsubscribe.js";
 import { splitBody, zipFiles } from "../studio-render.mjs";
 const original = {
   id: 1,
@@ -411,6 +416,112 @@ test("confirmation reminders are limited to recent pending subscribers and sent 
   assert.equal(await sendConfirmationReminders(s.env), 1);
   assert.equal(await sendConfirmationReminders(s.env), 0);
   assert.equal(sent, 1);
+});
+test("readers can pause and resume archive mail without reactivating an unsubscribed address", async (t) => {
+  const s = await setup(t),
+    id = await contact(s.db, "reader@example.com", "confirmed");
+  const url = await unsubscribeUrl(s.env, id);
+  for (const [action, expected] of [
+    ["archive-off", 0],
+    ["archive-on", 1],
+  ]) {
+    const response = await preferencesPost({
+      env: s.env,
+      request: new Request(url, {
+        method: "POST",
+        body: new URLSearchParams({ action }),
+      }),
+    });
+    assert.equal(response.status, 200);
+    assert.equal(
+      (
+        await s.db
+          .prepare(
+            "SELECT archive_enabled FROM newsletter_preferences WHERE contact_id=?",
+          )
+          .bind(id)
+          .first()
+      ).archive_enabled,
+      expected,
+    );
+    assert.equal(
+      (
+        await s.db
+          .prepare("SELECT status FROM newsletter_contacts WHERE id=?")
+          .bind(id)
+          .first()
+      ).status,
+      "confirmed",
+    );
+    assert.match(
+      await (
+        await preferencesGet({ env: s.env, request: new Request(url) })
+      ).text(),
+      expected ? /Pause earlier thoughts/ : /Resume earlier thoughts/,
+    );
+  }
+  await s.db
+    .prepare("UPDATE newsletter_contacts SET status='unsubscribed' WHERE id=?")
+    .bind(id)
+    .run();
+  assert.equal(
+    (
+      await preferencesPost({
+        env: s.env,
+        request: new Request(url, {
+          method: "POST",
+          body: new URLSearchParams({ action: "archive-on" }),
+        }),
+      })
+    ).status,
+    400,
+  );
+  assert.equal(
+    (
+      await s.db
+        .prepare("SELECT status FROM newsletter_contacts WHERE id=?")
+        .bind(id)
+        .first()
+    ).status,
+    "unsubscribed",
+  );
+});
+test("confirmation reminder batches exclude contacts who joined after the selected cohort", async (t) => {
+  const s = await setup(t),
+    now = Date.now();
+  await contact(
+    s.db,
+    "earlier@example.com",
+    "pending",
+    new Date(now - 10 * 86400000).toISOString(),
+  );
+  await contact(
+    s.db,
+    "later@example.com",
+    "pending",
+    new Date(now - 5 * 86400000).toISOString(),
+  );
+  await s.db
+    .prepare(
+      "INSERT INTO studio_settings(id,data,updated_at) VALUES ('confirmation-reminders',?,?)",
+    )
+    .bind(
+      JSON.stringify({
+        enabled: true,
+        before: new Date(now - 7 * 86400000).toISOString(),
+      }),
+      new Date(now).toISOString(),
+    )
+    .run();
+  t.mock.method(globalThis, "fetch", async (input) =>
+    new URL(input instanceof Request ? input.url : input).pathname.includes(
+      "/suppression/",
+    )
+      ? new Response("{}", { status: 404 })
+      : Response.json({ MessageId: "reminder" }),
+  );
+  assert.equal(await sendConfirmationReminders(s.env), 1);
+  assert.equal(await sendConfirmationReminders(s.env), 0);
 });
 test("slide splitting preserves all words and ZIP export contains a valid central directory", async () => {
   const words = Array.from({ length: 130 }, (_, i) => "word" + i).join(" "),

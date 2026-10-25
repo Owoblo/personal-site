@@ -307,7 +307,7 @@ function download(blob, name) {
   setTimeout(() => URL.revokeObjectURL(url), 1500);
 }
 async function png(index) {
-  if(dirty)await save();
+  if (dirty) await save();
   const canvas = document.createElement("canvas"),
     result = await renderSlide(canvas, readData(), index);
   if (!result.fits) throw Error(`Slide ${index + 1}: ${result.message}`);
@@ -597,7 +597,7 @@ bind("download-pack", () =>
 );
 bind("make-link", async () => {
   if (!asset) throw Error("Save an adaptation first.");
-  if(dirty)await save();
+  if (dirty) await save();
   const data = await api("/api/studio", {
     action: "link",
     postId: currentPost().id,
@@ -716,3 +716,8 @@ addEventListener("beforeunload", (e) => {
     status(error.message, true);
   }
 })();
+
+bind("pause-reminders", async () => {
+  await api("/api/reading-sequence", { action: "reminders", enabled: false });
+  status("Confirmation reminders paused.");
+});

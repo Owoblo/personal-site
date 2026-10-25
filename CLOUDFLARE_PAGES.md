@@ -29,7 +29,7 @@ The retry worker holds only `NEWSLETTER_CRON_SECRET`, matching Pages. It calls t
 
 The shared article template and `.post-body` styles keep preview and live formatting aligned. Markdown/HTML libraries ship locally. Save Draft persists across devices; local recovery separately protects unsaved writing on the current device. Saves merge only the edited post and reject stale edits.
 
-Existing articles retain generated social images. New articles use the portrait until the next static build generates their image. `_routes.json` enables Functions for `/api/*`, `/posts.json`, `/post/*`, and `/feed.xml`. Build output includes only publishable static assets.
+Published articles use branded social images. Saving writing triggers the social-card workflow; the `/og/` handler serves refreshed cards from GitHub, with deployed-image and JO fallbacks while a build runs. `_routes.json` enables the public article, feed, tracking, and image handlers as well as `/api/*`. Build output includes only publishable static assets.
 
 ## Branded email
 

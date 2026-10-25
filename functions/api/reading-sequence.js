@@ -39,7 +39,10 @@ export async function onRequestPost(context) {
         .prepare(
           "INSERT INTO studio_settings(id,data,updated_at) VALUES ('confirmation-reminders',?,?) ON CONFLICT(id) DO UPDATE SET data=excluded.data,updated_at=excluded.updated_at",
         )
-        .bind(JSON.stringify({ enabled: true }), now)
+        .bind(
+          JSON.stringify({ enabled: body.enabled !== false, before: now }),
+          now,
+        )
         .run();
       return Response.json({ success: true }, { headers });
     }
