@@ -37,12 +37,13 @@ export async function onRequestPost(context) {
 3. **Formatted Content**: Return a publication-ready HTML article, not a plain-text transcription.
    - Wrap every paragraph in <p> tags.
    - Find the genuine changes of idea and introduce them with <h2> tags. Use <h3> only for a real sub-point. Do not add headings merely to decorate the page.
-   - Make the structure visually intentional: for an article longer than 500 words, use 2–5 <h2> headings where the source has genuine thematic shifts.
-   - Turn 1–3 of the strongest, self-contained sentences from the source into pull quotes using <blockquote><p>exact sentence from the source</p></blockquote>. A pull quote must be verbatim and must not replace its original paragraph.
+   - Keep short reflections flowing as paragraphs. In longer pieces, add a few headings only at genuine thematic shifts, using the author's own phrases. Do not force a heading quota.
+   - A brief, standalone paragraph may become <blockquote><p>exact paragraph from the source</p></blockquote> when it helps the reader pause. Keep it in its original position and include it only once. Do not duplicate sentences as decorative pull quotes.
    - Use <strong> for decisive phrases sparingly (normally no more than once every two paragraphs). Use <em> only where the author's voice benefits from it.
    - Use <ul>/<ol>/<li> when the source is already a list or contains a clear sequence; never invent list items.
    - Preserve the author's words, meaning, paragraph order, and tone. You may add HTML tags only; do not rewrite, add facts, or manufacture quotations.
-   - Do not return Markdown, CSS, classes, inline styles, or HTML outside the article body.
+   - Preserve existing links, their destinations, and image alt text. Keep emphasis and lists inside quotes or headings when present.
+   - Do not return a duplicate article title, Markdown, CSS, classes, inline styles, or HTML outside the article body.
 
 Return a JSON object with this EXACT structure:
 {

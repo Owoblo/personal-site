@@ -9,34 +9,10 @@
             // Add cache-busting timestamp to prevent browser caching
             console.log('Attempting to load from posts.json...');
             const timestamp = new Date().getTime();
-            const response = await fetch(`posts.json?v=${timestamp}`);
+            const response = await fetch(`/posts.json?v=${timestamp}`);
             const data = await response.json();
             const jsonPosts = data.posts || [];
             console.log('Loaded posts from posts.json:', jsonPosts);
-
-            // Then check localStorage
-            const stored = localStorage.getItem('blog-posts');
-            console.log('Checking localStorage for posts:', stored ? 'Found' : 'Not found');
-
-            if (stored) {
-                const localPosts = JSON.parse(stored);
-                console.log('Loaded posts from localStorage:', localPosts);
-
-                // Merge posts, preferring localStorage for posts with matching IDs
-                const mergedPosts = [...jsonPosts];
-                localPosts.forEach(localPost => {
-                    const index = mergedPosts.findIndex(p => p.id === localPost.id);
-                    if (index >= 0) {
-                        // Update existing post with localStorage version
-                        mergedPosts[index] = localPost;
-                    } else {
-                        // Add new post from localStorage
-                        mergedPosts.push(localPost);
-                    }
-                });
-                console.log('Merged posts:', mergedPosts);
-                return mergedPosts;
-            }
 
             return jsonPosts;
         } catch (error) {
@@ -330,6 +306,7 @@
 
     async function init() {
         console.log('Blog system initializing...');
+        if (document.querySelector('#post-content article')) return;
         const posts = await loadPosts();
         console.log('Posts loaded in init:', posts);
 

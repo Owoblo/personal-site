@@ -6,525 +6,22 @@
     <meta name="robots" content="noindex, nofollow">
     <title>Create Post - John Owolabi</title>
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
-    <link rel="stylesheet" href="styles.css">
-    <style>
-        /* ========================================
-           SUBSTACK-STYLE WHITE THEME FOR ADMIN
-           ======================================== */
-
-        /* Override body styles for white theme */
-        body {
-            background-color: #ffffff !important;
-            color: #1a1a1a !important;
-        }
-
-        .create-container {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 40px 20px;
-            background: #ffffff;
-        }
-
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 40px;
-        }
-
-        .header h1 {
-            margin: 0;
-            font-size: 1.75em;
-            font-weight: 600;
-            color: #1a1a1a;
-        }
-
-        /* Buttons - Modern rounded style */
-        .btn {
-            padding: 10px 20px;
-            border: 1px solid #e5e5e5;
-            background-color: #ffffff;
-            color: #1a1a1a;
-            cursor: pointer;
-            font-size: 0.95em;
-            font-family: inherit;
-            font-weight: 500;
-            transition: all 0.2s ease;
-            text-decoration: none;
-            display: inline-block;
-            border-radius: 20px;
-        }
-
-        .btn:hover {
-            background-color: #f5f5f5;
-            border-color: #d0d0d0;
-            color: #1a1a1a;
-        }
-
-        .btn-primary {
-            background-color: #2563eb;
-            color: #ffffff;
-            border-color: #2563eb;
-        }
-
-        .btn-primary:hover {
-            background-color: #1d4ed8;
-            border-color: #1d4ed8;
-            color: #ffffff;
-        }
-
-        .btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        /* Sections - Clean cards */
-        .section {
-            margin-bottom: 30px;
-            padding: 28px;
-            border: 1px solid #e5e5e5;
-            border-radius: 12px;
-            background: #ffffff;
-        }
-
-        .section.hidden {
-            display: none;
-        }
-
-        .section h2 {
-            color: #1a1a1a;
-            font-weight: 600;
-            margin-top: 0;
-            margin-bottom: 20px;
-        }
-
-        /* Form Groups */
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: #1a1a1a;
-            font-size: 0.95em;
-        }
-
-        .form-group input,
-        .form-group textarea,
-        .form-group select {
-            width: 100%;
-            padding: 12px 14px;
-            border: 1px solid #e5e5e5;
-            background-color: #ffffff;
-            color: #1a1a1a;
-            font-size: 1em;
-            font-family: inherit;
-            box-sizing: border-box;
-            border-radius: 8px;
-            transition: border-color 0.2s ease, box-shadow 0.2s ease;
-        }
-
-        .form-group input:focus,
-        .form-group textarea:focus,
-        .form-group select:focus {
-            outline: none;
-            border-color: #2563eb;
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
-        }
-
-        .form-group textarea {
-            resize: vertical;
-        }
-
-        .form-group small {
-            display: block;
-            margin-top: 6px;
-            color: #6b6b6b;
-            font-size: 0.85em;
-        }
-
-        /* Alerts - Rounded with subtle backgrounds */
-        .alert {
-            padding: 14px 18px;
-            margin-bottom: 20px;
-            border-radius: 10px;
-            font-size: 0.95em;
-        }
-
-        .alert-success {
-            background-color: #dcfce7;
-            border: 1px solid #86efac;
-            color: #166534;
-        }
-
-        .alert-info {
-            background-color: #dbeafe;
-            border: 1px solid #93c5fd;
-            color: #1e40af;
-        }
-
-        .alert-warning {
-            background-color: #fef3c7;
-            border: 1px solid #fcd34d;
-            color: #92400e;
-        }
-
-        /* Preview Box */
-        .preview-box {
-            max-width: 700px;
-            margin: 0 auto;
-            padding: 30px;
-            border: 1px solid #e5e5e5;
-            border-radius: 12px;
-            background-color: #ffffff;
-        }
-
-        .preview-box strong,
-        .preview-box b {
-            font-weight: bold;
-        }
-
-        .preview-box em,
-        .preview-box i {
-            font-style: italic;
-        }
-
-        .preview-box s,
-        .preview-box del,
-        .preview-box strike {
-            text-decoration: line-through;
-        }
-
-        .preview-box blockquote {
-            border-left: 3px solid #2563eb;
-            margin: 1em 0;
-            padding: 0.5em 1em;
-            background: #f8fafc;
-            font-style: italic;
-            border-radius: 0 8px 8px 0;
-        }
-
-        .preview-box ul,
-        .preview-box ol {
-            margin: 1em 0;
-            padding-left: 2em;
-        }
-
-        .preview-box li {
-            margin: 0.5em 0;
-        }
-
-        .preview-box img {
-            max-width: 100%;
-            height: auto;
-            margin: 1em 0;
-            border-radius: 8px;
-        }
-
-        .actions {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
-
-        .status {
-            font-size: 0.9em;
-            color: #6b6b6b;
-            margin-top: 10px;
-        }
-
-        .btn-small {
-            padding: 8px 16px;
-            font-size: 0.9em;
-            border-radius: 16px;
-        }
-
-        .btn-danger {
-            background-color: #dc2626;
-            color: #ffffff;
-            border-color: #dc2626;
-        }
-
-        .btn-danger:hover {
-            background-color: #b91c1c;
-            border-color: #b91c1c;
-            color: #ffffff;
-        }
-
-        /* Post Items - Cards */
-        .post-item {
-            border: 1px solid #e5e5e5;
-            padding: 20px;
-            margin-bottom: 16px;
-            border-radius: 12px;
-            background: #ffffff;
-            transition: box-shadow 0.2s ease;
-        }
-
-        .post-item:hover {
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-        }
-
-        .post-item h3 {
-            margin-top: 0;
-            margin-bottom: 10px;
-            color: #1a1a1a;
-        }
-
-        .post-meta {
-            color: #6b6b6b;
-            font-size: 0.9em;
-            margin-bottom: 12px;
-        }
-
-        .post-actions {
-            display: flex;
-            gap: 10px;
-            margin-top: 15px;
-        }
-
-        /* Tabs - Substack-style underline */
-        .tabs {
-            display: flex;
-            gap: 0;
-            margin-bottom: 30px;
-            border-bottom: 1px solid #e5e5e5;
-        }
-
-        .tab {
-            padding: 14px 24px;
-            cursor: pointer;
-            border: none;
-            background: none;
-            font-size: 1em;
-            font-family: inherit;
-            font-weight: 500;
-            color: #6b6b6b;
-            border-bottom: 2px solid transparent;
-            margin-bottom: -1px;
-            transition: all 0.2s ease;
-        }
-
-        .tab.active {
-            color: #1a1a1a;
-            border-bottom-color: #2563eb;
-        }
-
-        .tab:hover {
-            color: #1a1a1a;
-        }
-
-        .tab-content {
-            display: none;
-        }
-
-        .tab-content.active {
-            display: block;
-        }
-
-        /* Editor Toolbar - Clean bar */
-        .editor-toolbar {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 12px;
-            align-items: center;
-            background: #fafafa;
-            border: 1px solid #e5e5e5;
-            border-radius: 8px;
-            padding: 8px 12px;
-            flex-wrap: wrap;
-        }
-
-        .view-toggle {
-            display: inline-flex;
-            border: 1px solid #e5e5e5;
-            border-radius: 6px;
-            overflow: hidden;
-            background: #ffffff;
-        }
-
-        .view-toggle button {
-            padding: 6px 14px;
-            border: none;
-            background: #ffffff;
-            color: #6b6b6b;
-            cursor: pointer;
-            font-family: inherit;
-            font-size: 0.9em;
-            font-weight: 500;
-            transition: all 0.2s ease;
-        }
-
-        .view-toggle button.active {
-            background: #1a1a1a;
-            color: #ffffff;
-        }
-
-        .view-toggle button:hover:not(.active) {
-            background: #f5f5f5;
-        }
-
-        .btn-icon {
-            padding: 6px 12px;
-            font-size: 0.95em;
-            background: transparent;
-            border: none;
-            color: #1a1a1a;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: background 0.2s ease;
-        }
-
-        .btn-icon:hover {
-            background: #e5e5e5;
-        }
-
-        .toolbar-divider {
-            width: 1px;
-            height: 20px;
-            background-color: #e5e5e5;
-            margin: 0 4px;
-        }
-
-        .toolbar-dropdown {
-            position: relative;
-            display: inline-block;
-        }
-
-        .toolbar-dropdown > button {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .toolbar-dropdown > button span {
-            font-size: 0.7em;
-            color: #6b6b6b;
-        }
-
-        .dropdown-menu {
-            display: none;
-            position: absolute;
-            top: 100%;
-            left: 0;
-            background: #ffffff;
-            border: 1px solid #e5e5e5;
-            min-width: 140px;
-            z-index: 100;
-            margin-top: 4px;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-        }
-
-        .toolbar-dropdown:hover .dropdown-menu,
-        .toolbar-dropdown:focus-within .dropdown-menu {
-            display: block;
-        }
-
-        .dropdown-menu button {
-            display: block;
-            width: 100%;
-            padding: 10px 14px;
-            border: none;
-            background: none;
-            text-align: left;
-            cursor: pointer;
-            font-family: inherit;
-            font-size: 0.9em;
-            color: #1a1a1a;
-            transition: background 0.15s ease;
-        }
-
-        .dropdown-menu button:hover {
-            background: #f5f5f5;
-        }
-
-        .word-count {
-            font-size: 0.85em;
-            color: #6b6b6b;
-            margin-left: auto;
-        }
-
-        /* Modals - Modern overlay */
-        .link-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.4);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-            backdrop-filter: blur(2px);
-        }
-
-        .link-modal.active {
-            display: flex;
-        }
-
-        .link-modal-content {
-            background: #ffffff;
-            border: 1px solid #e5e5e5;
-            padding: 28px;
-            max-width: 500px;
-            width: 90%;
-            border-radius: 16px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-        }
-
-        .link-modal-content h3 {
-            margin-top: 0;
-            margin-bottom: 20px;
-            color: #1a1a1a;
-            font-weight: 600;
-        }
-
-        .modal-actions {
-            display: flex;
-            gap: 12px;
-            margin-top: 24px;
-        }
-
-        /* Placeholder text color */
-        ::placeholder {
-            color: #9ca3af;
-        }
-
-        /* Selection color */
-        ::selection {
-            background: #dbeafe;
-            color: #1a1a1a;
-        }
-
-        .auth-gate { position: fixed; inset: 0; z-index: 5000; display: grid; place-items: center; padding: 20px; background: #f7f7f5; }
-        .auth-gate[hidden] { display: none; }
-        .auth-card { width: min(100%, 420px); padding: 34px; border: 1px solid #e5e5e5; border-radius: 16px; background: white; box-shadow: 0 20px 60px rgba(0,0,0,.08); }
-        .auth-card h1 { margin: 0 0 8px; font-size: 1.7rem; }
-        .auth-card p { margin: 0 0 24px; color: #666; font-size: .95rem; }
-        .auth-error { min-height: 20px; margin-top: 12px; color: #b91c1c; font-size: .88rem; }
-        .save-state { min-height: 20px; margin: -6px 0 14px; color: #6b6b6b; font-size: .82rem; text-align: right; }
-
-        @media (max-width: 680px) {
-            .create-container { padding: 20px 12px; }
-            .header { align-items: flex-start; margin-bottom: 24px; }
-            .section { padding: 20px 16px; }
-            .tabs { overflow-x: auto; }
-            .tab { flex: 0 0 auto; padding: 12px 16px; }
-            .editor-toolbar { position: static; }
-            .word-count { width: 100%; margin-left: 0; }
-            .actions .btn { flex: 1; text-align: center; }
-        }
-    </style>
+    <script src="writer-theme.js?v=20261025-1"></script>
+    <link rel="stylesheet" href="styles.css?v=20261025-4">
+    <link rel="stylesheet" href="writer.css?v=20261025-1">
 </head>
-<body>
+<body class="writer-room">
     <div class="auth-gate" id="auth-gate">
-        <form class="auth-card" id="auth-form">
-            <h1>Writer's room</h1>
+        <div class="auth-frame">
+            <div class="auth-controls">
+                <a href="index.html" class="writer-back">← Back to site</a>
+                <label class="toggle-switch" for="auth-theme-toggle" aria-label="Toggle dark mode">
+                    <input type="checkbox" id="auth-theme-toggle" class="toggle-checkbox" data-writer-theme>
+                    <span class="toggle-label has-transition"></span>
+                </label>
+            </div>
+        <form class="auth-card" id="auth-form" aria-labelledby="writer-heading">
+            <h1 id="writer-heading">Writer's room</h1>
             <p>Enter your admin password to open the publishing canvas.</p>
             <div class="form-group">
                 <label for="admin-password">Password</label>
@@ -533,11 +30,18 @@
             <button class="btn btn-primary" id="auth-submit" type="submit">Unlock</button>
             <div class="auth-error" id="auth-error" role="alert" aria-live="polite"></div>
         </form>
+        </div>
     </div>
-    <div class="create-container">
+    <div class="create-container" inert>
         <div class="header">
-            <h1>Blog Admin</h1>
-            <a href="index.html" class="btn">← Back to Site</a>
+            <h1>Writer's room</h1>
+            <div class="writer-header-actions">
+                <a href="index.html" class="writer-back">← Back to site</a>
+                <label class="toggle-switch" for="editor-theme-toggle" aria-label="Toggle dark mode">
+                    <input type="checkbox" id="editor-theme-toggle" class="toggle-checkbox" data-writer-theme>
+                    <span class="toggle-label has-transition"></span>
+                </label>
+            </div>
         </div>
 
         <div id="alert-container"></div>
@@ -553,21 +57,22 @@
 
         <!-- Step 1: Paste Raw Text -->
         <div id="paste-section" class="section">
-            <h2>Step 1: Paste Your Article</h2>
+            <h2>Start a thought</h2>
             <div class="form-group">
-                <label for="raw-text">Raw Text</label>
-                <textarea id="raw-text" placeholder="Paste your raw article text here. AI will analyze it, format it beautifully, and auto-generate the title, excerpt, and slug for you." style="min-height: 300px; font-size: 1.05em; line-height: 1.6;"></textarea>
+                <label for="raw-text">Your writing</label>
+                <textarea id="raw-text" placeholder="Write or paste your thoughts here. Continue writing to save a draft, or ask AI to format the piece."></textarea>
             </div>
             <div class="actions">
-                <button class="btn btn-primary" onclick="generatePost()" id="generate-btn">✨ Generate Post with AI</button>
+                <button class="btn btn-primary" onclick="beginManualPost()">Continue writing</button>
+                <button class="btn" onclick="generatePost()" id="generate-btn">Format with AI</button>
                 <span id="generate-status" class="status"></span>
             </div>
         </div>
 
         <!-- Step 2: Review & Edit -->
         <div id="review-section" class="section hidden">
-            <h2>Step 2: Review & Edit</h2>
-            <div class="alert alert-success" style="margin-bottom: 25px;">
+            <h2>Write & edit</h2>
+            <div class="alert alert-success" id="review-intro">
                 ✓ AI has generated your post! Review the details below, make any edits, and preview before publishing.
             </div>
 
@@ -594,7 +99,7 @@
 
             <div class="form-group">
                 <label for="post-status">Status *</label>
-                <select id="post-status" required style="width: 100%; padding: 12px 14px; border: 1px solid #e5e5e5; background-color: #ffffff; color: #1a1a1a; font-size: 1em; font-family: inherit; box-sizing: border-box; border-radius: 8px;">
+                <select id="post-status" required>
                     <option value="published">Published - Live on site</option>
                     <option value="draft">Draft - Save without publishing</option>
                     <option value="archived">Archived - Hidden from feed but accessible via URL</option>
@@ -603,17 +108,17 @@
             </div>
 
             <div class="form-group">
-                <label for="post-excerpt">Excerpt *</label>
+                <label for="post-excerpt">Excerpt</label>
                 <textarea id="post-excerpt" rows="3" required></textarea>
-                <small>AI-generated summary. Edit if needed.</small>
+                <small>A short introduction for readers. Required when publishing.</small>
             </div>
 
             <div class="form-group">
                 <label for="post-content">Content *</label>
                 <div class="editor-toolbar">
                     <div class="view-toggle">
-                        <button type="button" onclick="switchEditorView('text')">Plain text</button>
-                        <button type="button" class="active" onclick="switchEditorView('html')">Formatted HTML</button>
+                        <button type="button" onclick="switchEditorView('text')">Writing</button>
+                        <button type="button" class="active" onclick="switchEditorView('html')">HTML source</button>
                     </div>
                     <div class="toolbar-divider"></div>
                     <button type="button" class="btn btn-icon" onclick="formatText('bold')" title="Bold"><strong>B</strong></button>
@@ -642,13 +147,13 @@
                     </div>
                     <span class="word-count">0 words</span>
                 </div>
-                <textarea id="post-content" required style="min-height: 250px; font-family: inherit; font-size: 1em; line-height: 1.6;"></textarea>
-                <small id="content-view-hint">Formatted HTML view - AI formatting is preserved when you publish.</small>
+                <textarea id="post-content" required></textarea>
+                <small id="content-view-hint">HTML source — preview shows exactly how the article will read.</small>
             </div>
             <div class="save-state" id="save-state" role="status" aria-live="polite"></div>
 
             <div class="actions">
-                <button class="btn" onclick="showPreview()">👁️ Preview</button>
+                <button class="btn" onclick="showPreview()">Preview</button>
                 <button class="btn btn-primary" onclick="publishPost()" id="publish-btn">Publish Post</button>
                 <button class="btn" onclick="cancel()">Cancel</button>
             </div>
@@ -656,8 +161,8 @@
 
         <!-- Step 3: Preview -->
         <div id="preview-section" class="section hidden">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
-                <h2 style="margin: 0;">Preview</h2>
+            <div class="preview-heading">
+                <h2>Preview</h2>
                 <button class="btn" onclick="closePreview()">✕ Close</button>
             </div>
             <div id="preview-content" class="preview-box"></div>
@@ -668,7 +173,16 @@
         <!-- Manage Tab Content -->
         <div id="manage-tab" class="tab-content">
             <div class="section">
-                <h2>Your Posts</h2>
+                <h2>Your posts</h2>
+                <div class="form-group post-filters">
+                    <label for="manage-status">Show</label>
+                    <select id="manage-status" onchange="renderPostsList()">
+                        <option value="all">All posts</option>
+                        <option value="draft">Drafts</option>
+                        <option value="published">Published</option>
+                        <option value="archived">Archived</option>
+                    </select>
+                </div>
                 <div id="posts-list">
                     <p class="status">Loading posts...</p>
                 </div>
@@ -709,7 +223,7 @@
                 <input type="text" id="image-alt" placeholder="Describe the image">
             </div>
             <div id="image-preview" style="display: none; margin: 15px 0; text-align: center;">
-                <img id="preview-img" style="max-width: 100%; max-height: 200px; border: 1px solid #e5e5e5; border-radius: 8px;">
+                <img id="preview-img">
             </div>
             <div class="modal-actions">
                 <button class="btn btn-primary" onclick="uploadAndInsertImage()" id="upload-btn">Upload & Insert</button>
@@ -718,12 +232,16 @@
         </div>
     </div>
 
+    <script src="vendor/markdown-it.min.js"></script>
+    <script src="vendor/turndown.js"></script>
+    <script src="article-formatting.js?v=20261025-1"></script>
     <script>
         let posts = [];
         let currentPostId = null;
         let isEditing = false;
         let editorView = 'html'; // 'text' or 'html'
         let htmlContent = ''; // Store HTML version when in text view
+        let linkSelectionEnd = 0;
         let cursorPosition = 0; // Track cursor position for link insertion
 
         // Switch tabs
@@ -742,176 +260,29 @@
             }
         }
 
-        // Convert HTML to readable text
+        let lastHtml = null;
+        let lastWritingText = null;
+
         function htmlToText(html) {
-            // Create a temporary div to parse HTML
-            const temp = document.createElement('div');
-            temp.innerHTML = html;
-
-            // Convert images to markdown format
-            temp.querySelectorAll('img').forEach(img => {
-                const alt = img.getAttribute('alt') || 'Image';
-                const src = img.getAttribute('src') || '';
-                img.replaceWith(`![${alt}](${src})`);
-            });
-
-            // Convert links to readable format before extracting text
-            temp.querySelectorAll('a').forEach(link => {
-                const text = link.textContent;
-                const url = link.getAttribute('href');
-                link.replaceWith(`${text} (${url})`);
-            });
-
-            // Convert bold tags to markdown format
-            temp.querySelectorAll('strong, b').forEach(el => {
-                const text = el.textContent;
-                el.replaceWith(`**${text}**`);
-            });
-
-            // Convert italic tags to markdown format
-            temp.querySelectorAll('em, i').forEach(el => {
-                const text = el.textContent;
-                el.replaceWith(`*${text}*`);
-            });
-
-            // Convert strikethrough tags to markdown format
-            temp.querySelectorAll('s, del, strike').forEach(el => {
-                const text = el.textContent;
-                el.replaceWith(`~~${text}~~`);
-            });
-
-            // Convert headings to markdown format
-            temp.querySelectorAll('h2').forEach(el => {
-                const text = el.textContent;
-                el.replaceWith(`## ${text}\n\n`);
-            });
-
-            temp.querySelectorAll('h3').forEach(el => {
-                const text = el.textContent;
-                el.replaceWith(`### ${text}\n\n`);
-            });
-
-            // Convert blockquotes to markdown format
-            temp.querySelectorAll('blockquote').forEach(el => {
-                const text = el.textContent.trim();
-                const quotedText = text.split('\n').map(line => `> ${line}`).join('\n');
-                el.replaceWith(`${quotedText}\n\n`);
-            });
-
-            // Convert unordered lists to markdown format
-            temp.querySelectorAll('ul').forEach(ul => {
-                const items = Array.from(ul.querySelectorAll('li')).map(li => `- ${li.textContent}`).join('\n');
-                ul.replaceWith(`${items}\n\n`);
-            });
-
-            // Convert ordered lists to markdown format
-            temp.querySelectorAll('ol').forEach(ol => {
-                const items = Array.from(ol.querySelectorAll('li')).map((li, i) => `${i + 1}. ${li.textContent}`).join('\n');
-                ol.replaceWith(`${items}\n\n`);
-            });
-
-            // Replace remaining block elements with newlines
-            temp.querySelectorAll('p, br').forEach(el => {
-                if (el.tagName === 'BR') {
-                    el.replaceWith('\n');
-                } else {
-                    el.insertAdjacentText('afterend', '\n\n');
-                }
-            });
-
-            // Get text content
-            return temp.textContent.trim();
+            lastHtml = ArticleFormatting.sanitize(html);
+            lastWritingText = ArticleFormatting.toText(lastHtml);
+            return lastWritingText;
         }
 
-        // Convert text back to HTML
         function textToHtml(text) {
-            // Split by double newlines to identify paragraphs
-            const paragraphs = text.split(/\n\n+/);
-
-            return paragraphs.map(para => {
-                para = para.trim();
-                if (!para) return '';
-
-                // Check for markdown headings
-                if (para.startsWith('## ')) {
-                    const headingText = para.substring(3);
-                    return `<h2>${escapeHtml(headingText)}</h2>`;
-                }
-                if (para.startsWith('### ')) {
-                    const headingText = para.substring(4);
-                    return `<h3>${escapeHtml(headingText)}</h3>`;
-                }
-
-                // Check for blockquotes (lines starting with >)
-                if (para.startsWith('> ') || para.startsWith('>')) {
-                    const quoteLines = para.split('\n').map(line => {
-                        return line.replace(/^>\s?/, '');
-                    });
-                    return `<blockquote><p>${escapeHtml(quoteLines.join(' '))}</p></blockquote>`;
-                }
-
-                // Check for unordered lists (lines starting with -)
-                if (para.match(/^- /m)) {
-                    const items = para.split('\n')
-                        .filter(line => line.trim().startsWith('- '))
-                        .map(line => `<li>${processInlineFormatting(escapeHtml(line.trim().substring(2)))}</li>`)
-                        .join('\n');
-                    return `<ul>\n${items}\n</ul>`;
-                }
-
-                // Check for ordered lists (lines starting with number.)
-                if (para.match(/^\d+\. /m)) {
-                    const items = para.split('\n')
-                        .filter(line => line.trim().match(/^\d+\. /))
-                        .map(line => `<li>${processInlineFormatting(escapeHtml(line.trim().replace(/^\d+\. /, '')))}</li>`)
-                        .join('\n');
-                    return `<ol>\n${items}\n</ol>`;
-                }
-
-                // Check if it looks like a heading (short, no punctuation at end, not a list)
-                if (para.length < 80 && !para.match(/[.!?]$/) && !para.startsWith('-') && !para.match(/^\d+\./)) {
-                    return `<h2>${escapeHtml(para)}</h2>`;
-                }
-
-                // Regular paragraph
-                // Replace single newlines with <br>
-                let processedPara = para.split('\n').map(line => {
-                    return escapeHtml(line.trim());
-                }).join('<br>');
-
-                // Process inline formatting
-                processedPara = processInlineFormatting(processedPara);
-
-                return `<p>${processedPara}</p>`;
-            }).join('\n\n');
+            // A view switch alone must never rewrite a previously formatted article.
+            return text === lastWritingText ? lastHtml : ArticleFormatting.toHtml(text);
         }
 
-        // Process inline formatting (bold, italic, strikethrough, links, images)
-        function processInlineFormatting(text) {
-            // Convert markdown images: ![alt](url) to <img>
-            text = text.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1">');
+        function articleContent() {
+            const value = document.getElementById('post-content').value;
+            return ArticleFormatting.sanitize(editorView === 'text' ? textToHtml(value) : value);
+        }
 
-            // Convert text links like "text (url)" to HTML links
-            text = text.replace(/([^(]+)\s*\((https?:\/\/[^\s)]+)\)/g, function(match, linkText, url) {
-                // Don't convert if it's an image
-                if (linkText.includes('<img')) return match;
-                return `<a href="${url.trim()}">${linkText.trim()}</a>`;
-            });
-
-            // Re-process to unescape the links and images we just created
-            text = text.replace(/&lt;a href=&quot;([^&]+)&quot;&gt;([^&]+)&lt;\/a&gt;/g, '<a href="$1">$2</a>');
-            text = text.replace(/&lt;img src=&quot;([^&]+)&quot; alt=&quot;([^&]*)&quot;&gt;/g, '<img src="$1" alt="$2">');
-
-            // Convert markdown-style strikethrough: ~~text~~ to <s>text</s>
-            text = text.replace(/~~([^~]+)~~/g, '<s>$1</s>');
-
-            // Convert markdown-style bold: **text** to <strong>text</strong>
-            text = text.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
-
-            // Convert markdown-style italic: *text* to <em>text</em>
-            text = text.replace(/\*([^*]+)\*/g, '<em>$1</em>');
-
-            return text;
+        function separateBlock(text, before, after) {
+            if (editorView !== 'text') return text;
+            return (before && !before.endsWith('\n\n') ? '\n\n' : '') + text +
+                (after && !after.startsWith('\n\n') ? '\n\n' : '');
         }
 
         // Switch editor view
@@ -929,8 +300,8 @@
                 textarea.value = htmlToText(htmlContent);
                 textarea.style.fontFamily = 'inherit';
                 textarea.style.fontSize = '1em';
-                textarea.style.lineHeight = '1.6';
-                hint.textContent = 'Plain text view - HTML tags hidden for easier editing.';
+                textarea.style.lineHeight = '1.65';
+                hint.textContent = 'Writing view — use the tools or Markdown for headings, emphasis, quotes, links and lists.';
                 editorView = 'text';
                 buttons[0].classList.add('active');
                 buttons[1].classList.remove('active');
@@ -942,9 +313,9 @@
                 textarea.value = converted;
                 htmlContent = converted;
                 textarea.style.fontFamily = 'monospace';
-                textarea.style.fontSize = '0.9em';
-                textarea.style.lineHeight = '1.4';
-                hint.textContent = 'HTML view - Edit the raw HTML markup.';
+                textarea.style.fontSize = '16px';
+                textarea.style.lineHeight = '1.65';
+                hint.textContent = 'HTML source — preview shows exactly how the article will read.';
                 editorView = 'html';
                 buttons[0].classList.remove('active');
                 buttons[1].classList.add('active');
@@ -955,6 +326,7 @@
         function openLinkModal() {
             const textarea = document.getElementById('post-content');
             cursorPosition = textarea.selectionStart;
+            linkSelectionEnd = textarea.selectionEnd;
 
             // If text is selected, use it as link text
             const selectedText = textarea.value.substring(textarea.selectionStart, textarea.selectionEnd);
@@ -1001,17 +373,17 @@
 
             let linkHtml;
             if (editorView === 'text') {
-                // In text view, insert readable link format
-                linkHtml = `${linkText} (${linkUrl})`;
+                linkHtml = ArticleFormatting.toText(`<a href="${escapeHtml(linkUrl).replace(/"/g, '&quot;')}">${escapeHtml(linkText)}</a>`);
             } else {
                 // In HTML view, insert proper HTML anchor tag
-                linkHtml = `<a href="${linkUrl}">${linkText}</a>`;
+                linkHtml = `<a href="${escapeHtml(linkUrl).replace(/"/g, '&quot;')}">${escapeHtml(linkText)}</a>`;
             }
 
             // Insert at cursor position
             const before = currentContent.substring(0, cursorPosition);
-            const after = currentContent.substring(cursorPosition);
+            const after = currentContent.substring(linkSelectionEnd);
             textarea.value = before + linkHtml + after;
+            updateWordCount();
 
             // Update stored HTML if in text view
             if (editorView === 'text') {
@@ -1093,7 +465,7 @@
                 } else if (style === 'h3') {
                     formattedText = `### ${selectedText}`;
                 } else {
-                    formattedText = selectedText; // Body - no special formatting
+                    formattedText = selectedText.replace(/^#{1,6}\s+/gm, '');
                 }
             } else {
                 // In HTML view, use HTML tags
@@ -1109,6 +481,7 @@
             // Replace selected text with formatted text
             const before = textarea.value.substring(0, start);
             const after = textarea.value.substring(end);
+            formattedText = separateBlock(formattedText, before, after);
             textarea.value = before + formattedText + after;
 
             // Set cursor position after the formatted text
@@ -1151,6 +524,7 @@
             // Replace selected text with formatted text
             const before = textarea.value.substring(0, start);
             const after = textarea.value.substring(end);
+            formattedText = separateBlock(formattedText, before, after);
             textarea.value = before + formattedText + after;
 
             // Set cursor position
@@ -1194,6 +568,7 @@
             // Replace selected text with formatted text
             const before = textarea.value.substring(0, start);
             const after = textarea.value.substring(end);
+            formattedText = separateBlock(formattedText, before, after);
             textarea.value = before + formattedText + after;
 
             // Set cursor position
@@ -1237,6 +612,7 @@
             // Replace selected text with formatted text
             const before = textarea.value.substring(0, start);
             const after = textarea.value.substring(end);
+            formattedText = separateBlock(formattedText, before, after);
             textarea.value = before + formattedText + after;
 
             // Set cursor position
@@ -1268,6 +644,7 @@
             if (wordCountEl) {
                 wordCountEl.textContent = `${wordCount} words`;
             }
+            queueWorkingDraft();
         }
 
         // Open image modal
@@ -1423,26 +800,26 @@
             }
 
             // Sort by date, newest first
-            const sortedPosts = [...posts].sort((a, b) => new Date(b.date) - new Date(a.date));
+            const filter = document.getElementById('manage-status').value;
+            const sortedPosts = posts.filter((post) => filter === 'all' || (post.status || 'published') === filter)
+                .sort((a, b) => new Date(b.date) - new Date(a.date));
+            if (!sortedPosts.length) {
+                container.innerHTML = '<p class="status">No posts in this view yet.</p>';
+                return;
+            }
 
             container.innerHTML = sortedPosts.map(post => {
                 const status = post.status || 'published';
-                const statusStyles = {
-                    'published': { bg: '#dcfce7', color: '#166534', border: '#86efac' },
-                    'draft': { bg: '#dbeafe', color: '#1e40af', border: '#93c5fd' },
-                    'archived': { bg: '#f3f4f6', color: '#4b5563', border: '#d1d5db' }
-                };
                 const statusLabels = {
                     'published': 'Published',
                     'draft': 'Draft',
                     'archived': 'Archived'
                 };
-                const style = statusStyles[status];
                 return `
                 <div class="post-item">
-                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 10px;">
-                        <h3 style="margin: 0;">${escapeHtml(post.title)}</h3>
-                        <span style="padding: 4px 12px; font-size: 0.8em; font-weight: 500; border-radius: 12px; background-color: ${style.bg}; color: ${style.color}; border: 1px solid ${style.border};">${statusLabels[status]}</span>
+                    <div class="post-item-heading">
+                        <h3>${escapeHtml(post.title)}</h3>
+                        <span class="post-status">${statusLabels[status]}</span>
                     </div>
                     <div class="post-meta">
                         ${formatDate(post.date)} • Slug: ${escapeHtml(post.slug)}
@@ -1450,7 +827,7 @@
                     <p>${escapeHtml(post.excerpt)}</p>
                     <div class="post-actions">
                         <button class="btn btn-small" onclick="editPost(${post.id})">Edit</button>
-                        <button class="btn btn-small" onclick="openCarousel('${post.slug}')">📸 Carousel</button>
+                        <button class="btn btn-small" onclick="openCarousel('${post.slug}')">Carousel</button>
                         <button class="btn btn-small btn-danger" onclick="deletePost(${post.id})">Delete</button>
                     </div>
                 </div>
@@ -1458,14 +835,44 @@
             }).join('');
         }
 
+        function todayLocal() {
+            const date = new Date();
+            return [date.getFullYear(), String(date.getMonth() + 1).padStart(2, '0'), String(date.getDate()).padStart(2, '0')].join('-');
+        }
+
         // Format date
         function formatDate(dateStr) {
-            const date = new Date(dateStr);
+            const date = new Date(`${dateStr}T12:00:00`);
             return date.toLocaleDateString('en-US', {
                 year: 'numeric',
                 month: 'long',
                 day: 'numeric'
             });
+        }
+
+        function beginManualPost() {
+            isEditing = false;
+            currentPostId = posts.length ? Math.max(...posts.map((post) => post.id)) + 1 : 1;
+            document.getElementById('post-title').value = 'Untitled thought';
+            document.getElementById('post-slug').value = `thought-${Date.now()}`;
+            document.getElementById('post-date').value = todayLocal();
+            document.getElementById('post-excerpt').value = '';
+            document.getElementById('post-status').value = 'draft';
+            document.getElementById('title-options').style.display = 'none';
+            document.getElementById('post-content').value = htmlToText(ArticleFormatting.toHtml(document.getElementById('raw-text').value));
+            editorView = 'text';
+            document.getElementById('post-content').style.fontFamily = 'inherit';
+            document.getElementById('post-content').style.fontSize = '16px';
+            document.getElementById('post-content').style.lineHeight = '1.65';
+            document.getElementById('content-view-hint').textContent = 'Writing view — use the tools or Markdown for headings, emphasis, quotes, links and lists.';
+            document.querySelectorAll('.view-toggle button').forEach((button, index) => button.classList.toggle('active', index === 0));
+            document.getElementById('review-intro').textContent = 'Save a draft to keep it in your Writer’s Room. It stays off the public site until you choose Published.';
+            document.getElementById('paste-section').classList.add('hidden');
+            document.getElementById('review-section').classList.remove('hidden');
+            document.getElementById('preview-section').classList.add('hidden');
+            updatePublishButtonLabel();
+            updateWordCount();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         // Generate post with AI
@@ -1496,17 +903,24 @@
                 }
 
                 const data = await response.json();
+                if (typeof data.content !== 'string' || !data.content.trim()) throw new Error('No article content was generated. Try again.');
+                data.content = ArticleFormatting.fromGenerated(data.content);
+                data.titleOptions = Array.isArray(data.titleOptions) ? data.titleOptions.filter((title) => typeof title === 'string' && title.trim()) : [];
+                data.excerpt = typeof data.excerpt === 'string' ? data.excerpt : '';
 
                 // Show title options
                 if (data.titleOptions && data.titleOptions.length > 0) {
                     const titleOptionsDiv = document.getElementById('title-options');
                     const titleButtonsDiv = document.getElementById('title-buttons');
 
-                    titleButtonsDiv.innerHTML = data.titleOptions.map((title, index) => `
-                        <button type="button" class="btn btn-small" onclick="selectTitle('${escapeHtml(title).replace(/'/g, "\\'")}', event)" style="text-align: left; justify-content: flex-start;">
-                            ${index + 1}. ${escapeHtml(title)}
-                        </button>
-                    `).join('');
+                    titleButtonsDiv.replaceChildren(...data.titleOptions.map((title, index) => {
+                        const button = document.createElement('button');
+                        button.type = 'button';
+                        button.className = 'btn btn-small title-option';
+                        button.textContent = `${index + 1}. ${title}`;
+                        button.addEventListener('click', (event) => selectTitle(title, event));
+                        return button;
+                    }));
 
                     titleOptionsDiv.style.display = 'block';
 
@@ -1536,24 +950,26 @@
                 // Auto-fill other fields
                 document.getElementById('post-excerpt').value = data.excerpt;
                 htmlContent = data.content;
-                document.getElementById('post-content').value = data.content;
-                editorView = 'html';
-                document.getElementById('post-date').value = new Date().toISOString().split('T')[0];
+                document.getElementById('post-content').value = htmlToText(data.content);
+                editorView = 'text';
+                document.getElementById('post-date').value = todayLocal();
                 document.getElementById('post-status').value = 'draft'; // Default to draft for new posts
                 updatePublishButtonLabel();
 
                 // Generate new ID
                 currentPostId = posts.length > 0 ? Math.max(...posts.map(p => p.id)) + 1 : 1;
 
-                // Keep the AI's publication-ready HTML intact by default.
+                // Writing view keeps the original HTML until the author makes an edit.
                 const buttons = document.querySelectorAll('.view-toggle button');
-                buttons[0].classList.remove('active');
-                buttons[1].classList.add('active');
-                document.getElementById('post-content').style.fontFamily = 'monospace';
-                document.getElementById('post-content').style.fontSize = '0.9em';
-                document.getElementById('post-content').style.lineHeight = '1.4';
-                document.getElementById('content-view-hint').textContent = 'Formatted HTML view - AI formatting is preserved when you publish.';
+                buttons[0].classList.add('active');
+                buttons[1].classList.remove('active');
+                document.getElementById('post-content').style.fontFamily = 'inherit';
+                document.getElementById('post-content').style.fontSize = '16px';
+                document.getElementById('post-content').style.lineHeight = '1.65';
+                document.getElementById('content-view-hint').textContent = 'Writing view — use the tools or Markdown for headings, emphasis, quotes, links and lists.';
+                updateWordCount();
 
+                document.getElementById('review-intro').textContent = 'Formatting is ready. Review the piece, then save a draft or publish when you choose.';
                 // Show review section
                 document.getElementById('paste-section').classList.add('hidden');
                 document.getElementById('review-section').classList.remove('hidden');
@@ -1563,10 +979,10 @@
             } catch (error) {
                 console.error('Error:', error);
                 generateStatus.textContent = '✗ Error: ' + error.message;
-                generateStatus.style.color = '#dc3545';
+                generateStatus.style.color = 'var(--writer-error)';
             } finally {
                 generateBtn.disabled = false;
-                generateBtn.textContent = '✨ Generate Post with AI';
+                generateBtn.textContent = 'Format with AI';
             }
         }
 
@@ -1590,30 +1006,19 @@
             const title = document.getElementById('post-title').value;
             const date = document.getElementById('post-date').value;
 
-            // Get content in HTML format for preview
-            let content;
-            if (editorView === 'text') {
-                content = textToHtml(document.getElementById('post-content').value);
-            } else {
-                content = document.getElementById('post-content').value;
-            }
-            content = sanitizeContent(content);
+            const content = articleContent();
 
             if (!title || !content) {
                 alert('Please fill in title and content first.');
                 return;
             }
 
-            const formattedDate = new Date(date).toLocaleDateString('en-US', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
-            });
+            const formattedDate = formatDate(date);
 
             document.getElementById('preview-content').innerHTML = `
                 <article>
                     <h1 style="margin-bottom: 10px;">${escapeHtml(title)}</h1>
-                    <p style="opacity: 0.7; font-style: italic; margin-bottom: 30px;">${formattedDate}</p>
+                    <p class="post-date" style="font-style: italic; margin-bottom: 30px;">${formattedDate}</p>
                     <div class="post-body">${content}</div>
                 </article>
             `;
@@ -1634,6 +1039,11 @@
 
             isEditing = true;
             currentPostId = id;
+            document.getElementById('preview-section').classList.add('hidden');
+            document.getElementById('title-options').style.display = 'none';
+            document.getElementById('review-intro').textContent = (post.status || 'published') === 'draft'
+                ? 'This draft is saved in your Writer’s Room. It stays off the public site until you choose Published.'
+                : 'You are editing a saved post. Preview your changes before saving.';
 
             // Fill form with post data
             document.getElementById('post-title').value = post.title;
@@ -1641,18 +1051,19 @@
             document.getElementById('post-date').value = post.date;
             document.getElementById('post-excerpt').value = post.excerpt;
             htmlContent = post.content;
-            document.getElementById('post-content').value = post.content;
-            editorView = 'html';
+            document.getElementById('post-content').value = htmlToText(post.content);
+            editorView = 'text';
             document.getElementById('post-status').value = post.status || 'published'; // Default to published for legacy posts
 
-            // Existing HTML must remain intact unless the editor explicitly switches views.
+            // Writing view keeps the original HTML until the author makes an edit.
             const buttons = document.querySelectorAll('.view-toggle button');
-            buttons[0].classList.remove('active');
-            buttons[1].classList.add('active');
-            document.getElementById('post-content').style.fontFamily = 'monospace';
-            document.getElementById('post-content').style.fontSize = '0.9em';
-            document.getElementById('post-content').style.lineHeight = '1.4';
-            document.getElementById('content-view-hint').textContent = 'Formatted HTML view - AI formatting is preserved when you publish.';
+            buttons[0].classList.add('active');
+            buttons[1].classList.remove('active');
+            document.getElementById('post-content').style.fontFamily = 'inherit';
+            document.getElementById('post-content').style.fontSize = '16px';
+            document.getElementById('post-content').style.lineHeight = '1.65';
+            document.getElementById('content-view-hint').textContent = 'Writing view — use the tools or Markdown for headings, emphasis, quotes, links and lists.';
+            updateWordCount();
 
             // Hide paste section, show review section
             document.getElementById('paste-section').classList.add('hidden');
@@ -1686,7 +1097,7 @@
                 const response = await fetch('/api/save-post', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ posts: nextPosts })
+                    body: JSON.stringify({ posts: nextPosts, deletedPostId: id, expectedPost: posts.find((post) => post.id === id) })
                 });
 
                 if (!response.ok) {
@@ -1694,8 +1105,9 @@
                     throw new Error(error.error || 'Failed to delete');
                 }
 
-                posts = nextPosts;
-                showAlert('✓ Post deleted! Your site will update in ~30 seconds.', 'success');
+                const saved = await response.json();
+                posts = saved.posts || nextPosts;
+                showAlert('✓ Post deleted.', 'success');
                 renderPostsList();
 
             } catch (error) {
@@ -1711,20 +1123,12 @@
             const date = document.getElementById('post-date').value;
             const excerpt = document.getElementById('post-excerpt').value.trim();
 
-            // Get content in HTML format
-            let content;
-            if (editorView === 'text') {
-                // Convert text to HTML before saving
-                content = textToHtml(document.getElementById('post-content').value.trim());
-            } else {
-                content = document.getElementById('post-content').value.trim();
-            }
-            content = sanitizeContent(content);
+            const content = articleContent();
 
             const status = document.getElementById('post-status').value;
 
-            if (!title || !slug || !date || !excerpt || !content || !status) {
-                alert('Please fill in all fields.');
+            if (!title || !slug || !date || !content || !status || (status === 'published' && !excerpt)) {
+                alert(status === 'published' ? 'Add a title, excerpt, date and article before publishing.' : 'Add a title and some writing before saving the draft.');
                 return;
             }
 
@@ -1758,7 +1162,8 @@
                             date,
                             excerpt,
                             content,
-                            status
+                            status,
+                            updatedAt: new Date().toISOString()
                         };
                     } else throw new Error('The post being edited no longer exists. Refresh and try again.');
                 } else {
@@ -1770,7 +1175,8 @@
                         date,
                         excerpt,
                         content,
-                        status
+                        status,
+                        updatedAt: new Date().toISOString()
                     });
                 }
 
@@ -1778,7 +1184,7 @@
                 const response = await fetch('/api/save-post', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ posts: nextPosts })
+                    body: JSON.stringify({ posts: nextPosts, changedPostId: currentPostId, expectedPost: isEditing ? posts.find((post) => post.id === currentPostId) : null })
                 });
 
                 if (!response.ok) {
@@ -1786,13 +1192,12 @@
                     throw new Error(error.error || 'Failed to save');
                 }
 
-                posts = nextPosts;
+                const saved = await response.json();
+                posts = saved.posts || nextPosts;
                 clearWorkingDraft();
-                const successMessage = isEditing
-                    ? '✓ Post updated successfully.'
-                    : status === 'published'
-                        ? '✓ Post published! Your site will update shortly.'
-                        : '✓ Draft saved successfully.';
+                const successMessage = status === 'published'
+                    ? '✓ Post is live.' : status === 'draft'
+                        ? '✓ Draft saved to your Writer’s Room. It is not public.' : '✓ Archived post saved.';
                 showAlert(successMessage, 'success');
 
                 // Reset form and go back to create tab
@@ -1805,7 +1210,10 @@
                     currentPostId = null;
                     editorView = 'text';
                     htmlContent = '';
+                    ['post-title', 'post-slug', 'post-excerpt', 'post-content'].forEach((id) => { document.getElementById(id).value = ''; });
+                    publishBtn.disabled = false;
                     updatePublishButtonLabel();
+                    clearWorkingDraft();
 
                     // Reset view toggle buttons
                     const buttons = document.querySelectorAll('.view-toggle button');
@@ -1869,36 +1277,10 @@
             return div.innerHTML;
         }
 
-        function sanitizeContent(html) {
-            const allowedTags = new Set(['P', 'BR', 'H2', 'H3', 'STRONG', 'B', 'EM', 'I', 'S', 'DEL', 'BLOCKQUOTE', 'UL', 'OL', 'LI', 'A', 'IMG']);
-            const documentFragment = new DOMParser().parseFromString(`<div>${html}</div>`, 'text/html').body.firstElementChild;
-            Array.from(documentFragment.querySelectorAll('*')).forEach((element) => {
-                if (!allowedTags.has(element.tagName)) {
-                    element.replaceWith(...element.childNodes);
-                    return;
-                }
-                const href = element.getAttribute('href') || '';
-                const src = element.getAttribute('src') || '';
-                const alt = element.getAttribute('alt') || '';
-                Array.from(element.attributes).forEach((attribute) => element.removeAttribute(attribute.name));
-                if (element.tagName === 'A') {
-                    if (/^(https?:\/\/|mailto:|\/)/i.test(href)) element.setAttribute('href', href);
-                }
-                if (element.tagName === 'IMG') {
-                    if (/^(https:\/\/|\/images\/)/i.test(src)) {
-                        element.setAttribute('src', src);
-                        element.setAttribute('alt', alt);
-                        element.setAttribute('loading', 'lazy');
-                    } else element.remove();
-                }
-            });
-            return documentFragment.innerHTML;
-        }
-
         function updatePublishButtonLabel() {
             const status = document.getElementById('post-status').value;
             const button = document.getElementById('publish-btn');
-            if (isEditing) button.textContent = status === 'draft' ? 'Update Draft' : 'Update Post';
+            if (isEditing) button.textContent = status === 'draft' ? 'Save Draft' : status === 'published' && posts.find((post) => post.id === currentPostId)?.status === 'draft' ? 'Publish Post' : 'Update Post';
             else button.textContent = status === 'published' ? 'Publish Post' : status === 'archived' ? 'Save Archived' : 'Save Draft';
         }
 
@@ -1923,9 +1305,13 @@
                 reviewing: !document.getElementById('review-section').classList.contains('hidden')
             };
             if (!draft.rawText && !draft.title && !draft.content) return;
-            localStorage.setItem(WORKING_DRAFT_KEY, JSON.stringify(draft));
+            try { localStorage.setItem(WORKING_DRAFT_KEY, JSON.stringify(draft)); }
+            catch (_) {
+                document.getElementById('save-state').textContent = 'Could not save on this device. Use Save Draft to keep your writing.';
+                return;
+            }
             const state = document.getElementById('save-state');
-            if (state) state.textContent = `Recovered locally · saved ${new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}`;
+            if (state) state.textContent = `Saved on this device · ${new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}`;
         }
 
         function queueWorkingDraft() {
@@ -1943,8 +1329,14 @@
         function restoreWorkingDraft() {
             let draft;
             try { draft = JSON.parse(localStorage.getItem(WORKING_DRAFT_KEY)); } catch (_) { return; }
-            if (!draft || Date.now() - draft.savedAt > 7 * 24 * 60 * 60 * 1000) return;
-            if (!confirm('A locally saved writing draft was found. Restore it?')) return;
+            if (!draft || !Number.isFinite(draft.savedAt)) return;
+            const remote = posts.find((post) => post.id === draft.currentPostId);
+            if (draft.isEditing && remote?.updatedAt && Date.parse(remote.updatedAt) > draft.savedAt) {
+                clearWorkingDraft();
+                showAlert('A newer version is saved in your Writer’s Room. Open it from Manage Posts.', 'info');
+                return;
+            }
+            if (!confirm('Recover your unsaved writing from this device?')) return;
             document.getElementById('raw-text').value = draft.rawText || '';
             document.getElementById('post-title').value = draft.title || '';
             document.getElementById('post-slug').value = draft.slug || '';
@@ -1954,12 +1346,15 @@
             document.getElementById('post-content').value = draft.content || '';
             currentPostId = draft.currentPostId;
             isEditing = Boolean(draft.isEditing);
-            editorView = 'text';
+            editorView = draft.editorView || 'text';
             if (draft.reviewing) {
                 document.getElementById('paste-section').classList.add('hidden');
                 document.getElementById('review-section').classList.remove('hidden');
                 updatePublishButtonLabel();
-                if (draft.editorView === 'html') switchEditorView('html');
+                document.querySelectorAll('.view-toggle button').forEach((button, index) => button.classList.toggle('active', index === (editorView === 'text' ? 0 : 1)));
+                document.getElementById('post-content').style.fontFamily = editorView === 'html' ? 'monospace' : 'inherit';
+                document.getElementById('post-content').style.fontSize = '16px';
+                document.getElementById('review-intro').textContent = 'Recovered writing from this device. Save a draft to keep it in your Writer’s Room.';
             }
             updateWordCount();
             document.getElementById('save-state').textContent = 'Recovered local draft';
@@ -1977,6 +1372,7 @@
                 const data = await response.json();
                 if (data.authenticated) {
                     document.getElementById('auth-gate').hidden = true;
+                    document.querySelector('.create-container').inert = false;
                     await loadPosts();
                     restoreWorkingDraft();
                 }
@@ -2002,6 +1398,7 @@
                 const data = await response.json();
                 if (!response.ok || !data.valid) throw new Error(data.error || 'Invalid password');
                 document.getElementById('auth-gate').hidden = true;
+                document.querySelector('.create-container').inert = false;
                 document.getElementById('admin-password').value = '';
                 await loadPosts();
                 restoreWorkingDraft();

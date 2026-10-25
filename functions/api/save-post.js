@@ -6,7 +6,7 @@ export async function onRequestPost(context) {
   const headers = { 'Content-Type': 'application/json' };
 
   try {
-    const { posts } = await context.request.json();
+    const { posts, changedPostId, deletedPostId, expectedPost } = await context.request.json();
 
     if (!posts || !Array.isArray(posts) || posts.length > 1000) {
       return new Response(JSON.stringify({ error: 'Invalid posts data' }), {
@@ -55,12 +55,48 @@ export async function onRequestPost(context) {
     );
 
     let sha;
+    let latestPosts = [];
     if (getFileResponse.ok) {
       const fileData = await getFileResponse.json();
       sha = fileData.sha;
+      const binary = atob(fileData.content.replace(/\n/g, ''));
+      latestPosts = JSON.parse(new TextDecoder().decode(Uint8Array.from(binary, (character) => character.charCodeAt(0)))).posts;
+    } else {
+      throw new Error('Could not read the saved posts. Your changes have not been written.');
     }
 
-    const content = JSON.stringify({ posts }, null, 2);
+    let savedPosts = posts;
+    const targetId = deletedPostId ?? changedPostId;
+    if (targetId !== undefined) {
+      if (!Number.isSafeInteger(targetId) || !Array.isArray(latestPosts)) {
+        return new Response(JSON.stringify({ error: 'Invalid post update' }), { status: 400, headers });
+      }
+      const existing = latestPosts.find((post) => post.id === targetId);
+      const canonical = (post) => JSON.stringify(post, Object.keys(post).sort());
+      if (expectedPost && (!existing || canonical(existing) !== canonical(expectedPost))) {
+        return new Response(JSON.stringify({ error: 'This post changed in another session. Your writing is still saved on this device. Reopen the latest version before saving.' }), { status: 409, headers });
+      }
+      if (deletedPostId !== undefined) {
+        savedPosts = latestPosts.filter((post) => post.id !== targetId);
+      } else {
+        const changed = posts.find((post) => post.id === targetId);
+        if (!changed) return new Response(JSON.stringify({ error: 'Post update is missing' }), { status: 400, headers });
+        if (expectedPost) {
+          savedPosts = latestPosts.map((post) => post.id === targetId ? changed : post);
+        } else {
+          // Independent new drafts can be created on two devices without sharing an ID.
+          const id = existing ? Math.max(0, ...latestPosts.map((post) => post.id)) + 1 : targetId;
+          const slug = latestPosts.some((post) => post.slug === changed.slug);
+          if (slug) return new Response(JSON.stringify({ error: 'That URL slug is already in use. Choose another before saving.' }), { status: 409, headers });
+          savedPosts = [...latestPosts, { ...changed, id }];
+        }
+      }
+      if (new Set(savedPosts.map((post) => post.slug)).size !== savedPosts.length) {
+        return new Response(JSON.stringify({ error: 'That URL slug is already in use. Choose another before saving.' }), { status: 409, headers });
+      }
+    }
+
+    const content = JSON.stringify({ posts: savedPosts }, null, 2);
     const encodedContent = btoa(unescape(encodeURIComponent(content)));
 
     const updateResponse = await fetch(
@@ -92,19 +128,17 @@ export async function onRequestPost(context) {
     let deployTriggered = false;
 
     if (deployHookUrl) {
-      const deployResponse = await fetch(deployHookUrl, {
-        method: 'POST',
-        headers: {
-          'User-Agent': 'Cloudflare-Pages-Function',
-        },
-      });
+      // Live article routes read this saved source directly; a build refresh is optional.
+      try {
+        const deployResponse = await fetch(deployHookUrl, {
+          method: 'POST',
+          headers: {
+            'User-Agent': 'Cloudflare-Pages-Function',
+          },
+        });
 
-      if (!deployResponse.ok) {
-        const deployText = await deployResponse.text();
-        throw new Error(`GitHub updated, but deploy trigger failed: ${deployResponse.status} ${deployText}`);
-      }
-
-      deployTriggered = true;
+        deployTriggered = deployResponse.ok;
+      } catch (_) {}
     }
 
     return new Response(
@@ -112,9 +146,10 @@ export async function onRequestPost(context) {
         success: true,
         message: deployTriggered
           ? 'Post saved to GitHub and deployment triggered successfully!'
-          : 'Post saved to GitHub successfully! Deployment hook not configured.',
+          : 'Post saved successfully.',
         commit: result.commit,
         deployTriggered,
+        posts: savedPosts,
       }),
       { status: 200, headers }
     );
