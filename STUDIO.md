@@ -62,7 +62,7 @@ Apply `migrations/0002_studio.sql` before deploying these Functions. It contains
 
 ## Reading cards and signup invitations
 
-The Reading card layout centres fuller passages vertically, with a small name at the top and a page count below. It supports light, dark and alternating palettes. Reading cards aim for 60–100 body words; measured height still gates export and approval in the editor. Other layouts retain shorter slide pacing. The redundant “A thought by” header has been removed from all layouts.
+The Reading card layout centres fuller passages vertically, with John Owolabi at the top left, a palette switch mark at the top right, and a page count below. JO appears in the footer. The switch mark follows each slide’s palette; export palette controls remain interactive in the studio. It supports light, dark and alternating palettes. Reading cards aim for 60–100 body words; measured height still gates export and approval in the editor. Other layouts retain shorter slide pacing. The redundant “A thought by” header has been removed from all layouts.
 
 The public signup box appears after Thoughts on the homepage, at the end of each article, and on the writing index. Native form submission still works without JavaScript. The enhanced form keeps readers on the page, supports email autofill, retains the address on errors, and explains inbox confirmation without disclosing an address’s existing subscription status. The old article loader now uses the owned signup endpoint too.
 

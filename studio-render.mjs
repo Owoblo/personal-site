@@ -66,6 +66,18 @@ export async function renderSlide(canvas, data, index) {
   c.fillStyle = bg;
   c.fillRect(0, 0, 1080, 1350);
   c.textBaseline = "top";
+  c.fillStyle = ink;
+  c.font = "italic 40px Georgia,serif";
+  c.fillText("John Owolabi", 88, 110);
+  c.strokeStyle = muted;
+  c.lineWidth = 2.5;
+  c.beginPath();
+  c.roundRect(900, 105, 92, 46, 23);
+  c.stroke();
+  c.beginPath();
+  c.arc(dark ? 969 : 923, 128, 16, 0, Math.PI * 2);
+  c.fillStyle = ink;
+  c.fill();
   if (data.template === "reading") {
     c.font = "bold 54px Georgia,serif";
     const heading = slide.heading ? lines(c, slide.heading, 904) : [];
@@ -81,8 +93,6 @@ export async function renderSlide(canvas, data, index) {
       Math.max(0, paragraphs.length - 1) * 20;
     let y = Math.max(270, Math.round((1350 - height) / 2));
     c.fillStyle = ink;
-    c.font = "italic 40px Georgia,serif";
-    c.fillText("John Owolabi", 88, 110);
     c.font = "bold 54px Georgia,serif";
     for (const line of heading) {
       c.fillText(line, 88, y);
@@ -105,7 +115,7 @@ export async function renderSlide(canvas, data, index) {
     c.fillText(`${index + 1} / ${data.slides.length}`, 540, 1215);
     c.textAlign = "left";
     c.font = "23px Georgia,serif";
-    c.fillText("johnowolabi.com", 88, 1260);
+    c.fillText("JO · johnowolabi.com", 88, 1260);
     return {
       fits,
       words,
@@ -114,9 +124,6 @@ export async function renderSlide(canvas, data, index) {
         : "This reading card needs more room. Split it before export.",
     };
   }
-  c.fillStyle = muted;
-  c.font = "28px Georgia,serif";
-  c.fillText("JO", 84, 74);
   let y = index === 0 ? 250 : 190;
   const photo =
     data.template === "photo" &&
@@ -173,7 +180,7 @@ export async function renderSlide(canvas, data, index) {
   c.fillRect(84, 1176, 912, 1);
   c.fillStyle = muted;
   c.font = "26px Georgia,serif";
-  c.fillText("John Owolabi · johnowolabi.com", 84, 1215);
+  c.fillText("JO · johnowolabi.com", 84, 1215);
   c.textAlign = "right";
   c.fillText(
     `${String(index + 1).padStart(2, "0")} / ${String(data.slides.length).padStart(2, "0")}`,
