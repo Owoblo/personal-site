@@ -11,7 +11,8 @@ export async function onRequestGet(context) {
     const data = await readPosts(context);
     const posts = await isAuthorized(context.request, context.env)
       ? data.posts
-      : data.posts.filter((post) => (post.status || 'published') === 'published');
+      : data.posts.filter((post) => (post.status || 'published') === 'published')
+        .map(({ _newsletter, ...post }) => post);
     return new Response(JSON.stringify({ ...data, posts }), { headers });
   } catch (_) {
     return new Response(JSON.stringify({ error: 'Articles are temporarily unavailable' }), { status: 503, headers });

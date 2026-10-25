@@ -34,6 +34,7 @@ const topLevelFiles = [
   "writer.css",
   "writer-theme.js",
   "article-formatting.js",
+  "subscribe.html",
 ];
 
 const topLevelDirectories = ["fonts", "images", "posts"];

@@ -21,10 +21,12 @@ This repo deploys to Cloudflare Pages, with static site assets and Pages Functio
 - `INSTAGRAM_ACCESS_TOKEN`
 - `INSTAGRAM_BUSINESS_ID`
 - `CLOUDFLARE_DEPLOY_HOOK_URL` for an optional refresh of static pages, sitemap, and generated social images after saving
+- `BUTTONDOWN_API_KEY` for publication announcements and the authenticated Email list tab
+- `NEWSLETTER_CRON_SECRET` for the protected retry endpoint; use the same secret in the retry worker
 
 ## Important notes
 
-- `_routes.json` enables Functions for `/api/*`, `/posts.json`, and `/post/*`.
+- `_routes.json` enables Functions for `/api/*`, `/posts.json`, `/feed.xml`, and `/post/*`.
 - The feed and live articles read the latest GitHub-backed post data. Publishing and editing an article do not depend on a deployment hook. Static article pages remain an availability fallback.
 - Public feed requests return published posts. The authenticated writer can see drafts and archived posts. Draft article URLs return 404; archived posts remain accessible by direct URL.
 - `functions/_lib/render-post.mjs` is the shared template used by static builds and live article requests. The writer's preview and public articles share `.post-body` styles.
@@ -43,3 +45,19 @@ This repo deploys to Cloudflare Pages, with static site assets and Pages Functio
 4. Run `npx wrangler pages dev dist`
 
 Run `npm test` for the publishing, draft visibility, and concurrent editing regression checks.
+
+## Publication emails
+
+The existing Buttondown list remains the subscriber source. Native signup forms preserve its confirmation, CAPTCHA, error, and unsubscribe flows. Only confirmed subscribers receive announcements; setup does not reactivate pending addresses or send old articles.
+
+When a draft first becomes published, the writer can select **Email readers when this goes live**. The site saves the article first, then creates a short Buttondown announcement linking to it. Saving drafts and editing previously published articles do not send email. Multiple new announcements are spaced at least 24 hours apart. The authenticated **Email list** tab shows subscriber counts, recent email status, and failed announcements with a retry action.
+
+An outbox entry is stored with the source article. Provider requests reuse a stable idempotency key so a retry after a timeout does not deliberately create another announcement. Failed attempts back off, with up to eight automatic attempts; the writer can retry manually afterward. Queued/scheduled means Buttondown accepted the request, not that every reader received it. Internal outbox metadata is excluded from the public posts endpoint.
+
+Deploy `workers/newsletter-cron/wrangler.toml` separately with Wrangler, then set its `NEWSLETTER_CRON_SECRET`. This worker checks the protected Pages endpoint every 15 minutes. It has no public worker URL and does not hold the Buttondown or GitHub keys. Deploy Pages with both production secrets before enabling the retry worker.
+
+The public `/feed.xml` is a reader RSS feed, separate from email sending. This setup does not enable Buttondown's paid RSS, tagging, or automation add-ons. Default provider confirmation messages remain in place; custom transactional messages require a different Buttondown plan.
+
+The optional signup redirect URLs are `https://johnowolabi.com/subscribe?status=pending` and `https://johnowolabi.com/subscribe?status=confirmed`. The site's confirmation page is informational; Buttondown verifies each address through its own confirmation link.
+
+Run `npm test` for RSS filtering, outbox retries, cron authentication, and publishing/draft regression checks. Delivery can be checked using Buttondown's send-draft API with an explicit owner-only recipient, without broadcasting to subscribers.

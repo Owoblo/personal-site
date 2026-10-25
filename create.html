@@ -7,8 +7,8 @@
     <title>Create Post - John Owolabi</title>
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <script src="writer-theme.js?v=20261025-1"></script>
-    <link rel="stylesheet" href="styles.css?v=20261025-4">
-    <link rel="stylesheet" href="writer.css?v=20261025-1">
+    <link rel="stylesheet" href="styles.css?v=20261025-5">
+    <link rel="stylesheet" href="writer.css?v=20261025-2">
 </head>
 <body class="writer-room">
     <div class="auth-gate" id="auth-gate">
@@ -50,6 +50,7 @@
         <div class="tabs">
             <button class="tab active" onclick="switchTab('create', event)">Create New Post</button>
             <button class="tab" onclick="switchTab('manage', event)">Manage Posts</button>
+            <button class="tab" onclick="switchTab('newsletter', event)">Email list</button>
         </div>
 
         <!-- Create Tab Content -->
@@ -150,6 +151,10 @@
                 <textarea id="post-content" required></textarea>
                 <small id="content-view-hint">HTML source — preview shows exactly how the article will read.</small>
             </div>
+            <div id="publication-email" class="publication-email" hidden>
+                <label for="notify-subscribers"><input type="checkbox" id="notify-subscribers" checked> Email readers when this goes live</label>
+                <p class="status">A short note with the title, excerpt, and article link. Uncheck this for a quiet publication. Announcements are spaced at least a day apart.</p>
+            </div>
             <div class="save-state" id="save-state" role="status" aria-live="polite"></div>
 
             <div class="actions">
@@ -189,6 +194,19 @@
             </div>
         </div><!-- End manage-tab -->
 
+        <div id="newsletter-tab" class="tab-content">
+            <section class="section">
+                <h2>Your email list</h2>
+                <p class="section-intro">A quiet way for readers to keep up with your thoughts.</p>
+                <div id="newsletter-status" role="status" aria-live="polite"><p class="status">Open this tab to check the connection.</p></div>
+                <p class="subscription-note">Only confirmed subscribers receive new-post emails. Saved drafts never enter the publication feed.</p>
+                <div class="actions">
+                    <a class="btn" href="https://buttondown.com/" target="_blank" rel="noopener">Open Buttondown</a>
+                    <a class="btn" href="/feed.xml" target="_blank" rel="noopener">View publication feed</a>
+                    <button class="btn" onclick="loadNewsletter()">Refresh</button>
+                </div>
+            </section>
+        </div>
     </div><!-- End container -->
 
     <!-- Link Insert Modal -->
@@ -257,6 +275,46 @@
             // Load posts when switching to manage tab
             if (tabName === 'manage') {
                 renderPostsList();
+            }
+            if (tabName === 'newsletter') loadNewsletter();
+        }
+
+        async function loadNewsletter() {
+            const container = document.getElementById('newsletter-status');
+            container.innerHTML = '<p class="status">Checking your email list…</p>';
+            try {
+                const response = await fetch('/api/newsletter');
+                const data = await response.json();
+                if (!response.ok) throw new Error(data.error || 'Could not check the email list.');
+                if (!data.configured) {
+                    container.innerHTML = '<p>Buttondown needs to be connected before sending can be checked.</p>';
+                    return;
+                }
+                const mode = data.notificationMode === 'publishing' ? 'Connected to publishing' : 'Not active';
+                const counts = [['Confirmed readers', data.confirmed], ['Awaiting confirmation', data.pending], ['Undeliverable', data.undeliverable]];
+                container.innerHTML = `<dl class="newsletter-counts">${counts.map(([label, count]) => `<div><dt>${label}</dt><dd>${count ?? '—'}</dd></div>`).join('')}</dl>
+                    <p><strong>${escapeHtml(mode)}</strong></p>
+                    <p class="status">New posts can email confirmed readers when you publish. Drafts and routine edits do not send announcements.</p><p class="status">${data.automaticRetry ? 'A scheduled check retries waiting notifications every 15 minutes.' : 'Retry any failed notification here.'}</p>
+                    ${data.feed?.error ? `<p class="auth-error">${escapeHtml(String(data.feed.error))}</p>` : ''}
+                    ${data.incomplete ? '<p class="status">Some account details could not be loaded. Check API permissions in Buttondown.</p>' : ''}
+                    ${(data.pendingNotifications || []).map((item) => `<div class="notification-item"><p>${escapeHtml(item.title)}</p><p class="status">${escapeHtml(item.error || 'Email notification is waiting to be queued.')}</p><button class="btn btn-small" onclick="retryNotification(${item.id}, this)">Retry notification</button></div>`).join('')}
+                    ${data.emails.length ? '<h3>Recent subscriber emails</h3><ul class="email-history">' + data.emails.map((email) => `<li>${escapeHtml(email.subject || 'Untitled email draft')} <span class="status">${escapeHtml(email.status)}</span></li>`).join('') + '</ul>' : ''}`;
+            } catch (error) {
+                container.textContent = error.message;
+            }
+        }
+
+        async function retryNotification(postId, button) {
+            button.disabled = true;
+            try {
+                const response = await fetch('/api/newsletter', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'retry', postId }) });
+                const data = await response.json();
+                if (!response.ok || data.notification?.status === 'failed') throw new Error(data.error || data.notification?.error || 'The notification could not be queued.');
+                posts = data.posts || posts;
+                await loadNewsletter();
+            } catch (error) {
+                showAlert(error.message, 'warning');
+                button.disabled = false;
             }
         }
 
@@ -859,6 +917,7 @@
             document.getElementById('post-excerpt').value = '';
             document.getElementById('post-status').value = 'draft';
             document.getElementById('title-options').style.display = 'none';
+            document.getElementById('notify-subscribers').checked = true;
             document.getElementById('post-content').value = htmlToText(ArticleFormatting.toHtml(document.getElementById('raw-text').value));
             editorView = 'text';
             document.getElementById('post-content').style.fontFamily = 'inherit';
@@ -954,6 +1013,7 @@
                 editorView = 'text';
                 document.getElementById('post-date').value = todayLocal();
                 document.getElementById('post-status').value = 'draft'; // Default to draft for new posts
+                document.getElementById('notify-subscribers').checked = true;
                 updatePublishButtonLabel();
 
                 // Generate new ID
@@ -1039,6 +1099,7 @@
 
             isEditing = true;
             currentPostId = id;
+            document.getElementById('notify-subscribers').checked = true;
             document.getElementById('preview-section').classList.add('hidden');
             document.getElementById('title-options').style.display = 'none';
             document.getElementById('review-intro').textContent = (post.status || 'published') === 'draft'
@@ -1184,7 +1245,7 @@
                 const response = await fetch('/api/save-post', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ posts: nextPosts, changedPostId: currentPostId, expectedPost: isEditing ? posts.find((post) => post.id === currentPostId) : null })
+                    body: JSON.stringify({ posts: nextPosts, changedPostId: currentPostId, expectedPost: isEditing ? posts.find((post) => post.id === currentPostId) : null, notifySubscribers: !document.getElementById('publication-email').hidden && document.getElementById('notify-subscribers').checked })
                 });
 
                 if (!response.ok) {
@@ -1198,7 +1259,11 @@
                 const successMessage = status === 'published'
                     ? '✓ Post is live.' : status === 'draft'
                         ? '✓ Draft saved to your Writer’s Room. It is not public.' : '✓ Archived post saved.';
-                showAlert(successMessage, 'success');
+                const notificationMessage = saved.notification?.status === 'scheduled'
+                    ? ' Email scheduled for ' + new Date(saved.notification.scheduledFor).toLocaleString() + '.'
+                    : saved.notification?.status === 'queued' ? ' Reader email queued.'
+                    : saved.notification?.status === 'failed' ? ' The email needs attention; open Email list to retry.' : '';
+                showAlert(successMessage + notificationMessage, saved.notification?.status === 'failed' ? 'warning' : 'success');
 
                 // Reset form and go back to create tab
                 setTimeout(() => {
@@ -1280,6 +1345,8 @@
         function updatePublishButtonLabel() {
             const status = document.getElementById('post-status').value;
             const button = document.getElementById('publish-btn');
+            const original = isEditing ? posts.find((post) => post.id === currentPostId) : null;
+            document.getElementById('publication-email').hidden = status !== 'published' || !!original?.firstPublishedAt || (original && (original.status || 'published') !== 'draft');
             if (isEditing) button.textContent = status === 'draft' ? 'Save Draft' : status === 'published' && posts.find((post) => post.id === currentPostId)?.status === 'draft' ? 'Publish Post' : 'Update Post';
             else button.textContent = status === 'published' ? 'Publish Post' : status === 'archived' ? 'Save Archived' : 'Save Draft';
         }
@@ -1297,6 +1364,7 @@
                 slug: document.getElementById('post-slug').value,
                 date: document.getElementById('post-date').value,
                 status: document.getElementById('post-status').value,
+                notifySubscribers: document.getElementById('notify-subscribers').checked,
                 excerpt: document.getElementById('post-excerpt').value,
                 content: document.getElementById('post-content').value,
                 editorView,
@@ -1342,6 +1410,7 @@
             document.getElementById('post-slug').value = draft.slug || '';
             document.getElementById('post-date').value = draft.date || '';
             document.getElementById('post-status').value = draft.status || 'draft';
+            document.getElementById('notify-subscribers').checked = draft.notifySubscribers !== false;
             document.getElementById('post-excerpt').value = draft.excerpt || '';
             document.getElementById('post-content').value = draft.content || '';
             currentPostId = draft.currentPostId;

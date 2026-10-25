@@ -3,7 +3,8 @@
   "include": [
     "/api/*",
     "/posts.json",
-    "/post/*"
+    "/post/*",
+    "/feed.xml"
   ],
   "exclude": []
 }

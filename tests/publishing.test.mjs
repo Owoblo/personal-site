@@ -35,7 +35,7 @@ test('static and live article template preserves semantic content and escapes ti
   assert.ok(html.includes(base.content));
   assert.match(html, /A thought &amp; an observation/);
   assert.match(html, /class="post-body"/);
-  assert.match(html, /styles.css\?v=20261025-4/);
+  assert.match(html, /styles.css\?v=20261025-5/);
 });
 
 test('newly saved published articles are live without a static file or rebuild', async () => {
@@ -63,6 +63,14 @@ test('public feed contains published posts; authenticated writer can reopen draf
   assert.deepEqual(publicPosts.posts.map((post) => post.id), [1]);
   const writerPosts = await (await feed(await context('/posts.json', { authenticated: true }))).json();
   assert.deepEqual(writerPosts.posts.map((post) => post.id), [1, 2, 3]);
+});
+
+test('public feed excludes internal email metadata while retaining it for the writer', async () => {
+  const posts = [{ ...base, _newsletter: { requestId: 'private-outbox-reference', status: 'queued' } }];
+  const publicFeed = await (await feed(await context('/posts.json', { posts }))).json();
+  assert.equal(publicFeed.posts[0]._newsletter, undefined);
+  const ownerFeed = await (await feed(await context('/posts.json', { posts, authenticated: true }))).json();
+  assert.equal(ownerFeed.posts[0]._newsletter.requestId, 'private-outbox-reference');
 });
 
 test('article route uses the latest saved source, preserving Unicode and formatting', async (t) => {
@@ -94,6 +102,37 @@ function mockGitHub(t, initial) {
 async function saveRequest(body, authenticated = true) {
   return context('/api/save-post', { remote: true, authenticated, method: 'POST', body });
 }
+
+test('first publication can announce once, while draft saves and published edits stay silent', async (t) => {
+  let posts = [structuredClone(draft)];
+  let announcements = 0;
+  t.mock.method(globalThis, 'fetch', async (url, options = {}) => {
+    if (String(url).startsWith('https://api.buttondown.com/')) {
+      announcements++;
+      return Response.json({ id: 'owner-test-provider-reference' });
+    }
+    if (options.method === 'PUT') {
+      posts = JSON.parse(Buffer.from(JSON.parse(options.body).content, 'base64').toString('utf8')).posts;
+      return Response.json({ commit: { sha: 'test-commit' } });
+    }
+    return Response.json({ sha: 'test-source-sha', content: encoded(posts) });
+  });
+  async function update(changed) {
+    const ctx = await saveRequest({ posts: [changed], changedPostId: 2, expectedPost: structuredClone(posts[0]), notifySubscribers: true });
+    ctx.env.BUTTONDOWN_API_KEY = 'test-only-key';
+    const response = await save(ctx);
+    assert.equal(response.status, 200);
+    return response.json();
+  }
+  await update({ ...draft, content: '<p>Still private.</p>' });
+  assert.equal(announcements, 0);
+  const result = await update({ ...posts[0], status: 'published' });
+  assert.equal(result.notification.status, 'queued');
+  assert.equal(announcements, 1);
+  assert.ok(posts[0].firstPublishedAt);
+  await update({ ...posts[0], title: 'A revised title' });
+  assert.equal(announcements, 1);
+});
 
 test('saving a private draft survives a new authenticated session, then publishes only when requested', async (t) => {
   const store = mockGitHub(t, [base]);

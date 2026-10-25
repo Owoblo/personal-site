@@ -1,4 +1,5 @@
 import { requireAdmin } from '../_lib/auth.js';
+import { planPostEmail, queuePostEmail } from '../_lib/post-email.mjs';
 
 export async function onRequestPost(context) {
   const unauthorized = await requireAdmin(context);
@@ -6,7 +7,7 @@ export async function onRequestPost(context) {
   const headers = { 'Content-Type': 'application/json' };
 
   try {
-    const { posts, changedPostId, deletedPostId, expectedPost } = await context.request.json();
+    const { posts, changedPostId, deletedPostId, expectedPost, notifySubscribers } = await context.request.json();
 
     if (!posts || !Array.isArray(posts) || posts.length > 1000) {
       return new Response(JSON.stringify({ error: 'Invalid posts data' }), {
@@ -66,6 +67,7 @@ export async function onRequestPost(context) {
     }
 
     let savedPosts = posts;
+    let notificationPostId = null;
     const targetId = deletedPostId ?? changedPostId;
     if (targetId !== undefined) {
       if (!Number.isSafeInteger(targetId) || !Array.isArray(latestPosts)) {
@@ -79,8 +81,21 @@ export async function onRequestPost(context) {
       if (deletedPostId !== undefined) {
         savedPosts = latestPosts.filter((post) => post.id !== targetId);
       } else {
-        const changed = posts.find((post) => post.id === targetId);
+        let changed = posts.find((post) => post.id === targetId);
         if (!changed) return new Response(JSON.stringify({ error: 'Post update is missing' }), { status: 400, headers });
+        // Reader dates can be backdated. Email notifications track the first actual publication.
+        const previousStatus = existing?.status || (existing ? 'published' : null);
+        const firstPublishedAt = existing?.firstPublishedAt ||
+          (['published', 'archived'].includes(previousStatus) ? `${existing.date}T12:00:00Z` :
+            changed.status === 'published' ? new Date().toISOString() : null);
+        if (firstPublishedAt) changed = { ...changed, firstPublishedAt };
+        // Email state is owned by the publishing workflow, not overwritten by form fields.
+        const { _newsletter: _ignored, ...fields } = changed;
+        changed = { ...fields, ...(existing?._newsletter ? { _newsletter: existing._newsletter } : {}) };
+        const firstPublication = changed.status === 'published' && !['published', 'archived'].includes(previousStatus) && !existing?.firstPublishedAt;
+        if (firstPublication && notifySubscribers === true) {
+          changed = { ...changed, _newsletter: planPostEmail(changed, latestPosts) };
+        }
         if (expectedPost) {
           savedPosts = latestPosts.map((post) => post.id === targetId ? changed : post);
         } else {
@@ -89,6 +104,9 @@ export async function onRequestPost(context) {
           const slug = latestPosts.some((post) => post.slug === changed.slug);
           if (slug) return new Response(JSON.stringify({ error: 'That URL slug is already in use. Choose another before saving.' }), { status: 409, headers });
           savedPosts = [...latestPosts, { ...changed, id }];
+        }
+        if (changed._newsletter?.status === 'pending' && firstPublication) {
+          notificationPostId = savedPosts.find((post) => post.slug === changed.slug).id;
         }
       }
       if (new Set(savedPosts.map((post) => post.slug)).size !== savedPosts.length) {
@@ -124,6 +142,16 @@ export async function onRequestPost(context) {
     }
 
     const result = await updateResponse.json();
+    let notification = null;
+    if (notificationPostId !== null) {
+      try {
+        const queued = await queuePostEmail(context.env, notificationPostId);
+        notification = queued.state;
+        savedPosts = queued.posts;
+      } catch (error) {
+        notification = { status: 'failed', error: error.message };
+      }
+    }
     const deployHookUrl = context.env.CLOUDFLARE_DEPLOY_HOOK_URL;
     let deployTriggered = false;
 
@@ -150,6 +178,7 @@ export async function onRequestPost(context) {
         commit: result.commit,
         deployTriggered,
         posts: savedPosts,
+        notification,
       }),
       { status: 200, headers }
     );

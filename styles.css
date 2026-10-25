@@ -649,8 +649,8 @@ p {
 .post-excerpt { margin: 6px 0 0; }
 
 #blog-posts {
-    list-style: none;
-    padding: 0;
+    list-style: disc;
+    padding-left: 20px;
     margin: 20px 0;
 }
 
@@ -818,6 +818,9 @@ section:last-child {
 .newsletter-form-group button::after {
     content: " →";
 }
+
+.subscription-note { margin-top: 12px; color: var(--colors--secondary); font-size: 13px; }
+.subscription-page { color-scheme: inherit; }
 
 .newsletter-form-group:focus-within {
     border-bottom-width: 2px;

@@ -4,3 +4,5 @@ GITHUB_TOKEN=ghp_your-token-here
 GITHUB_REPO=Owoblo/personal-site
 INSTAGRAM_ACCESS_TOKEN=your-instagram-access-token-here
 INSTAGRAM_BUSINESS_ID=your-instagram-business-id-here
+BUTTONDOWN_API_KEY=your-buttondown-api-key-here
+NEWSLETTER_CRON_SECRET=your-random-shared-cron-secret-here

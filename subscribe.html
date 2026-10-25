@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex">
+    <title>Subscribe — John Owolabi</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <script src="/writer-theme.js?v=20261025-1"></script>
+    <link rel="stylesheet" href="/styles.css?v=20261025-5">
+</head>
+<body class="subscription-page">
+    <div class="container">
+        <header class="site-header">
+            <h1><a href="/" class="site-title">John Owolabi</a></h1>
+            <label class="toggle-switch" for="subscribe-theme-toggle" aria-label="Toggle dark mode">
+                <input type="checkbox" id="subscribe-theme-toggle" class="toggle-checkbox" data-writer-theme>
+                <span class="toggle-label has-transition"></span>
+            </label>
+        </header>
+        <main>
+            <h2 id="subscription-heading">One more step — check your inbox.</h2>
+            <p id="subscription-message">Open the confirmation email and follow the link to join. If it hasn’t arrived, check your spam or promotions folder.</p>
+            <p class="section-intro">I’ll send a short note when I publish a new thought. You can unsubscribe whenever you like.</p>
+            <p><a href="/thoughts">Read the latest thoughts →</a></p>
+        </main>
+        <footer class="colophon">© 2026 John Owolabi</footer>
+    </div>
+    <script>
+        if (new URLSearchParams(location.search).get('status') === 'confirmed') {
+            document.getElementById('subscription-heading').textContent = 'You’re on the list. Glad you’re here.';
+            document.getElementById('subscription-message').textContent = 'Your subscription is confirmed. New thoughts will arrive in your inbox when I publish them.';
+        }
+    </script>
+</body>
+</html>

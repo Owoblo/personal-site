@@ -134,8 +134,9 @@ export function renderPostPage(post, allPosts, { ogImageUrl } = {}) {
     <meta name="twitter:image" content="${escapeHtml(ogImage)}">
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-    <link rel="stylesheet" href="/styles.css?v=20261025-4">
+    <link rel="stylesheet" href="/styles.css?v=20261025-5">
 
+    <link rel="alternate" type="application/rss+xml" title="John Owolabi — Thoughts" href="https://johnowolabi.com/feed.xml">
     <link rel="canonical" href="${escapeHtml(canonical)}">
 
     <script type="application/ld+json">${jsonLd}</script>
@@ -170,10 +171,12 @@ export function renderPostPage(post, allPosts, { ogImageUrl } = {}) {
                 <!-- Email Subscription -->
                 <div class="email-subscription" style="margin-top: 50px; padding: 30px 0; border-top: 1px solid var(--colors--divider); border-bottom: 1px solid var(--colors--divider);">
                     <p style="margin-bottom: 15px; font-size: 1em;">Get new posts in your inbox</p>
-                    <form action="https://buttondown.email/api/emails/embed-subscribe/johnowolabi" method="post" target="popupwindow" onsubmit="window.open('https://buttondown.email/johnowolabi', 'popupwindow')" style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center;">
-                        <input type="email" name="email" placeholder="your@email.com" required style="flex: 1; min-width: 200px; padding: 10px 12px; border: 1px solid var(--colors--text); background-color: var(--colors--background); color: var(--colors--text); font-family: inherit; font-size: 0.95em;">
-                        <button type="submit" style="padding: 10px 20px; border: 1px solid var(--colors--text); background-color: var(--colors--text); color: var(--colors--background); cursor: pointer; font-family: inherit; font-size: 0.95em; transition: opacity 0.2s ease;">Subscribe</button>
+                    <form action="https://buttondown.com/api/emails/embed-subscribe/johnowolabi" method="post" class="newsletter-form-group">
+                        <input type="hidden" name="embed" value="1">
+                        <input type="email" name="email" placeholder="Your email address" required aria-label="Email address">
+                        <button type="submit">Subscribe</button>
                     </form>
+                    <p class="subscription-note">Confirm in your inbox. Unsubscribe whenever you like.</p>
                 </div>
 
                 <!-- Share buttons -->

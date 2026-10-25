@@ -1,0 +1,10 @@
+name = "johnowolabi-newsletter-cron"
+main = "worker.mjs"
+compatibility_date = "2026-10-25"
+workers_dev = false
+
+[vars]
+NEWSLETTER_ENDPOINT = "https://johnowolabi.com/api/newsletter-cron"
+
+[triggers]
+crons = ["*/15 * * * *"]
