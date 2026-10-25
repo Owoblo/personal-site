@@ -54,7 +54,7 @@ A separate one-time confirmation reminder is available for pending subscriptions
 - Gmail Send mail as uses the already-verified SES SMTP settings in the owner's private local file, outside this repository. Reply from the same address and the alias reply-to should both be configured. Google has announced third-party Send as retirement for January 2027.
 - The JO image is included in email bodies and available as a profile asset. The outlined sender-logo SVG is hosted under `/brand/jo-bimi.svg`. Gmail's inbox avatar still requires certificate issuance and DMARC enforcement; see BIMI_SETUP.md. No certificate was purchased or inbox-avatar activation claimed.
 
-Detailed account requirements and provider restrictions are recorded in SOCIAL_CONNECTIONS.md. Two additional, editable carousel test drafts for “You Don't Lose Everyone at Once” compare a light eight-slide journal with a shorter dark six-slide sequence. Photo starters require the owner's own uploaded photograph; the design-reference screenshot is not a content photograph.
+Detailed account requirements and provider restrictions are recorded in SOCIAL_CONNECTIONS.md. Three editable carousel test drafts for “You Don't Lose Everyone at Once” compare a light eight-slide journal, a shorter dark six-slide sequence, and an eight-slide mixed version alternating light and dark. The Mixed export palette is available for any carousel and starts light on slide one. Photo starters require the owner's own uploaded photograph; the design-reference screenshot is not a content photograph.
 
 ## Operations
 

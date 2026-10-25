@@ -58,7 +58,7 @@ export async function renderSlide(canvas, data, index) {
   canvas.width = 1080;
   canvas.height = 1350;
   const c = canvas.getContext("2d"),
-    dark = data.theme === "dark",
+    dark = data.theme === "dark" || (data.theme === "mixed" && index % 2 === 1),
     bg = dark ? "#1C1B19" : "#F5F3EE",
     ink = dark ? "#E6E2D9" : "#292825",
     muted = dark ? "#ABA69B" : "#77746E",

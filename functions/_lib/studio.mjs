@@ -153,7 +153,7 @@ export function cleanAsset(data) {
     slides: data.slides.map((s) => ({ heading: s.heading, body: s.body })),
     parts: data.parts,
     template: data.template === "photo" ? "photo" : "journal",
-    theme: data.theme === "dark" ? "dark" : "light",
+    theme: ["light", "dark", "mixed"].includes(data.theme) ? data.theme : "light",
     photo,
   };
 }
