@@ -1,6 +1,6 @@
 # John Owolabi - Personal Website
 
-> John Owolabi runs Saturn Star Movers in Canada and builds software projects spanning logistics, real estate data, automation, and tools that help people make faster, clearer decisions.
+> John Owolabi runs SSM in Canada and builds software projects spanning logistics, real estate data, automation, and tools that help people make faster, clearer decisions.
 
 This is the personal website of John Owolabi, featuring his blog posts (called "Thoughts"), projects, and professional information.
 
@@ -12,11 +12,11 @@ This is the personal website of John Owolabi, featuring his blog posts (called "
 
 ## About the Author
 
-John Owolabi is a founder and software developer based in Canada. He operates Saturn Star Movers, a moving company, and builds software tools for the logistics and real estate industries.
+John Owolabi is a founder and software developer based in Canada. He operates SSM, a moving company, and builds software tools for the logistics and real estate industries.
 
 ### Projects
 
-- Saturn Star Movers (https://starmovers.ca) - A moving company in Canada
+- SSM (https://starmovers.ca) - A moving company in Canada
 - Sold2Move (https://sold2move.com) - Real-time real estate listing tracker for movers
 - MovSense (https://movsense.com) - Automation software for moving companies
 

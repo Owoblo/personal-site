@@ -4,7 +4,7 @@
 
 ## About
 
-John Owolabi runs Saturn Star Movers in Canada and realized most moving companies operate like it's 1995. So he's building the software stack the industry should have had decades ago. His work spans real estate data, logistics automation, and tools that turn manual chaos into scalable systems.
+John Owolabi runs SSM in Canada and realized most moving companies operate like it's 1995. So he's building the software stack the industry should have had decades ago. His work spans real estate data, logistics automation, and tools that turn manual chaos into scalable systems.
 
 He focuses on systems, not noise, and prefers solving real problems over talking about them.
 
@@ -18,7 +18,7 @@ Most of his projects start from the same place: see the gap, build the system, l
 
 ## Projects
 
-### Saturn Star Movers (https://starmovers.ca)
+### SSM (https://starmovers.ca)
 A moving company in Canada, and the laboratory where John tests every tool he builds. Real operations, real problems, real solutions.
 
 ### Sold2Move (https://sold2move.com)
