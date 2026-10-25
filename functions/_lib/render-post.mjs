@@ -1,3 +1,4 @@
+import { thoughtId } from './studio.mjs';
 const SITE = "https://johnowolabi.com";
 
 function escapeHtml(s) {
@@ -81,7 +82,7 @@ export function renderPostPage(post, allPosts, { ogImageUrl } = {}) {
   const canonical = `${SITE}/post/${post.slug}/`;
   const title = `${post.title} | John Owolabi`;
   const description = trimDescription(post.excerpt || post.title);
-  const ogImage = ogImageUrl || `${SITE}/og/${post.slug}.png?v=20260921-2`;
+  const ogImage = ogImageUrl || `${SITE}/og/${post.slug}.png?v=${encodeURIComponent(post.updatedAt||post.firstPublishedAt||post.date)}`;
 
   const jsonLd = JSON.stringify({
     "@context": "https://schema.org",
@@ -134,7 +135,7 @@ export function renderPostPage(post, allPosts, { ogImageUrl } = {}) {
     <meta name="twitter:image" content="${escapeHtml(ogImage)}">
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-    <link rel="stylesheet" href="/styles.css?v=20261025-5">
+    <link rel="stylesheet" href="/styles.css?v=20261025-6">
 
     <link rel="alternate" type="application/rss+xml" title="John Owolabi — Thoughts" href="https://johnowolabi.com/feed.xml">
     <link rel="canonical" href="${escapeHtml(canonical)}">
@@ -158,7 +159,7 @@ export function renderPostPage(post, allPosts, { ogImageUrl } = {}) {
         </header>
 
         <div id="post-content">
-            <article>
+            <article data-thought-id="${escapeHtml(thoughtId(post))}">
                 <header>
                     <h1>${escapeHtml(post.title)}</h1>
                     <p class="post-date" style="font-style: italic; margin-top: 10px;">${escapeHtml(longDate(post.date))}</p>
@@ -171,12 +172,12 @@ export function renderPostPage(post, allPosts, { ogImageUrl } = {}) {
                 <!-- Email Subscription -->
                 <div class="email-subscription" style="margin-top: 50px; padding: 30px 0; border-top: 1px solid var(--colors--divider); border-bottom: 1px solid var(--colors--divider);">
                     <p style="margin-bottom: 15px; font-size: 1em;">Get new posts in your inbox</p>
-                    <form action="/api/subscribe" method="post" class="newsletter-form-group">
+                    <form action="/api/subscribe" method="post" id="post-subscribe" class="newsletter-form-group">
                         <input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" hidden>
                         <input type="email" name="email" maxlength="254" placeholder="Your email address" required aria-label="Email address">
                         <button type="submit">Subscribe</button>
                     </form>
-                    <p class="subscription-note">Confirm in your inbox. Unsubscribe whenever you like.</p>
+                    <label class="archive-choice"><input type="checkbox" name="archive" value="1" checked form="post-subscribe"> Include earlier thoughts, at most one a day.</label><p class="subscription-note">Confirm in your inbox. Unsubscribe whenever you like.</p>
                 </div>
 
                 <!-- Share buttons -->
@@ -200,6 +201,7 @@ export function renderPostPage(post, allPosts, { ogImageUrl } = {}) {
 
     <!-- Blog Posts Loader -->
     <script src="/blog.js?v=20261025-1"></script>
+    <script src="/reader-metrics.js?v=1" defer></script>
 
     <!-- Table of contents sidebar (article pages, wide screens) -->
     <script src="/toc.js?v=20260920-2"></script>

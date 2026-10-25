@@ -1,0 +1,381 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="robots" content="noindex,nofollow" />
+    <title>Thought studio — John Owolabi</title>
+    <link rel="icon" href="/favicon.svg" />
+    <script src="/writer-theme.js?v=20261025-1"></script>
+    <link rel="stylesheet" href="/styles.css?v=20261025-6" />
+    <link rel="stylesheet" href="/writer.css?v=20261025-2" />
+    <link rel="stylesheet" href="/studio.css?v=1" />
+  </head>
+  <body class="writer-room">
+    <main class="studio-shell">
+      <header class="header">
+        <div>
+          <h1>Thought studio</h1>
+          <p class="status">One thought. Room for different expressions.</p>
+        </div>
+        <div class="writer-header-actions">
+          <a href="/create" class="writer-back">← Writer’s room</a
+          ><label
+            class="toggle-switch"
+            for="studio-theme"
+            aria-label="Toggle dark mode"
+            ><input
+              id="studio-theme"
+              class="toggle-checkbox"
+              type="checkbox"
+              data-writer-theme /><span
+              class="toggle-label has-transition"
+            ></span
+          ></label>
+        </div>
+      </header>
+      <form id="studio-login" class="section" hidden>
+        <h2>Open your studio</h2>
+        <div class="form-group">
+          <label for="studio-password">Admin password</label
+          ><input
+            id="studio-password"
+            type="password"
+            autocomplete="current-password"
+            required
+          />
+        </div>
+        <button class="btn btn-primary">Unlock</button>
+      </form>
+      <p id="studio-status" role="status" aria-live="polite">
+        Opening your workspace…
+      </p>
+      <div id="studio-workspace" hidden>
+        <nav class="tabs" aria-label="Studio">
+          <button class="tab active" data-view="work">Repurpose</button
+          ><button class="tab" data-view="voice">Voice & inspiration</button
+          ><button class="tab" data-view="insights">Reader insights</button
+          ><button class="tab" data-view="email">Email sequence</button>
+        </nav>
+        <section id="view-work" class="studio-view">
+          <div class="form-group">
+            <label for="thought-select">Original thought</label
+            ><select id="thought-select"></select
+            ><small id="thought-identity"></small>
+          </div>
+          <div class="studio-controls">
+            <div class="form-group">
+              <label for="format-select">Format</label
+              ><select id="format-select">
+                <option value="carousel">Carousel</option>
+                <option value="tweet">Short post for X</option>
+                <option value="thread">Thread for X</option>
+                <option value="linkedin">LinkedIn</option>
+                <option value="facebook">Facebook</option>
+                <option value="video">Video script</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="angle-input">Angle to explore</label
+              ><input
+                id="angle-input"
+                placeholder="The observation you want someone to sit with"
+                maxlength="1000"
+              />
+            </div>
+          </div>
+          <div class="actions">
+            <button class="btn btn-primary" id="generate-adaptation">
+              Draft with AI</button
+            ><button class="btn" id="start-adaptation">
+              Start from original
+            </button>
+          </div>
+          <p class="status">
+            AI drafts use your voice guide and writing examples. Your original
+            stays intact. Review each adaptation before using it.
+          </p>
+          <div id="saved-adaptations" class="saved-adaptations"></div>
+          <section id="asset-editor" hidden>
+            <div class="preview-heading">
+              <h2 id="asset-heading">Adaptation</h2>
+              <span class="status" id="asset-state"></span>
+            </div>
+            <p id="asset-warning" class="auth-error" hidden></p>
+            <div class="form-group">
+              <label for="asset-title">Title</label
+              ><input id="asset-title" maxlength="300" />
+            </div>
+            <div id="carousel-editor">
+              <div class="studio-controls">
+                <div class="form-group">
+                  <label for="carousel-template">Layout</label
+                  ><select id="carousel-template">
+                    <option value="journal">Quiet journal · type only</option>
+                    <option value="photo">Field notes · your photograph</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="carousel-theme">Export palette</label
+                  ><select id="carousel-theme">
+                    <option value="light">Warm light</option>
+                    <option value="dark">Soft dark</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group" id="photo-control" hidden>
+                <label for="carousel-photo">Your photograph</label
+                ><input
+                  id="carousel-photo"
+                  type="file"
+                  accept="image/jpeg,image/png,image/webp"
+                /><small
+                  >Stored privately with this draft. It becomes shareable when
+                  you export it.</small
+                >
+              </div>
+              <div class="carousel-grid">
+                <div>
+                  <div id="slides-editor"></div>
+                  <button class="btn" id="add-slide">Add a slide</button>
+                </div>
+                <aside class="carousel-preview">
+                  <canvas
+                    id="slide-canvas"
+                    width="1080"
+                    height="1350"
+                    aria-label="Selected carousel slide preview"
+                  ></canvas>
+                  <p id="slide-fit" class="status"></p>
+                  <div class="actions">
+                    <button class="btn" id="previous-slide">← Previous</button
+                    ><button class="btn" id="next-slide">Next →</button
+                    ><button class="btn" id="download-slide">
+                      Download PNG</button
+                    ><button class="btn" id="download-all">
+                      Export all slides
+                    </button>
+                  </div>
+                  <p class="status">
+                    1080 × 1350 · 4:5. Aim for 25–50 words and one idea per
+                    slide. Long slides can be split before export. Small name,
+                    page number, and a calm reading invitation.
+                  </p>
+                </aside>
+              </div>
+            </div>
+            <div id="text-editor" class="form-group">
+              <label for="asset-text">Adapted writing / spoken script</label
+              ><textarea id="asset-text" rows="12"></textarea
+              ><small id="text-count"></small>
+            </div>
+            <div id="parts-editor" class="form-group">
+              <label for="asset-parts">Thread posts / recording beats</label
+              ><textarea
+                id="asset-parts"
+                rows="10"
+                placeholder="Separate each post or beat with a blank line"
+              ></textarea
+              ><small id="parts-count"></small>
+            </div>
+            <div class="form-group">
+              <label for="asset-caption">Caption / reading invitation</label
+              ><textarea id="asset-caption" rows="4"></textarea>
+            </div>
+            <div class="actions">
+              <button class="btn btn-primary" id="save-adaptation">
+                Save draft</button
+              ><button class="btn" id="approve-adaptation">
+                Approve for use</button
+              ><button class="btn" id="copy-adaptation">Copy writing</button
+              ><button class="btn" id="download-pack">
+                Download content pack
+              </button>
+            </div>
+            <p class="status" id="asset-save-state"></p>
+            <section class="studio-subsection">
+              <h3>Share & measure</h3>
+              <div class="studio-controls">
+                <div class="form-group">
+                  <label for="link-channel">Where you’ll share it</label
+                  ><select id="link-channel">
+                    <option value="instagram">Instagram / story / bio</option>
+                    <option value="x">X</option>
+                    <option value="linkedin">LinkedIn</option>
+                    <option value="facebook">Facebook</option>
+                    <option value="tiktok">TikTok</option>
+                    <option value="direct">Other</option>
+                  </select>
+                </div>
+                <button class="btn" id="make-link">
+                  Get tracked reading link
+                </button>
+              </div>
+              <div class="form-group">
+                <label for="tracked-link">Reading link</label
+                ><input id="tracked-link" readonly /><small
+                  >Use this in the caption, story, bio, or thread. It ties
+                  visits and subscriptions to this adaptation.</small
+                >
+              </div>
+              <details>
+                <summary>
+                  Record a published post and its platform results
+                </summary>
+                <p class="status">
+                  Manual measurements until your social accounts are connected.
+                </p>
+                <div class="form-group">
+                  <label for="platform-url">Published post URL</label
+                  ><input id="platform-url" type="url" />
+                </div>
+                <div id="social-stat-fields" class="studio-controls"></div>
+                <button class="btn" id="save-social-stats">
+                  Save platform results
+                </button>
+              </details>
+            </section>
+          </section>
+        </section>
+        <section id="view-voice" class="studio-view" hidden>
+          <h2>Your voice guide</h2>
+          <div class="form-group">
+            <label for="voice-principles">How your writing should feel</label
+            ><textarea id="voice-principles" rows="4"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="voice-avoid">What you would never say</label
+            ><textarea id="voice-avoid" rows="4"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="voice-corrections"
+              >Corrections and good / bad examples</label
+            ><textarea
+              id="voice-corrections"
+              rows="5"
+              placeholder="Instead of this… I would write…"
+            ></textarea
+            ><small
+              >Save the edits you keep making, so the next draft has the same
+              guidance.</small
+            >
+          </div>
+          <div class="form-group">
+            <label for="voice-cta">Preferred reading invitation</label
+            ><input id="voice-cta" />
+          </div>
+          <fieldset id="voice-examples">
+            <legend>Representative writing · choose up to five</legend>
+          </fieldset>
+          <button class="btn btn-primary" id="save-voice">
+            Save voice guide
+          </button>
+          <section class="studio-subsection">
+            <h2>Inspiration library</h2>
+            <p class="status">
+              Save what works about a reference: the opening, pacing, image
+              placement, or ending.
+            </p>
+            <div class="form-group">
+              <label for="inspiration-url">Reference URL</label
+              ><input id="inspiration-url" type="url" />
+            </div>
+            <div class="form-group">
+              <label for="inspiration-title">Title</label
+              ><input id="inspiration-title" />
+            </div>
+            <div class="form-group">
+              <label for="inspiration-kind">Format</label
+              ><select id="inspiration-kind">
+                <option>carousel</option>
+                <option>video</option>
+                <option>writing</option>
+                <option>photo</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="inspiration-notes"
+                >What you want to borrow from its structure</label
+              ><textarea id="inspiration-notes" rows="3"></textarea>
+            </div>
+            <button class="btn" id="save-inspiration">Save reference</button>
+            <div id="inspiration-list"></div>
+          </section>
+        </section>
+        <section id="view-insights" class="studio-view" hidden>
+          <div class="preview-heading">
+            <h2>Reader insights</h2>
+            <select id="insights-days" aria-label="Reporting period">
+              <option value="30">Last 30 days</option>
+              <option value="7">Last 7 days</option>
+            </select>
+          </div>
+          <p class="status">
+            Anonymous page visits, visible reading time, and article depth. Your
+            authenticated visits and common bots are excluded. Scroll depth is a
+            reading signal, not proof that someone read every word.
+          </p>
+          <div id="insights-results"></div>
+        </section>
+        <section id="view-email" class="studio-view" hidden>
+          <h2>A reading sequence</h2>
+          <p>New thoughts first. Earlier writing at a quiet pace.</p>
+          <p class="status">
+            Confirmed readers can receive one thought a day. Existing readers
+            start with pieces published after they joined; new readers can
+            choose the earlier archive. Delivery history prevents repeats.
+          </p>
+          <div id="sequence-status"></div>
+          <div class="actions">
+            <button class="btn" id="preview-sequence">
+              Preview eligible reading queue</button
+            ><button class="btn btn-primary" id="enable-sequence">
+              Enable daily catch-up</button
+            ><button class="btn" id="pause-sequence">Pause catch-up</button>
+          </div>
+          <section class="studio-subsection">
+            <h3>One confirmation reminder</h3>
+            <p class="status">
+              A single reminder is available for recent pending subscribers.
+              They stay out of the reading sequence until they confirm. No
+              repeated nudges.
+            </p>
+            <button class="btn" id="send-reminders">
+              Send one reminder to eligible pending readers
+            </button>
+          </section>
+          <section class="studio-subsection">
+            <h3>Replying as hello</h3>
+            <p>
+              Incoming mail already reaches your Gmail. Add
+              hello@johnowolabi.com under Gmail → Settings → Accounts and import
+              → Send mail as.
+            </p>
+            <p>
+              Use <strong>email-smtp.us-east-2.amazonaws.com</strong>, port
+              <strong>587</strong>, with <strong>TLS</strong>. Use SES SMTP
+              credentials, which differ from the AWS secret key.
+            </p>
+            <p>
+              Then select “Reply from the same address the message was sent to”
+              and set the alias reply-to address to hello@johnowolabi.com.
+            </p>
+            <p class="status">
+              Google says third-party Send as ends in January 2027. Forwarding
+              continues. A hosted mailbox can replace this when you’re ready.
+            </p>
+            <p>
+              <a
+                href="https://support.google.com/mail/answer/22370"
+                target="_blank"
+                rel="noopener"
+                >Gmail setup instructions →</a
+              >
+            </p>
+          </section>
+        </section>
+      </div>
+    </main>
+    <script type="module" src="/studio.js?v=1"></script>
+  </body>
+</html>

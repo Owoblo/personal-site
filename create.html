@@ -7,7 +7,7 @@
     <title>Create Post - John Owolabi</title>
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <script src="writer-theme.js?v=20261025-1"></script>
-    <link rel="stylesheet" href="styles.css?v=20261025-5">
+    <link rel="stylesheet" href="styles.css?v=20261025-6">
     <link rel="stylesheet" href="writer.css?v=20261025-2">
 </head>
 <body class="writer-room">
@@ -51,6 +51,8 @@
             <button class="tab active" onclick="switchTab('create', event)">Create New Post</button>
             <button class="tab" onclick="switchTab('manage', event)">Manage Posts</button>
             <button class="tab" onclick="switchTab('newsletter', event)">Email list</button>
+            <a class="tab" href="/studio">Repurpose</a>
+            <a class="tab" href="/studio?view=insights">Reader insights</a>
         </div>
 
         <!-- Create Tab Content -->
@@ -898,6 +900,7 @@
                     <div class="post-actions">
                         <button class="btn btn-small" onclick="editPost(${post.id})">Edit</button>
                         <button class="btn btn-small" onclick="openCarousel('${post.slug}')">Carousel</button>
+                        <a class="btn btn-small" href="/studio?post=${post.id}">Repurpose</a>
                         <button class="btn btn-small btn-danger" onclick="deletePost(${post.id})">Delete</button>
                     </div>
                 </div>

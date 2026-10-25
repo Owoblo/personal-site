@@ -35,7 +35,7 @@ test('static and live article template preserves semantic content and escapes ti
   assert.ok(html.includes(base.content));
   assert.match(html, /A thought &amp; an observation/);
   assert.match(html, /class="post-body"/);
-  assert.match(html, /styles.css\?v=20261025-5/);
+  assert.match(html, /styles.css\?v=20261025-6/);
 });
 
 test('newly saved published articles are live without a static file or rebuild', async () => {
@@ -43,7 +43,7 @@ test('newly saved published articles are live without a static file or rebuild',
   assert.equal(response.status, 200);
   const html = await response.text();
   assert.ok(html.includes(base.content));
-  assert.match(html, /https:\/\/johnowolabi.com\/11.png/);
+  assert.match(html, /https:\/\/johnowolabi.com\/og\/a-thought.png/);
 });
 
 test('draft URLs stay unavailable even if an old published asset exists', async () => {
@@ -154,8 +154,10 @@ test('saving a private draft survives a new authenticated session, then publishe
   const fresh = await (await feed(await context('/posts.json', { remote: true, authenticated: true }))).json();
   assert.equal(fresh.posts.find((post) => post.id === 2).status, 'draft');
   assert.equal((await article(await context('/post/private-thought/', { remote: true }))).status, 404);
-  const edited = { ...draft, content: '<p>A revised <strong>thought</strong>.</p>' };
-  assert.equal((await save(await saveRequest({ posts: [base, edited], changedPostId: 2, expectedPost: draft }))).status, 200);
+  const savedDraft = fresh.posts.find(post => post.id === 2);
+  assert.ok(savedDraft.thoughtId);
+  const edited = { ...savedDraft, content: '<p>A revised <strong>thought</strong>.</p>' };
+  assert.equal((await save(await saveRequest({ posts: [base, edited], changedPostId: 2, expectedPost: savedDraft }))).status, 200);
   assert.equal(store.posts[1].content, edited.content);
   const published = { ...edited, status: 'published' };
   assert.equal((await save(await saveRequest({ posts: [base, published], changedPostId: 2, expectedPost: edited }))).status, 200);

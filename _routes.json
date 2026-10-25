@@ -4,7 +4,10 @@
     "/api/*",
     "/posts.json",
     "/post/*",
-    "/feed.xml"
+    "/feed.xml",
+    "/r/*",
+    "/email-open/*",
+    "/og/*"
   ],
   "exclude": []
 }

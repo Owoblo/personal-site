@@ -1,0 +1,59 @@
+# Thought studio
+
+Open `/studio` with the existing Writer's room password. The source essay, adaptations, saved voice guide, references, and analytics remain separate. Studio data is private in D1.
+
+## Using it
+
+1. Choose an existing thought, including a private draft, and an angle.
+2. Choose carousel, short X post, X thread, LinkedIn, Facebook, or video script.
+3. Draft with the existing OpenAI connection or start from the original. AI results are always drafts. The configured default is the existing `gpt-4o-mini`; `REPURPOSE_MODEL` can change the provider-specific model later. No additional model subscription was purchased.
+4. Edit, save, and approve. Source changes mark adaptations stale and prevent approval until a fresh adaptation is created. Saves reject stale revisions and preserve previous versions. Local recovery protects unsaved editing; remote saves reopen across devices.
+5. Export PNG slides as one ZIP, a content pack as JSON, or copy writing. The original article is never rewritten by repurposing.
+6. Create a reading link for the intended channel. Record the eventual platform URL and measurements on the adaptation until account integrations are connected.
+
+The voice guide contains style principles, exclusions, corrections, a reading invitation, and up to five selected examples. Reference URLs are saved as inspiration without fetching, copying, or executing the referenced content.
+
+Six starter carousel drafts use excerpts from three existing essays, in type-only and photograph layouts. The photograph starters use the site's already-public portrait. New uploaded photos remain private in the draft until the owner exports or publishes them.
+
+## Carousel defaults
+
+- 1080 × 1350 pixels, 4:5, Georgia/serif and the site's warm light/dark palettes.
+- A concise opening, one idea per slide, approximately 25–50 words per middle slide, and an invitation to read and subscribe.
+- Small JO/name/website branding and page numbers. No patterns, gradients, shadows, or automatic posting.
+- Photo layout places a photograph on the cover and occasional intermediate slides. The ending stays typographic.
+- Export checks measured text height and word count. Long slides must be split or edited; content is not silently cropped from an approved export.
+
+These are starting templates, not a claim about what a platform's algorithm prefers. Compare a few real essays and keep the corrections that make the output sound like John.
+
+## Identity and measurements
+
+Existing thoughts use `thought-<post id>`. New writing receives a server-owned UUID, retained through edits and slug changes. Adaptations and reading links get separate IDs. Adaptation revisions, link revisions, and manual platform measurements preserve the connection to the version that was shared.
+
+Reading links under `/r/` point only to this site and attach channel, thought, and adaptation attribution. HEAD requests, common previews, and known bots do not increment link requests. Security scanners may still appear, so these counts are not labeled as verified humans.
+
+Article measurements start at this deployment: ephemeral navigation IDs, visible/focused reading time, and 25/50/75/100% depth. Updates are monotonic and deduplicated. Authenticated owner visits, common bots, DNT, and Global Privacy Control are excluded. Referrers retain only the hostname. No raw IP or screen recording is stored. Raw reading sessions expire after 90 days.
+
+Email deliveries get their own reading links and an image-based open signal. Open counts are estimates because mail clients can preload, cache, or block images. Confirmed signup attribution follows a reading link within the same browser session. Platform views, likes, saves, and shares remain explicitly manual until the platform account is connected.
+
+## Email sequence
+
+The Email sequence view previews eligible readers and allows enabling/pausing catch-up. Existing confirmed readers begin with writing dated after they joined. New subscribers can select the earlier archive on the signup form. Unsubscribe preferences can pause earlier writing while retaining new posts.
+
+The worker processes new publications first, queues catch-up separately, checks consent before sending, enforces at most one thought per reader per 24 hours, and skips already-submitted or uncertain copies of the same thought. Pending, unsubscribed, bounced, and complained contacts do not enter the reading sequence. Per-reader leases prevent parallel sends from bypassing the daily pace.
+
+A separate one-time confirmation reminder is available for pending subscriptions between 3 and 180 days old. It does not activate the contact; only following the confirmation link does. Its send marker is claimed before the provider call so an ambiguous timeout does not trigger another automatic reminder. Very old pending subscriptions remain dormant.
+
+## Social link previews
+
+`social-cards.yml` regenerates published PNG preview cards when writing is saved. It uses the repository's built-in workflow token and commits only image files. It does not edit source writing or require the Cloudflare DNS token. The `/og/` handler reads refreshed cards from GitHub, with deployed-image and JO fallbacks while a new card builds. Draft cards are unavailable publicly.
+
+## Connections still required
+
+- Instagram/Facebook, X, LinkedIn, and TikTok require their own account authorization and supported publishing/insight permissions before automatic posting or metric collection. No social posts have been sent by this implementation. DM aggregation also depends on each platform's API access.
+- Search Console data requires access to the verified search property. The current reader dashboard contains the site's own measurements.
+- Gmail Send mail as uses the already-verified SES SMTP settings in the owner's private local file, outside this repository. Reply from the same address and the alias reply-to should both be configured. Google has announced third-party Send as retirement for January 2027.
+- The JO image is included in email bodies and available as a profile asset. Gmail's inbox avatar is controlled separately. Google's BIMI route requires eligible domain/logo certification and enforcing DMARC; no certificate was purchased or inbox-avatar activation claimed.
+
+## Operations
+
+Apply `migrations/0002_studio.sql` before deploying these Functions. It contains only additive `CREATE TABLE IF NOT EXISTS` statements. The existing private `NEWSLETTER_DB` binding is reused. `npm test` includes isolated SQLite tests for permissions, source preservation, stale saves, attribution, consent, and paced delivery. Browser verification covers desktop/mobile, both themes, actual PNG/ZIP downloads, and reopening saved work.

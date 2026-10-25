@@ -21,7 +21,7 @@
     <meta name="twitter:image" content="https://johnowolabi.com/11.png">
 
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
-    <link rel="stylesheet" href="styles.css?v=20261025-5">
+    <link rel="stylesheet" href="styles.css?v=20261025-6">
 
     <link rel="alternate" type="application/rss+xml" title="John Owolabi — Thoughts" href="https://johnowolabi.com/feed.xml">
 
@@ -58,12 +58,12 @@
                 A short note when I publish a new thought. Unsubscribe whenever you like.
             </p>
             <form action="/api/subscribe" method="post"
-                class="newsletter-form-group">
+                class="newsletter-form-group" id="thoughts-subscribe">
                 <input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" hidden>
                 <input type="email" name="email" maxlength="254" placeholder="Your email address" required aria-label="Email address" />
                 <button type="submit">Subscribe</button>
             </form>
-            <p class="subscription-note">Confirm in your inbox. Unsubscribe whenever you like.</p>
+            <label class="archive-choice"><input type="checkbox" name="archive" value="1" checked form="thoughts-subscribe"> Include earlier thoughts, at most one a day.</label><p class="subscription-note">Confirm in your inbox. Unsubscribe whenever you like.</p>
         </section>
     </div>
 
@@ -114,6 +114,6 @@
             });
         })();
     </script>
-</body>
+<script src="/reader-metrics.js?v=1" defer></script></body>
 
 </html>

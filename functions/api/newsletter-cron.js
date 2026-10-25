@@ -1,6 +1,7 @@
 import { readPosts } from '../_lib/read-posts.mjs';
 import { queuePostEmail } from '../_lib/post-email.mjs';
 import { processSesOutbox } from '../_lib/ses-outbox.mjs';
+import { queueReadingSequence,sendConfirmationReminders } from '../_lib/reading-sequence.mjs';
 
 function matches(secret, supplied) {
     if (!secret || secret.length < 32 || secret.length !== supplied.length) return false;
@@ -31,7 +32,10 @@ export async function onRequestPost(context) {
             } catch (_) { result.failed++; }
         }
         if (context.env.NEWSLETTER_PROVIDER === 'ses') {
-            Object.assign(result, await processSesOutbox(context.env, posts));
+            const deliveries=await processSesOutbox(context.env, posts);result.failed+=deliveries.failed;result.submitted=deliveries.submitted;result.uncertain=deliveries.uncertain;result.skipped=deliveries.skipped;
+            result.archiveQueued=await queueReadingSequence(context.env,posts);
+            result.reminders=await sendConfirmationReminders(context.env);
+            await context.env.NEWSLETTER_DB.prepare('DELETE FROM studio_readings WHERE day<?').bind(new Date(Date.now()-90*86400000).toISOString().slice(0,10)).run();
         }
     }
     return Response.json(result, { headers: { 'Cache-Control': 'no-store' } });

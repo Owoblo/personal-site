@@ -1,0 +1,18 @@
+CREATE TABLE IF NOT EXISTS studio_thoughts(id TEXT PRIMARY KEY,post_id INTEGER NOT NULL,slug TEXT NOT NULL,title TEXT NOT NULL,source_hash TEXT NOT NULL,visible INTEGER NOT NULL DEFAULT 0,featured INTEGER NOT NULL DEFAULT 0,updated_at TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS studio_settings(id TEXT PRIMARY KEY,data TEXT NOT NULL,revision INTEGER NOT NULL DEFAULT 1,updated_at TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS studio_assets(id TEXT PRIMARY KEY,thought_id TEXT NOT NULL,format TEXT NOT NULL,angle TEXT NOT NULL,source_hash TEXT NOT NULL,data TEXT NOT NULL,state TEXT NOT NULL DEFAULT 'draft',revision INTEGER NOT NULL DEFAULT 1,created_at TEXT NOT NULL,updated_at TEXT NOT NULL);
+CREATE INDEX IF NOT EXISTS studio_assets_thought ON studio_assets(thought_id);
+CREATE TABLE IF NOT EXISTS studio_versions(asset_id TEXT NOT NULL,revision INTEGER NOT NULL,data TEXT NOT NULL,created_at TEXT NOT NULL,PRIMARY KEY(asset_id,revision));
+CREATE TABLE IF NOT EXISTS studio_inspiration(id TEXT PRIMARY KEY,url TEXT NOT NULL,title TEXT NOT NULL,notes TEXT NOT NULL,kind TEXT NOT NULL,created_at TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS studio_links(id TEXT PRIMARY KEY,thought_id TEXT NOT NULL,asset_id TEXT,channel TEXT NOT NULL,target TEXT NOT NULL,created_at TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS studio_link_days(link_id TEXT NOT NULL,day TEXT NOT NULL,requests INTEGER NOT NULL DEFAULT 0,PRIMARY KEY(link_id,day));
+CREATE TABLE IF NOT EXISTS studio_readings(id TEXT PRIMARY KEY,thought_id TEXT NOT NULL,day TEXT NOT NULL,channel TEXT NOT NULL,link_id TEXT,referrer TEXT NOT NULL DEFAULT '',seconds INTEGER NOT NULL DEFAULT 0,depth INTEGER NOT NULL DEFAULT 0,sequence INTEGER NOT NULL DEFAULT 0,updated_at TEXT NOT NULL);
+CREATE INDEX IF NOT EXISTS studio_readings_day ON studio_readings(day,thought_id);
+CREATE TABLE IF NOT EXISTS studio_social_stats(asset_id TEXT PRIMARY KEY,platform_url TEXT NOT NULL DEFAULT '',views INTEGER NOT NULL DEFAULT 0,likes INTEGER NOT NULL DEFAULT 0,saves INTEGER NOT NULL DEFAULT 0,shares INTEGER NOT NULL DEFAULT 0,comments INTEGER NOT NULL DEFAULT 0,recorded_at TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS newsletter_engagement(id TEXT PRIMARY KEY,campaign_id TEXT NOT NULL,contact_id TEXT NOT NULL,thought_id TEXT NOT NULL,link_id TEXT NOT NULL,open_count INTEGER NOT NULL DEFAULT 0,opened_at TEXT,clicked_at TEXT,UNIQUE(campaign_id,contact_id));
+CREATE TABLE IF NOT EXISTS newsletter_attribution(contact_id TEXT PRIMARY KEY,link_id TEXT NOT NULL,created_at TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS newsletter_preferences(contact_id TEXT PRIMARY KEY,archive_enabled INTEGER NOT NULL DEFAULT 0,sequence_floor TEXT NOT NULL DEFAULT '1970-01-01',reminder_sent_at TEXT);
+CREATE TABLE IF NOT EXISTS newsletter_campaign_meta(campaign_id TEXT PRIMARY KEY,kind TEXT NOT NULL,target_contact_id TEXT);
+CREATE TABLE IF NOT EXISTS newsletter_contact_locks(contact_id TEXT PRIMARY KEY,token TEXT NOT NULL,until_at TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS studio_link_versions(link_id TEXT PRIMARY KEY,revision INTEGER NOT NULL);
+CREATE TABLE IF NOT EXISTS studio_measurements(id TEXT PRIMARY KEY,asset_id TEXT NOT NULL,revision INTEGER NOT NULL,platform_url TEXT NOT NULL,stats TEXT NOT NULL,recorded_at TEXT NOT NULL);

@@ -43,7 +43,7 @@ The initial migration preserved 12 confirmed, 42 pending, and 2 undeliverable co
 
 ## Publication announcements
 
-A first publication can request **Email readers when this goes live**. Draft saves and later edits never request another announcement. Multiple announcements are spaced at least 24 hours apart. The site saves the article first, then creates a durable campaign in D1. Current confirmed readers are snapshotted when a due campaign begins. New subscribers do not receive old campaigns.
+A first publication can request **Email readers when this goes live**. Draft saves and later edits never request another announcement. Multiple announcements are spaced at least 24 hours apart. The site saves the article first, then creates a durable campaign in D1. Current confirmed readers are snapshotted when a due campaign begins. New subscribers do not receive old publication campaigns; the separate optional reading sequence provides earlier thoughts at a daily pace.
 
 A cron check runs every five minutes and processes up to five recipients per check. Each recipient has separate state and a send lease. Completed recipients are not resent. Definite failures back off and receive up to eight automatic attempts; the Email list tab provides retries for failed deliveries. A timeout or interrupted acknowledgement is held as uncertain and requires a delivery check before any retry, because SES SendEmail is not idempotent. The backend reports submitted messages, not guaranteed inbox delivery. Unpublished or replaced source articles cancel remaining campaign delivery.
 
@@ -51,12 +51,12 @@ The authenticated Email list tab shows subscriber counts, campaign progress, fai
 
 ## Analytics and social tools
 
-`analytics.js` has legacy GitHub tracking disabled. `analytics.html` shows an old snapshot; current Cloudflare Web Analytics and reading-depth instrumentation have not been enabled. The existing carousel exporter provides editable slides and downloads. Broader repurposing, platform connections, and the new reader analytics dashboard remain planned work.
+`analytics.js` has legacy GitHub tracking disabled. `analytics.html` shows an old snapshot; first-party reading measurements are described in STUDIO.md. The existing carousel exporter provides editable slides and downloads. The private Thought studio now provides repurposing, voice/reference libraries, carousel exports, tracked links, and reader insights. Social account integrations remain unconnected. See STUDIO.md for setup and current limits.
 
 ## Development and verification
 
 Copy `.dev.vars.example` to `.dev.vars`, fill in credentials, build, and use `npx wrangler pages dev dist`. Keep local email sending disabled unless deliberately testing against controlled addresses and a separate database.
 
-Run `npm test` on Node 22.13 or newer for the publishing, draft, consent, template, and delivery-queue checks. Tests use an in-memory SQLite database and mocked external providers. Generate a non-sending email design preview with `node scripts/preview-newsletter.mjs`.
+Apply migrations/0002_studio.sql before deploying the studio and sequence features. Run `npm test` on Node 22.13 or newer for the publishing, draft, consent, template, and delivery-queue checks. Tests use an in-memory SQLite database and mocked external providers. Generate a non-sending email design preview with `node scripts/preview-newsletter.mjs`.
 
 Live verification covered an owner-only branded confirmation, confirmation then unsubscribe, an email sent to hello@johnowolabi.com and forwarded into Gmail, and authenticated cron access. No existing subscriber received a setup broadcast.

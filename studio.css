@@ -1,0 +1,233 @@
+.studio-shell {
+  max-width: 1060px;
+  margin: 0 auto;
+  padding: 56px 24px 80px;
+}
+.studio-shell h1 {
+  font-size: 32px;
+  margin: 0;
+}
+.studio-shell h2 {
+  font-size: 20px;
+}
+.studio-shell h3 {
+  font-size: 17px;
+}
+.studio-shell input,
+.studio-shell textarea,
+.studio-shell select {
+  box-sizing: border-box;
+}
+.studio-shell [hidden] {
+  display: none !important;
+}
+.studio-shell button,
+.studio-shell input,
+.studio-shell textarea,
+.studio-shell select {
+  font-family: Georgia, serif;
+}
+.studio-shell select {
+  max-width: 100%;
+  font-size: 16px;
+  background: var(--colors--background);
+  color: var(--colors--text);
+  border: 1px solid var(--colors--divider);
+  padding: 8px;
+}
+.studio-controls {
+  display: flex;
+  align-items: end;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.studio-controls .form-group {
+  flex: 1 1 180px;
+}
+.studio-controls > button {
+  margin-bottom: 24px;
+}
+.studio-view > h2 {
+  margin-top: 24px;
+}
+.studio-view {
+  max-width: 100%;
+}
+.saved-adaptations {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 24px 0;
+}
+.saved-adaptations button {
+  font-size: 13px;
+}
+.carousel-grid {
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 32px;
+  align-items: start;
+  margin: 24px 0;
+}
+.carousel-preview {
+  position: sticky;
+  top: 20px;
+}
+.carousel-preview canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--colors--divider);
+}
+.slide-row {
+  border-top: 1px solid var(--colors--divider);
+  padding: 20px 0;
+}
+.slide-row.selected {
+  border-top-color: var(--colors--text);
+}
+.slide-row .form-group {
+  margin-bottom: 12px;
+}
+.slide-row textarea {
+  min-height: 112px;
+}
+.slide-row .actions {
+  gap: 6px;
+}
+.slide-row button {
+  min-height: 32px;
+  padding: 4px 9px;
+}
+.studio-subsection {
+  margin-top: 36px;
+  padding-top: 28px;
+  border-top: 1px solid var(--colors--divider);
+}
+#studio-status {
+  font-size: 14px;
+  overflow-wrap: anywhere;
+}
+.studio-shell fieldset {
+  padding: 16px;
+  border: 1px solid var(--colors--divider);
+  margin-bottom: 24px;
+}
+.studio-shell fieldset label {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-size: 14px;
+  margin: 10px 0;
+}
+.studio-shell input[type="checkbox"] {
+  appearance: auto;
+  accent-color: var(--colors--text);
+}
+.reference-item,
+.insight-row {
+  padding: 20px 0;
+  border-bottom: 1px solid var(--colors--divider);
+  overflow-wrap: anywhere;
+}
+.reference-item h3,
+.insight-row h3 {
+  margin-top: 0;
+}
+.metric-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 20px;
+  border-block: 1px solid var(--colors--divider);
+  padding: 20px 0;
+  margin: 24px 0;
+}
+.metric-grid strong {
+  display: block;
+  font-size: 26px;
+}
+.metric-grid span {
+  font-size: 13px;
+  color: var(--colors--secondary);
+}
+.depth-row {
+  display: grid;
+  grid-template-columns: 70px 1fr 50px;
+  gap: 12px;
+  align-items: center;
+  font-size: 14px;
+  margin: 12px 0;
+}
+.depth-bar {
+  height: 5px;
+  background: var(--colors--divider);
+}
+.depth-bar span {
+  display: block;
+  height: 100%;
+  background: var(--colors--text);
+}
+.insight-meta {
+  font-size: 14px;
+  color: var(--colors--secondary);
+}
+.studio-shell details {
+  margin: 24px 0;
+}
+.studio-shell summary {
+  cursor: pointer;
+  margin-bottom: 16px;
+}
+.studio-shell table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+.studio-shell th,
+.studio-shell td {
+  text-align: left;
+  padding: 10px 8px;
+  border-bottom: 1px solid var(--colors--divider);
+  overflow-wrap: anywhere;
+}
+.table-scroll {
+  overflow-x: auto;
+}
+.studio-shell code {
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+.studio-shell a {
+  overflow-wrap: anywhere;
+}
+@media (max-width: 740px) {
+  .studio-shell {
+    padding: 32px 20px 56px;
+  }
+  .studio-shell .header h1 {
+    font-size: 30px;
+  }
+  .carousel-grid {
+    grid-template-columns: 1fr;
+  }
+  .carousel-preview {
+    position: static;
+    grid-row: 1;
+  }
+  .carousel-preview canvas {
+    max-width: 390px;
+    margin: auto;
+  }
+  .studio-shell .tabs {
+    gap: 16px;
+  }
+  .studio-controls {
+    gap: 8px;
+  }
+  .metric-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .studio-shell .form-group textarea {
+    font-size: 16px;
+  }
+}

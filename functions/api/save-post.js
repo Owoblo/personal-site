@@ -1,5 +1,6 @@
 import { requireAdmin } from '../_lib/auth.js';
 import { planPostEmail, queuePostEmail } from '../_lib/post-email.mjs';
+import { syncThoughts } from '../_lib/studio.mjs';
 
 export async function onRequestPost(context) {
   const unauthorized = await requireAdmin(context);
@@ -93,6 +94,7 @@ export async function onRequestPost(context) {
         // Email state is owned by the publishing workflow, not overwritten by form fields.
         const { _newsletter: _ignored, ...fields } = changed;
         changed = { ...fields, ...(existing?._newsletter ? { _newsletter: existing._newsletter } : {}) };
+        changed.thoughtId=expectedPost?(existing.thoughtId||`thought-${existing.id}`):crypto.randomUUID();
         const firstPublication = changed.status === 'published' && !['published', 'archived'].includes(previousStatus) && !existing?.firstPublishedAt;
         if (firstPublication && notifySubscribers === true) {
           if (context.env.NEWSLETTER_SENDING_ENABLED === 'true') changed = { ...changed, _newsletter: planPostEmail(changed, latestPosts) };
@@ -144,6 +146,7 @@ export async function onRequestPost(context) {
     }
 
     const result = await updateResponse.json();
+    if(context.env.NEWSLETTER_DB){try{if(deletedPostId!==undefined)await context.env.NEWSLETTER_DB.prepare('UPDATE studio_thoughts SET visible=0 WHERE post_id=?').bind(deletedPostId).run();else await syncThoughts(context.env.NEWSLETTER_DB,savedPosts.filter(p=>p.id===changedPostId||p.slug===posts.find(item=>item.id===changedPostId)?.slug));}catch(_){}}
     let notification = notificationPaused ? { status: 'paused', error: 'Subscriber emails are paused until your branded sender is ready.' } : null;
     if (notificationPostId !== null) {
       try {

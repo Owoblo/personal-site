@@ -35,6 +35,13 @@ const topLevelFiles = [
   "writer-theme.js",
   "article-formatting.js",
   "subscribe.html",
+  "studio.html",
+  "studio.js",
+  "studio.css",
+  "studio-render.mjs",
+  "reader-metrics.js",
+  "jo-email.png",
+  "jo-avatar.png",
 ];
 
 const topLevelDirectories = ["fonts", "images", "posts"];
@@ -82,48 +89,11 @@ function ogEscapeXml(text) {
 }
 
 function ogSvg(title) {
-  const width = 1200;
-  const height = 630;
-  const padX = 100;
-  const fontFamily = "Lora, Georgia, serif";
-
-  // Name, Dario-style: big and bold at the top
-  const name = "John Owolabi";
-  const nameFontSize = 104;
-
-  // Title below the name, regular serif, clearly subordinate
-  const titleFontSize = 58;
-  const titleLineHeight = titleFontSize * 1.3;
-  const lines = ogWrapText(title, 30).slice(0, 3);
-
-  const nameY = 210;
-  const titleStartY = nameY + 110;
-
-  const titleTextElements = lines
-    .map((line, index) => {
-      const y = titleStartY + index * titleLineHeight;
-      return `<text x="${padX}" y="${y}" style="font-family: ${fontFamily}; font-size: ${titleFontSize}px; fill: #1a1a1a;">${ogEscapeXml(line)}</text>`;
-    })
-    .join("\n");
-
-  // Bottom pill caption, Dario-style
-  const pillLabel = `${name} \u2014 ${title}`;
-  const pillFontSize = 30;
-  const pillPadX = 36;
-  const pillPadY = 20;
-  const pillText = pillLabel.length > 52 ? pillLabel.slice(0, 49) + "\u2026" : pillLabel;
-  const pillWidth = pillText.length * (pillFontSize * 0.58) + pillPadX * 2;
-  const pillHeight = pillFontSize + pillPadY * 2;
-  const pillX = padX;
-  const pillY = height - 60 - pillHeight;
-
-  return `<svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg">
-  <rect width="${width}" height="${height}" fill="#F0EEE6"/>
-  <text x="${padX}" y="${nameY}" style="font-family: ${fontFamily}; font-size: ${nameFontSize}px; font-weight: bold; fill: #1a1a1a;">${ogEscapeXml(name)}</text>
-  ${titleTextElements}
-  <rect x="${pillX}" y="${pillY}" width="${pillWidth}" height="${pillHeight}" rx="${pillHeight / 2}" fill="#1c1c1c"/>
-  <text x="${pillX + pillPadX}" y="${pillY + pillPadY + pillFontSize * 0.78}" style="font-family: ${fontFamily}; font-size: ${pillFontSize}px; fill: #ffffff;">${ogEscapeXml(pillText)}</text>
-</svg>`;
+  const width=1200,height=630;
+  let size=64,lines=ogWrapText(title,31);
+  while(lines.length>3&&size>48){size-=4;lines=ogWrapText(title,Math.round(31*64/size));}
+  const titleLines=lines.map((line,index)=>`<text x="88" y="${244+index*size*1.25}" font-family="Lora, Georgia, serif" font-size="${size}" fill="#292825">${ogEscapeXml(line)}</text>`).join('');
+  return `<svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg"><rect width="1200" height="630" fill="#F5F3EE"/><text x="88" y="91" font-family="Lora, Georgia, serif" font-size="30" fill="#77746E">JO</text><text x="162" y="92" font-family="Lora, Georgia, serif" font-size="46" font-weight="bold" fill="#292825">John Owolabi</text><path d="M88 137H1112" stroke="#E4E0D8"/>${titleLines}<path d="M88 538H1112" stroke="#E4E0D8"/><text x="88" y="582" font-family="Lora, Georgia, serif" font-size="25" fill="#77746E">Building things. Studying people. Questioning assumptions.</text><text x="1112" y="582" text-anchor="end" font-family="Lora, Georgia, serif" font-size="25" fill="#77746E">johnowolabi.com</text></svg>`;
 }
 
 async function writeOgPng(post) {

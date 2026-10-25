@@ -18,7 +18,7 @@ export async function onRequestGet(context) {
         }
         const published = posts.filter((article) => (article.status || 'published') === 'published')
             .sort((a, b) => new Date(b.date) - new Date(a.date));
-        const options = assets.status === 200 ? {} : { ogImageUrl: 'https://johnowolabi.com/11.png' };
+        const options = {};
         return new Response(renderPostPage(post, published, options), {
             headers: { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store' },
         });

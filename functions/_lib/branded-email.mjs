@@ -9,7 +9,7 @@ function ownLink(value) {
 
 // Transport-independent template. The sending service must provide a working,
 // signed unsubscribe URL on our domain before this can be sent to subscribers.
-export function renderBrandedEmail({ title, excerpt, articleUrl, unsubscribeUrl, confirmation = false }) {
+export function renderBrandedEmail({ title, excerpt, articleUrl, unsubscribeUrl, confirmation = false, pixelUrl = null, archive = false }) {
     const article = ownLink(articleUrl);
     const unsubscribe = confirmation ? null : ownLink(unsubscribeUrl);
     const html = `<!doctype html>
@@ -21,21 +21,23 @@ export function renderBrandedEmail({ title, excerpt, articleUrl, unsubscribeUrl,
 <body style="margin:0;padding:0;background-color:#F5F3EE;color:#292825;font-family:Georgia,'Times New Roman',serif;">
 <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" class="canvas" style="background-color:#F5F3EE;"><tr><td align="center">
 <table role="presentation" width="640" cellspacing="0" cellpadding="0" border="0" class="content" style="width:100%;max-width:640px;"><tr><td class="padding" style="padding:48px 28px;font-family:Georgia,'Times New Roman',serif;font-size:16px;line-height:1.65;">
+<img src="https://johnowolabi.com/jo-email.png" width="40" height="40" alt="JO" style="display:block;margin:0 0 20px;border:0;">
 <p class="name ink" style="margin:0 0 8px;color:#292825;font-size:32px;line-height:1.2;font-weight:bold;">John Owolabi</p>
 <p class="muted" style="margin:0 0 32px;color:#77746E;font-size:14px;">Building things. Studying people. Questioning assumptions.</p>
 <div class="rule" style="border-top:1px solid #E4E0D8;margin-bottom:32px;"></div>
-<p class="muted" style="margin:0 0 12px;color:#77746E;font-size:14px;">${confirmation ? 'One more step' : 'A new thought'}</p>
+<p class="muted" style="margin:0 0 12px;color:#77746E;font-size:14px;">${confirmation ? 'One more step' : archive ? 'From the archive' : 'A new thought'}</p>
 <h1 class="ink" style="margin:0 0 20px;color:#292825;font-size:24px;line-height:1.35;">${escape(title)}</h1>
 <p style="margin:0 0 24px;">${escape(excerpt)}</p>
 <p style="margin:0 0 32px;"><a class="ink" href="${escape(article)}" style="color:#292825;text-decoration:underline;text-underline-offset:3px;">${confirmation ? 'Confirm my subscription' : 'Read the thought →'}</a></p>
 <p style="margin:0 0 36px;">— John</p>
 <div class="rule" style="border-top:1px solid #E4E0D8;margin-bottom:20px;"></div>
 <p class="muted" style="margin:0 0 8px;color:#77746E;font-size:13px;">${confirmation ? 'If you didn’t request this, you can ignore this email. You won’t be added to the list.' : 'You’re receiving this because you subscribed to my thoughts.'}</p>
+${!confirmation?'<p class="muted" style="margin:0 0 8px;color:#77746E;font-size:13px;">Links and approximate opens help me understand what readers enjoy.</p>':''}
 <p class="muted" style="margin:0;color:#77746E;font-size:13px;"><a class="muted" href="${SITE}/#subscribe" style="color:#77746E;text-decoration:underline;">${confirmation ? 'johnowolabi.com' : 'Subscribe'}</a>${confirmation ? '' : ` · <a class="muted" href="${escape(unsubscribe)}" style="color:#77746E;text-decoration:underline;">Unsubscribe</a>`}</p>
-</td></tr></table></td></tr></table></body></html>`;
+</td></tr></table></td></tr></table>${pixelUrl?`<img src="${escape(ownLink(pixelUrl))}" width="1" height="1" alt="" style="display:block;border:0;">`:''}</body></html>`;
     return { html, text: `John Owolabi\nBuilding things. Studying people. Questioning assumptions.\n\n${title}\n\n${excerpt}\n\n${confirmation ? 'Confirm my subscription' : 'Read the thought'}: ${article}\n\n— John\n\n${confirmation ? 'If you didn’t request this, ignore this email. You won’t be added to the list.' : `You’re receiving this because you subscribed to my thoughts.\nSubscribe: ${SITE}/#subscribe\nUnsubscribe: ${unsubscribe}`}` };
 }
 
 export function renderConfirmationEmail(confirmUrl) {
-    return renderBrandedEmail({ title: 'Confirm your subscription', excerpt: 'Thanks for wanting to stay in touch. Confirm your email below, and I’ll send you a short note when I publish a new thought.', articleUrl: confirmUrl, confirmation: true });
+    return renderBrandedEmail({ title: 'Confirm your subscription', excerpt: 'Thanks for wanting to stay in touch. Confirm below to receive my thoughts. If you chose the earlier archive, I’ll send it at a quiet pace, at most one thought a day.', articleUrl: confirmUrl, confirmation: true });
 }
