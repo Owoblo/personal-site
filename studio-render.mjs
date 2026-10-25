@@ -52,17 +52,21 @@ function lines(ctx, text, width) {
   }
   return result;
 }
-export async function renderSlide(canvas, data, index) {
+export async function renderSlide(canvas, data, index, { scale = 2 } = {}) {
   const slide = data.slides[index];
   if (!slide) return { fits: false, message: "Add a slide." };
-  canvas.width = 1080;
-  canvas.height = 1350;
+  const density = scale === 1 ? 1 : 2;
+  canvas.width = 1080 * density;
+  canvas.height = 1350 * density;
   const c = canvas.getContext("2d"),
     dark = data.theme === "dark" || (data.theme === "mixed" && index % 2 === 1),
     bg = dark ? "#1C1B19" : "#F5F3EE",
     ink = dark ? "#E6E2D9" : "#292825",
     muted = dark ? "#ABA69B" : "#77746E",
     rule = dark ? "#393630" : "#E4E0D8";
+  c.scale(density, density);
+  c.imageSmoothingEnabled = true;
+  c.imageSmoothingQuality = "high";
   c.fillStyle = bg;
   c.fillRect(0, 0, 1080, 1350);
   c.textBaseline = "top";

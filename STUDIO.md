@@ -17,7 +17,7 @@ Six starter carousel drafts use excerpts from three existing essays, in type-onl
 
 ## Carousel defaults
 
-- 1080 × 1350 pixels, 4:5, Georgia/serif and the site's warm light/dark palettes.
+- 2160 × 2700 lossless PNG exports, 4:5, Georgia/serif and the site's warm light/dark palettes.
 - A concise opening, one idea per slide, approximately 25–50 words per middle slide, and an invitation to read and subscribe.
 - Small JO/name/website branding and page numbers. No patterns, gradients, shadows, or automatic posting.
 - Photo layout places a photograph on the cover and occasional intermediate slides. The ending stays typographic.
@@ -69,3 +69,11 @@ The public signup box appears after Thoughts on the homepage, at the end of each
 A small reading invitation can appear after 30 seconds of visible, focused reading and meaningful progress. It does not open a modal or take focus. Dismissal suppresses it for seven days on that browser, as does a recent signup request. A confirmed subscription is recognised by a first-party, non-identifying UI cookie set after actual confirmation; unsubscribe clears it. This does not identify an existing subscriber on every device. No email address is stored in browser storage. The signup form remains available to readers who disable JavaScript.
 
 Carousel headers use upright Georgia for the name. Short journal passages are centred in the available reading area, with a clear gap below the header. A final reading-card paragraph inviting readers to johnowolabi.com is separated by space and a short divider, then set in bold.
+
+## Full reading library
+
+`scripts/export-reading-library.mjs` creates a local library for every source thought (including clearly labelled private drafts), with searchable previews, per-thought PNG ZIPs, captions, and an import manifest. Run with `PLAYWRIGHT_MODULE` pointing to an installed Playwright package, and optionally `--output <directory>` or `--published-only`. Chrome can be selected through `CHROME_EXECUTABLE`. The output directory must be outside the website repository. No private writing is added to static deployment assets.
+
+Each paragraph is split with word-preserving boundaries and packed using actual canvas text measurements. The source word sequence is checked before adding the closing invitation. Stable adaptation IDs use the source hash so a repeat export does not overwrite a hand-edited draft. Existing original writing is unchanged. The editor can open a saved adaptation directly with `?post=<id>&asset=<uuid>`.
+
+Text and graphics render directly at twice the layout density for 2160 × 2700 PNGs; browser previews use a lighter canvas. Download the original PNGs for posting. The local detail view offers an Original PNG link for inspecting a full-resolution file.

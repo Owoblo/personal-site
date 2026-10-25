@@ -1,4 +1,4 @@
-import { renderSlide, splitBody, zipFiles } from "./studio-render.mjs?v=6";
+import { renderSlide, splitBody, zipFiles } from "./studio-render.mjs?v=7";
 const $ = (id) => document.getElementById(id),
   escape = (s) =>
     String(s ?? "").replace(
@@ -248,7 +248,7 @@ async function preview() {
   asset.data = readData();
   const version = ++renderVersion,
     buffer = document.createElement("canvas");
-  const result = await renderSlide(buffer, asset.data, slide);
+  const result = await renderSlide(buffer, asset.data, slide, { scale: 1 });
   if (version !== renderVersion) return;
   $("slide-canvas").getContext("2d").drawImage(buffer, 0, 0);
   $("slide-fit").textContent = result.message;
@@ -419,11 +419,19 @@ async function load() {
   const requested = new URLSearchParams(location.search).get("post");
   if (state.posts.some((p) => p.id === Number(requested)))
     $("thought-select").value = requested;
+  const requestedAsset = state.assets.find(
+    (a) => a.id === new URLSearchParams(location.search).get("asset"),
+  );
+  const assetPost =
+    requestedAsset &&
+    state.posts.find((p) => p.thoughtId === requestedAsset.thought_id);
+  if (assetPost) $("thought-select").value = assetPost.id;
   renderSaved();
   renderVoice();
   $("generate-adaptation").disabled = !state.aiConfigured;
   status("Your original writing and adaptations are stored separately.");
   switchView(new URLSearchParams(location.search).get("view") || "work");
+  if (requestedAsset) await openAsset(requestedAsset);
 }
 $("studio-login").addEventListener("submit", async (e) => {
   e.preventDefault();
