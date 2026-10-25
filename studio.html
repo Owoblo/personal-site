@@ -9,7 +9,7 @@
     <script src="/writer-theme.js?v=20261025-1"></script>
     <link rel="stylesheet" href="/styles.css?v=20261025-6" />
     <link rel="stylesheet" href="/writer.css?v=20261025-2" />
-    <link rel="stylesheet" href="/studio.css?v=1" />
+    <link rel="stylesheet" href="/studio.css?v=2" />
   </head>
   <body class="writer-room">
     <main class="studio-shell">
@@ -52,11 +52,74 @@
       </p>
       <div id="studio-workspace" hidden>
         <nav class="tabs" aria-label="Studio">
-          <button class="tab active" data-view="work">Repurpose</button
+          <button class="tab active" data-view="library">
+            Thought library
+          </button>
+          <button class="tab" data-view="work">Repurpose</button>
+          <button class="tab" data-view="video">Video directions</button>
+          <button class="tab" data-view="queue">Ready queue</button
           ><button class="tab" data-view="voice">Voice & inspiration</button
           ><button class="tab" data-view="insights">Reader insights</button
           ><button class="tab" data-view="email">Email sequence</button>
         </nav>
+        <section id="view-library" class="studio-view" hidden>
+          <h2>Your thoughts, together</h2>
+          <p>
+            Thought → adaptations → review → ready queue → publishing → results.
+          </p>
+          <p class="status" id="library-summary"></p>
+          <div class="studio-controls">
+            <div class="form-group">
+              <label for="library-search">Find a thought</label
+              ><input
+                id="library-search"
+                type="search"
+                placeholder="Search your writing"
+              />
+            </div>
+            <div class="form-group">
+              <label for="library-source">Source</label
+              ><select id="library-source">
+                <option value="all">All thoughts</option>
+                <option value="published">Published</option>
+                <option value="draft">Private drafts</option>
+              </select>
+            </div>
+          </div>
+          <div id="library-results"></div>
+        </section>
+        <section id="view-video" class="studio-view" hidden>
+          <h2>Video directions</h2>
+          <p>
+            Keep the thought at the centre. These are recording formats to test,
+            with room for your own pace.
+          </p>
+          <div class="form-group">
+            <label for="video-thought-select">Thought to explore</label
+            ><select id="video-thought-select"></select>
+          </div>
+          <h3>Saved recording briefs</h3>
+          <div id="video-briefs" class="package-assets"></div>
+          <div id="video-formats" class="video-format-grid"></div>
+        </section>
+        <section id="view-queue" class="studio-view" hidden>
+          <h2>Ready queue</h2>
+          <p>
+            Reviewed versions, organised by destination. Publishing is waiting
+            for account connections. A planned date does not send a post yet.
+          </p>
+          <p class="status">
+            A change to the thought or adaptation requires fresh review. Video
+            scripts also need a recording.
+          </p>
+          <div class="actions">
+            <button class="btn" id="refresh-content-queue">Refresh queue</button
+            ><a class="btn" href="/api/content-queue?download=1"
+              >Download publishing manifest</a
+            >
+          </div>
+          <div id="queue-results"></div>
+        </section>
         <section id="view-work" class="studio-view">
           <div class="form-group">
             <label for="thought-select">Original thought</label
@@ -170,12 +233,14 @@
               </div>
             </div>
             <div id="text-editor" class="form-group">
-              <label for="asset-text">Adapted writing / spoken script</label
+              <label for="asset-text" id="asset-text-label"
+                >Adapted writing / spoken script</label
               ><textarea id="asset-text" rows="12"></textarea
               ><small id="text-count"></small>
             </div>
             <div id="parts-editor" class="form-group">
-              <label for="asset-parts">Thread posts / recording beats</label
+              <label for="asset-parts" id="asset-parts-label"
+                >Thread posts / recording beats</label
               ><textarea
                 id="asset-parts"
                 rows="10"
@@ -201,6 +266,31 @@
               </button>
             </div>
             <p class="status" id="asset-save-state"></p>
+            <section class="studio-subsection" id="queue-controls">
+              <h3>Prepare for distribution</h3>
+              <p class="status">
+                Approve the saved version first. Account connections come next.
+              </p>
+              <div class="studio-controls">
+                <div class="form-group">
+                  <label for="queue-channel">Destination</label
+                  ><select id="queue-channel">
+                    <option value="instagram">Instagram</option>
+                    <option value="x">X</option>
+                    <option value="linkedin">LinkedIn</option>
+                    <option value="facebook">Facebook</option>
+                    <option value="tiktok">TikTok</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="queue-date">Planned date (optional)</label
+                  ><input id="queue-date" type="datetime-local" />
+                </div>
+              </div>
+              <button class="btn" id="queue-adaptation">
+                Add reviewed version to ready queue
+              </button>
+            </section>
             <section class="studio-subsection">
               <h3>Share & measure</h3>
               <div class="studio-controls">
@@ -387,6 +477,6 @@
         </section>
       </div>
     </main>
-    <script type="module" src="/studio.js?v=9"></script>
+    <script type="module" src="/studio.js?v=10"></script>
   </body>
 </html>

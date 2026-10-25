@@ -1,3 +1,4 @@
+import { mountOrganizer } from "./studio-organizer.js?v=1";
 import { renderSlide, splitBody, zipFiles } from "./studio-render.mjs?v=8";
 const $ = (id) => document.getElementById(id),
   escape = (s) =>
@@ -17,7 +18,8 @@ let state = { posts: [], assets: [], voice: {}, inspiration: [] },
   slide = 0,
   dirty = false,
   renderVersion = 0,
-  timer;
+  timer,
+  organizer;
 function status(text, error = false) {
   $("studio-status").textContent = text;
   $("studio-status").className = error ? "auth-error" : "status";
@@ -169,6 +171,21 @@ async function openAsset(a) {
   $("carousel-template").value = asset.data.template;
   $("carousel-theme").value = asset.data.theme;
   $("asset-heading").textContent = `${asset.format} adaptation`;
+  $("asset-text-label").textContent =
+    asset.format === "video"
+      ? "Recording brief"
+      : "Adapted writing / spoken script";
+  $("asset-parts-label").textContent =
+    asset.format === "video"
+      ? "Spoken script / recording beats"
+      : "Thread posts / recording beats";
+  $("queue-channel").value = ["tweet", "thread"].includes(asset.format)
+    ? "x"
+    : asset.format === "linkedin"
+      ? "linkedin"
+      : asset.format === "facebook"
+        ? "facebook"
+        : "instagram";
   $("asset-state").textContent = `${asset.state} · revision ${asset.revision}`;
   $("asset-warning").hidden = !a.stale;
   $("asset-warning").textContent =
@@ -296,6 +313,7 @@ async function save(approved = false) {
   $("asset-save-state").textContent = "Saved in your studio.";
   $("asset-state").textContent = `${asset.state} · revision ${asset.revision}`;
   renderSaved();
+  organizer?.render();
   status(
     approved
       ? "Approved for use. You can export it when ready."
@@ -322,6 +340,8 @@ async function png(index) {
   );
 }
 function switchView(view) {
+  if (view === "queue")
+    organizer?.loadQueue().catch((error) => status(error.message, true));
   for (const section of document.querySelectorAll(".studio-view"))
     section.hidden = section.id !== "view-" + view;
   for (const tab of document.querySelectorAll("[data-view]"))
@@ -429,9 +449,20 @@ async function load() {
   if (assetPost) $("thought-select").value = assetPost.id;
   renderSaved();
   renderVoice();
+  organizer = mountOrganizer({
+    state,
+    choosePost,
+    openAsset,
+    switchView,
+    status,
+    api,
+  });
   $("generate-adaptation").disabled = !state.aiConfigured;
   status("Your original writing and adaptations are stored separately.");
-  switchView(new URLSearchParams(location.search).get("view") || "work");
+  switchView(
+    new URLSearchParams(location.search).get("view") ||
+      (requested || requestedAsset ? "work" : "library"),
+  );
   if (requestedAsset) await openAsset(requestedAsset);
 }
 $("studio-login").addEventListener("submit", async (e) => {
@@ -534,6 +565,7 @@ for (const [id, generate] of [
     state.assets.unshift(result.asset);
     openAsset(result.asset);
     renderSaved();
+    organizer?.render();
     status(
       generate
         ? "Draft ready. Read it against your original before approving."
@@ -743,4 +775,34 @@ addEventListener("beforeunload", (e) => {
 bind("pause-reminders", async () => {
   await api("/api/reading-sequence", { action: "reminders", enabled: false });
   status("Confirmation reminders paused.");
+});
+
+function choosePost(id) {
+  if (
+    dirty &&
+    !confirm("Switch thoughts? Your edits have a local recovery copy.")
+  )
+    return false;
+  if (dirty) persistRecovery();
+  clearTimeout(timer);
+  asset = null;
+  dirty = false;
+  $("asset-editor").hidden = true;
+  $("thought-select").value = id;
+  renderSaved();
+  return true;
+}
+bind("refresh-content-queue", () => organizer.loadQueue());
+bind("queue-adaptation", async () => {
+  if (!asset || dirty) throw Error("Save and approve this adaptation first.");
+  await api("/api/content-queue", {
+    action: "enqueue",
+    assetId: asset.id,
+    revision: asset.revision,
+    channel: $("queue-channel").value,
+    notBefore: $("queue-date").value
+      ? new Date($("queue-date").value).toISOString()
+      : null,
+  });
+  status("Reviewed version added. It will wait for the account connection.");
 });

@@ -4,6 +4,7 @@ export function testDatabase() {
  const database = new DatabaseSync(':memory:');
  database.exec(readFileSync(new URL('../../migrations/0001_newsletter.sql', import.meta.url), 'utf8'));
  database.exec(readFileSync(new URL('../../migrations/0002_studio.sql', import.meta.url), 'utf8'));
+ database.exec(readFileSync(new URL('../../migrations/0003_content_queue.sql', import.meta.url), 'utf8'));
  return {
   prepare(sql) {
    let params=[];

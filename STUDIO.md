@@ -85,3 +85,15 @@ Three published essays have a private review set: Maybe I'm Not Behind; The Expl
 The prepared texts were checked using X's twitter-text weighted counter, including numbered posts and shortened URL weights. These initial drafts do not require an OpenAI request. No social account has been connected or used to publish them. Review response to the style before extending the batch.
 
 Thread posts preserve paragraph breaks inside each post. In the editor, a line containing `---` separates posts or recording beats. Copy writing copies only the actual standalone tweet or the complete thread once. The reading-card footer now places JO/website left and the count at the far right on one line.
+
+## Thought library, video and ready queue
+
+The studio opens on a searchable library grouped by source thought. It displays prepared formats and missing ones, with each saved adaptation's review/stale status. Private source drafts stay labelled. Saved metadata is no longer silently limited to 150 adaptations. Direct post/adaptation links still open the editor.
+
+Video directions offers six reusable approaches: a calm conversation, everyday footage with voiceover, a single observation, a small story, two perspectives, and a workbench observation. Nine source-grounded recording briefs cover the three initial X essays. Briefs contain an opening, spoken beats, framing/shot ideas, on-screen wording, delivery notes, a rough word-based duration, and a caption. They are scripts to record, not finished video files.
+
+Apply `migrations/0003_content_queue.sql` for the review queue. The authenticated `/api/content-queue` accepts only approved, current revisions from published source thoughts, checks format/destination compatibility, and deduplicates by adaptation/revision/channel. An optional planned date records intent; publishing is not connected. Source edits, adaptation revisions, loss of review, or private/unavailable source writing hold an item. Pausing/removing is reversible and does not delete an adaptation.
+
+The private publishing-manifest download includes the reviewed snapshot (using revision history after later edits), its source hash, destination, planned date, and stable idempotency key. Items currently have `dispatchable: false`: account connectors and social scheduling are not enabled. Video briefs additionally require a recorded media asset. No social cron was activated. The existing email cron is independent.
+
+When social connections are added, use the queue helper/manifest as the hand-off: verify the connected account and capabilities; attach/render media; recheck source/review/pinned version; claim one due item; submit with its idempotency key where supported; save the provider post ID and status. Ambiguous acknowledgements must be held for review, not blindly retried. Add dedicated service authentication and provider-specific tests before wiring a social cron. The interface does not pretend a planned date will publish today.

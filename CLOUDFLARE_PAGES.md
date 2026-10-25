@@ -9,6 +9,8 @@ This site uses static assets and Pages Functions for writing, current articles, 
 - Output: `dist`
 - Deploy: `npx wrangler pages deploy dist --project-name personal-site --branch main`
 - Newsletter schema: `npx wrangler d1 execute johnowolabi-newsletter --remote --file migrations/0001_newsletter.sql`
+- Studio schema: `npx wrangler d1 execute johnowolabi-newsletter --remote --file migrations/0002_studio.sql`
+- Content queue schema: `npx wrangler d1 execute johnowolabi-newsletter --remote --file migrations/0003_content_queue.sql`
 - Retry worker: `npx wrangler deploy --config workers/newsletter-cron/wrangler.toml`
 
 The root `wrangler.toml` binds the private `NEWSLETTER_DB` database and selects the SES provider. Keep sending disabled during a new setup until the domain, credentials, subscription flow, and owner-only delivery test have been verified.
@@ -50,6 +52,8 @@ A cron check runs every five minutes and processes up to five recipients per che
 The authenticated Email list tab shows subscriber counts, campaign progress, failed deliveries, and uncertain deliveries. All list data and per-recipient delivery records stay in D1, outside public assets and GitHub. The public RSS feed is separate from email delivery. No paid RSS, automation, branding, or tagging add-on was enabled.
 
 ## Analytics and social tools
+
+The studio's Thought library groups adaptations by source and shows missing formats. Video directions contains reusable recording formats and saved briefs. The private Ready queue pins reviewed versions and holds them for missing connections, changed source/revisions, or unrecorded video. Downloadable publishing manifests carry a stable idempotency key and reviewed payload. This is preparation for a future provider adapter and social cron; neither is enabled. The existing email cron continues independently. See STUDIO.md for the hand-off contract.
 
 `analytics.js` has legacy GitHub tracking disabled. `analytics.html` shows an old snapshot; first-party reading measurements are described in STUDIO.md. The existing carousel exporter provides editable slides and downloads. The private Thought studio now provides repurposing, voice/reference libraries, carousel exports, tracked links, and reader insights. Social account integrations remain unconnected. See STUDIO.md for setup and current limits.
 

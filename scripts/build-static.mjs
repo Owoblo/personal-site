@@ -37,6 +37,7 @@ const topLevelFiles = [
   "subscribe.html",
   "studio.html",
   "studio.js",
+  "studio-organizer.js",
   "studio.css",
   "studio-render.mjs",
   "reader-metrics.js",

@@ -47,7 +47,7 @@ export async function onRequestGet(context) {
   await syncThoughts(db, posts);
   const assets = await db
     .prepare(
-      "SELECT id,thought_id,format,angle,source_hash,state,revision,created_at,updated_at,json_extract(data,'$.title') AS title FROM studio_assets ORDER BY updated_at DESC LIMIT 150",
+      "SELECT id,thought_id,format,angle,source_hash,state,revision,created_at,updated_at,json_extract(data,'$.title') AS title FROM studio_assets ORDER BY updated_at DESC",
     )
     .all();
   const inspiration = await db
