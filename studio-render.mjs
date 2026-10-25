@@ -123,12 +123,12 @@ export async function renderSlide(canvas, data, index, { scale = 2 } = {}) {
     const words = (slide.body.match(/\S+/g) || []).length;
     const fits = y <= 1115 && words <= 200;
     c.fillStyle = muted;
-    c.font = "28px Georgia,serif";
-    c.textAlign = "center";
-    c.fillText(`${index + 1} / ${data.slides.length}`, 540, 1215);
+    c.font = "26px Georgia,serif";
     c.textAlign = "left";
-    c.font = "23px Georgia,serif";
-    c.fillText("JO · johnowolabi.com", 88, 1260);
+    c.fillText("JO · johnowolabi.com", 88, 1240);
+    c.textAlign = "right";
+    c.fillText(`${index + 1} / ${data.slides.length}`, 992, 1240);
+    c.textAlign = "left";
     return {
       fits,
       words,

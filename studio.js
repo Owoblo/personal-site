@@ -1,4 +1,4 @@
-import { renderSlide, splitBody, zipFiles } from "./studio-render.mjs?v=7";
+import { renderSlide, splitBody, zipFiles } from "./studio-render.mjs?v=8";
 const $ = (id) => document.getElementById(id),
   escape = (s) =>
     String(s ?? "").replace(
@@ -91,16 +91,19 @@ function announceSaved() {
     }
   }, 600);
 }
+function readParts() {
+  return $("asset-parts")
+    .value.split(/\n[ \t]*---[ \t]*\n/)
+    .map((part) => part.trim())
+    .filter(Boolean);
+}
 function readData() {
   if (!asset) return null;
   return {
     ...asset.data,
     title: $("asset-title").value,
     text: $("asset-text").value,
-    parts: $("asset-parts")
-      .value.split(/\n\s*\n/)
-      .map((s) => s.trim())
-      .filter(Boolean),
+    parts: readParts(),
     caption: $("asset-caption").value,
     template: $("carousel-template").value,
     theme: $("carousel-theme").value,
@@ -161,7 +164,7 @@ async function openAsset(a) {
   $("asset-editor").hidden = false;
   $("asset-title").value = asset.data.title;
   $("asset-text").value = asset.data.text;
-  $("asset-parts").value = asset.data.parts.join("\n\n");
+  $("asset-parts").value = asset.data.parts.join("\n\n---\n\n");
   $("asset-caption").value = asset.data.caption;
   $("carousel-template").value = asset.data.template;
   $("carousel-theme").value = asset.data.theme;
@@ -258,9 +261,7 @@ async function preview() {
 function updateCounts() {
   $("text-count").textContent =
     `${Array.from($("asset-text").value).length} characters`;
-  $("parts-count").textContent = $("asset-parts")
-    .value.split(/\n\s*\n/)
-    .filter(Boolean)
+  $("parts-count").textContent = readParts()
     .map((p, i) => `${i + 1}: ${Array.from(p).length} characters`)
     .join(" · ");
 }
@@ -577,7 +578,18 @@ bind("download-all", async () => {
 bind("copy-adaptation", async () => {
   const d = readData();
   await navigator.clipboard.writeText(
-    [d.title, d.text, d.parts.join("\n\n"), d.caption, $("tracked-link").value]
+    (asset.format === "tweet"
+      ? [d.text]
+      : asset.format === "thread"
+        ? [d.parts.join("\n\n---\n\n")]
+        : [
+            d.title,
+            d.text,
+            d.parts.join("\n\n"),
+            d.caption,
+            $("tracked-link").value,
+          ]
+    )
       .filter(Boolean)
       .join("\n\n"),
   );

@@ -77,3 +77,11 @@ Carousel headers use upright Georgia for the name. Short journal passages are ce
 Each paragraph is split with word-preserving boundaries and packed using actual canvas text measurements. The source word sequence is checked before adding the closing invitation. Stable adaptation IDs use the source hash so a repeat export does not overwrite a hand-edited draft. Existing original writing is unchanged. The editor can open a saved adaptation directly with `?post=<id>&asset=<uuid>`.
 
 Text and graphics render directly at twice the layout density for 2160 × 2700 PNGs; browser previews use a lighter canvas. Download the original PNGs for posting. The local detail view offers an Original PNG link for inspecting a full-resolution file.
+
+## X review drafts
+
+Three published essays have a private review set: Maybe I'm Not Behind; The Explosion Gets the Headline; and People Don't Love My Writing. They Love My Honesty. Each has a sharp standalone, a quiet standalone, and a connected thread (nine saved adaptations total). Drafts are grounded in the actual source essays and are not claims about guaranteed engagement. Standalones complete one thought; a reading link is available as an optional follow-up reply. Threads use one closing invitation. Each adaptation has its own owned reading link for later attribution.
+
+The prepared texts were checked using X's twitter-text weighted counter, including numbered posts and shortened URL weights. These initial drafts do not require an OpenAI request. No social account has been connected or used to publish them. Review response to the style before extending the batch.
+
+Thread posts preserve paragraph breaks inside each post. In the editor, a line containing `---` separates posts or recording beats. Copy writing copies only the actual standalone tweet or the complete thread once. The reading-card footer now places JO/website left and the count at the far right on one line.
