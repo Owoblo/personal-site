@@ -239,7 +239,7 @@ function renderPostPage(post, allPosts) {
       const pDate = formatDate(p.date, { year: "numeric", month: "short" });
       return `<li style="margin-bottom: 12px;">
                             <a href="/post/${encodeURIComponent(p.slug)}/">${escapeHtml(p.title)}</a>
-                            <span style="opacity: 0.6; font-size: 0.9em;"> (${escapeHtml(pDate)})</span>
+                            <span class="post-meta"> (${escapeHtml(pDate)})</span>
                         </li>`;
     })
     .join("");
@@ -272,11 +272,7 @@ function renderPostPage(post, allPosts) {
     <meta name="twitter:image" content="${escapeHtml(ogImage)}">
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap"
-        rel="stylesheet">
-    <link rel="stylesheet" href="/styles.css?v=20260920-2">
+    <link rel="stylesheet" href="/styles.css?v=20261025-3">
 
     <link rel="canonical" href="${escapeHtml(canonical)}">
 
@@ -302,7 +298,7 @@ function renderPostPage(post, allPosts) {
             <article>
                 <header>
                     <h1>${escapeHtml(post.title)}</h1>
-                    <p class="post-date" style="opacity: 0.7; font-style: italic; margin-top: 10px;">${escapeHtml(longDate(post.date))}</p>
+                    <p class="post-date" style="font-style: italic; margin-top: 10px;">${escapeHtml(longDate(post.date))}</p>
                 </header>
 
                 <div class="post-body" style="margin-top: 30px;">
@@ -310,7 +306,7 @@ function renderPostPage(post, allPosts) {
                 </div>
 
                 <!-- Email Subscription -->
-                <div class="email-subscription" style="margin-top: 50px; padding: 30px 0; border-top: 1px solid var(--colors--text); border-bottom: 1px solid var(--colors--text);">
+                <div class="email-subscription" style="margin-top: 50px; padding: 30px 0; border-top: 1px solid var(--colors--divider); border-bottom: 1px solid var(--colors--divider);">
                     <p style="margin-bottom: 15px; font-size: 1em;">Get new posts in your inbox</p>
                     <form action="https://buttondown.email/api/emails/embed-subscribe/johnowolabi" method="post" target="popupwindow" onsubmit="window.open('https://buttondown.email/johnowolabi', 'popupwindow')" style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center;">
                         <input type="email" name="email" placeholder="your@email.com" required style="flex: 1; min-width: 200px; padding: 10px 12px; border: 1px solid var(--colors--text); background-color: var(--colors--background); color: var(--colors--text); font-family: inherit; font-size: 0.95em;">
@@ -433,8 +429,8 @@ function renderThoughtsList(posts) {
       const desc = trimDescription(p.excerpt || "", 160);
       return `                <li>
                     <a href="${url}">${escapeHtml(p.title)}</a>
-                    <span style="opacity: 0.6; font-size: 0.9em;"> (${escapeHtml(longDate(p.date))})</span>
-                    <p style="opacity: 0.75; margin: 6px 0 18px;">${escapeHtml(desc)}</p>
+                    <span class="post-meta"> (${escapeHtml(longDate(p.date))})</span>
+                    <p class="post-excerpt">${escapeHtml(desc)}</p>
                 </li>`;
     })
     .join("\n");
