@@ -1,4 +1,4 @@
-import { renderSlide, splitBody, zipFiles } from "./studio-render.mjs?v=4";
+import { renderSlide, splitBody, zipFiles } from "./studio-render.mjs?v=6";
 const $ = (id) => document.getElementById(id),
   escape = (s) =>
     String(s ?? "").replace(

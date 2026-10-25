@@ -67,7 +67,7 @@ export async function renderSlide(canvas, data, index) {
   c.fillRect(0, 0, 1080, 1350);
   c.textBaseline = "top";
   c.fillStyle = ink;
-  c.font = "italic 40px Georgia,serif";
+  c.font = "normal 400 36px Georgia,serif";
   c.fillText("John Owolabi", 88, 110);
   c.strokeStyle = muted;
   c.lineWidth = 2.5;
@@ -81,16 +81,20 @@ export async function renderSlide(canvas, data, index) {
   if (data.template === "reading") {
     c.font = "bold 54px Georgia,serif";
     const heading = slide.heading ? lines(c, slide.heading, 904) : [];
-    c.font = "42px Georgia,serif";
-    const paragraphs = slide.body
-      .split(/\n\s*\n/)
-      .filter(Boolean)
-      .map((p) => lines(c, p, 904));
+    const passage = slide.body.split(/\n\s*\n/).filter(Boolean);
+    const paragraphs = passage.map((text, p) => {
+      const cta =
+        index === data.slides.length - 1 &&
+        p === passage.length - 1 &&
+        /johnowolabi\.com/i.test(text) &&
+        /\b(read|subscribe|join)\b/i.test(text);
+      c.font = `${cta ? "bold" : "normal"} 42px Georgia,serif`;
+      return { lines: lines(c, text, 904), cta, gap: p ? (cta ? 56 : 20) : 0 };
+    });
     const height =
       heading.length * 67 +
       (heading.length && paragraphs.length ? 34 : 0) +
-      paragraphs.reduce((n, p) => n + p.length * 61, 0) +
-      Math.max(0, paragraphs.length - 1) * 20;
+      paragraphs.reduce((n, p) => n + p.lines.length * 61 + p.gap, 0);
     let y = Math.max(270, Math.round((1350 - height) / 2));
     c.fillStyle = ink;
     c.font = "bold 54px Georgia,serif";
@@ -99,13 +103,18 @@ export async function renderSlide(canvas, data, index) {
       y += 67;
     }
     if (heading.length && paragraphs.length) y += 34;
-    c.font = "42px Georgia,serif";
-    for (let p = 0; p < paragraphs.length; p++) {
-      for (const line of paragraphs[p]) {
+    for (const paragraph of paragraphs) {
+      if (paragraph.cta && paragraph.gap) {
+        c.fillStyle = rule;
+        c.fillRect(88, y + 18, 110, 2);
+      }
+      y += paragraph.gap;
+      c.fillStyle = ink;
+      c.font = `${paragraph.cta ? "bold" : "normal"} 42px Georgia,serif`;
+      for (const line of paragraph.lines) {
         c.fillText(line, 88, y);
         y += 61;
       }
-      if (p < paragraphs.length - 1) y += 20;
     }
     const words = (slide.body.match(/\S+/g) || []).length;
     const fits = y <= 1115 && words <= 200;
@@ -124,7 +133,6 @@ export async function renderSlide(canvas, data, index) {
         : "This reading card needs more room. Split it before export.",
     };
   }
-  let y = index === 0 ? 250 : 190;
   const photo =
     data.template === "photo" &&
     (index === 0 || index % 3 === 0) &&
@@ -142,7 +150,7 @@ export async function renderSlide(canvas, data, index) {
       img.src = data.photo;
     });
     const width = 912,
-      height = 470,
+      height = 400,
       scale = Math.max(width / image.width, height / image.height),
       sw = width / scale,
       sh = height / scale;
@@ -153,23 +161,29 @@ export async function renderSlide(canvas, data, index) {
       sw,
       sh,
       84,
-      150,
+      240,
       width,
       height,
     );
-    y = 672;
   }
   c.fillStyle = ink;
-  const font = index === 0 && !photo ? 78 : photo ? 52 : 56;
+  const font = index === 0 && !photo ? 78 : 52;
   c.font = `bold ${font}px Georgia,serif`;
-  const heading = lines(c, slide.heading, 912);
+  const heading = slide.heading ? lines(c, slide.heading, 912) : [];
+  c.font = `${photo ? 40 : 44}px Georgia,serif`;
+  const body = slide.body ? lines(c, slide.body, 912) : [];
+  const contentHeight =
+    heading.length * font * 1.22 +
+    (slide.heading ? 44 : 0) +
+    body.length * (photo ? 56 : 64);
+  let y = photo ? 700 : Math.max(320, Math.round(690 - contentHeight / 2));
+  c.font = `bold ${font}px Georgia,serif`;
   for (const line of heading) {
     c.fillText(line, 84, y);
     y += font * 1.22;
   }
-  if (slide.heading) y += 36;
+  if (slide.heading) y += 44;
   c.font = `${photo ? 40 : 44}px Georgia,serif`;
-  const body = lines(c, slide.body, 912);
   for (const line of body) {
     c.fillText(line, 84, y);
     y += photo ? 56 : 64;
