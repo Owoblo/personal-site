@@ -28,7 +28,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="styles.css?v=20260904-2">
+    <link rel="stylesheet" href="styles.css?v=20261025-1">
 
     <!-- Canonical URL -->
     <meta property="og:site_name" content="John Owolabi">
@@ -73,44 +73,60 @@
 
         <main>
         <section class="bio" aria-labelledby="bio-heading">
-            <p class="eyebrow" id="bio-heading">Founder · builder · writer</p>
+            <p id="bio-heading"><em>Founder. Builder. Writer. A student of systems and human nature.</em></p>
             <p class="bio-lede">
-                John Owolabi runs <a href="https://starmovers.ca" target="_blank" rel="noopener">Saturn Star Movers</a>
-                and realized most moving companies operate like it's 1995. So he's building the software stack the
-                industry should have had decades ago. His work spans
-                <button class="story-link" type="button" data-story="real-estate" aria-expanded="false">real estate data</button>,
-                <button class="story-link" type="button" data-story="automation" aria-expanded="false">logistics automation</button>,
-                and tools that turn manual chaos into
-                <button class="story-link" type="button" data-story="systems" aria-expanded="false">scalable systems</button>.
+                I'm a Nigerian-born entrepreneur, builder, and writer based in Canada.
                 <button class="text-button" type="button" id="bio-more-toggle" aria-expanded="false" aria-controls="bio-extended">More</button>
             </p>
 
-            <aside class="story-note" id="story-note" aria-live="polite" hidden>
-                <div>
-                    <p class="story-note-label" id="story-note-label"></p>
-                    <p class="story-note-copy" id="story-note-copy"></p>
-                </div>
-                <a class="story-note-action" id="story-note-action" href="#">Explore <span aria-hidden="true">↗</span></a>
-                <button class="story-note-close" id="story-note-close" type="button" aria-label="Close note">×</button>
-            </aside>
-
             <div id="bio-extended" class="bio-extended">
                 <p>
-                    He focuses on systems, not noise, and prefers solving real problems over talking about them.
+                    I've always been fascinated by the invisible architecture of things. The systems that govern how businesses operate, how markets behave, how people make decisions, and how seemingly ordinary actions produce extraordinary consequences.
                 </p>
                 <p>
-                    He writes to think. His blog is where he breaks down what he's learning: ideas, experiments,
-                    failures, and whatever problem he's currently obsessed with. Curiosity drives most of his work,
-                    whether it's AI, markets, travel, design, or understanding how people operate.
+                    My curiosity rarely ends at understanding how something works. I want to know why it works that way, what assumptions hold it together, and what becomes possible when those assumptions are challenged.
                 </p>
                 <p>
-                    He grew up learning to figure things out quickly, and that habit never left. He moves fast, asks
-                    direct questions, and takes work seriously. He likes meeting people, but he also keeps his distance.
-                    The mix is intentional.
+                    I founded <a href="https://starmovers.ca/" target="_blank" rel="noopener">Saturn Star Movers</a>, a Canadian moving company that has gradually become something more than a transportation business. It's become a testing ground for a larger conviction of mine: that some of the most interesting technological opportunities are hiding inside industries the world has stopped paying attention to.
+                </p>
+                <p>
+                    That conviction informs much of my work across logistics, real estate intelligence, automation, and software. I'm interested in building tools not because technology fascinates me in isolation, but because I've experienced firsthand the inefficiencies those tools are meant to eliminate.
+                </p>
+                <p>
+                    But business is only one expression of my curiosity.
+                </p>
+                <p>
+                    I'm equally fascinated by people. The peculiarities of human behaviour, the fragility of relationships, the contradictions of ambition, the mechanics of belonging, and the extraordinary lengths to which we go in search of meaning, security, and significance.
+                </p>
+                <p>
+                    I write about these things, not necessarily to arrive at conclusions, but to examine perspectives that might otherwise go unexplored. Writing, for me, is often an attempt to give language to observations I've carried around for years.
+                </p>
+                <p>
+                    I'm drawn to people who think independently, conversations that challenge my assumptions, and ideas that refuse to fit neatly into conventional explanations.
+                </p>
+                <p>
+                    I believe deeply in human potential, including my own. But I'm also painfully conscious of the uncomfortable distance that sometimes exists between what we're capable of and what we consistently accomplish.
+                </p>
+                <p>
+                    I've made mistakes. Some expensive, some instructive, and some that have forced me to reconsider things I once believed I understood. I don't consider these experiences particularly romantic. They're simply part of the cost of participating in life rather than observing it from a comfortable distance.
+                </p>
+                <p>
+                    There are a few contradictions I've come to recognize in myself.
+                </p>
+                <p>
+                    I enjoy people, but I value solitude. I'm intensely ambitious, yet increasingly suspicious of noise. I can be impatient with inefficiency and remarkably patient with ideas. I'm fascinated by complexity, but find myself drawn toward simplicity.
+                </p>
+                <p>
+                    And perhaps the most consistent thing about me is my refusal to accept that the existing arrangement of things is necessarily the best one.
+                </p>
+                <p>
+                    I'm not particularly interested in appearing to have everything figured out.
+                </p>
+                <p>
+                    I'd rather spend my life finding out.
                 </p>
                 <p class="key-statement">
-                    Most of his projects start from the same place:<br>
-                    <em>see the gap, build the system, let the results speak.</em>
+                    <strong>Building things. Studying people. Questioning assumptions. And occasionally writing about the strange experience of being alive.</strong>
                 </p>
             </div>
         </section>
@@ -198,64 +214,6 @@
         }
 
         document.getElementById('bio-more-toggle').addEventListener('click', toggleBio);
-
-        // Contextual notes turn the biography into an index without interrupting the reading flow.
-        (function () {
-            const stories = {
-                'real-estate': {
-                    label: 'Real estate data',
-                    copy: 'Sold2Move tracks listings and sales so moving companies can find demand before it becomes obvious.',
-                    href: 'https://sold2move.com',
-                    action: 'Visit Sold2Move'
-                },
-                automation: {
-                    label: 'Logistics automation',
-                    copy: 'MovSense is the operating layer John is building for dispatch, scheduling, and the work that spreadsheets were never meant to run.',
-                    href: 'https://movsense.com',
-                    action: 'Visit MovSense'
-                },
-                systems: {
-                    label: 'Scalable systems',
-                    copy: 'A note on the designed rules, defaults, and incentives hiding underneath what looks accidental.',
-                    href: '/post/unlocking-the-secrets-of-engineered-experiences/',
-                    action: 'Read Everything is Engineered'
-                }
-            };
-            const note = document.getElementById('story-note');
-            const label = document.getElementById('story-note-label');
-            const copy = document.getElementById('story-note-copy');
-            const action = document.getElementById('story-note-action');
-            const triggers = Array.from(document.querySelectorAll('.story-link'));
-
-            function closeNote() {
-                note.hidden = true;
-                triggers.forEach((trigger) => trigger.setAttribute('aria-expanded', 'false'));
-            }
-
-            triggers.forEach((trigger) => {
-                trigger.addEventListener('click', () => {
-                    const story = stories[trigger.dataset.story];
-                    const wasOpen = trigger.getAttribute('aria-expanded') === 'true';
-                    closeNote();
-                    if (wasOpen) return;
-                    label.textContent = story.label;
-                    copy.textContent = story.copy;
-                    action.href = story.href;
-                    action.textContent = story.action + ' ↗';
-                    if (story.href.startsWith('http')) {
-                        action.target = '_blank';
-                        action.rel = 'noopener';
-                    } else {
-                        action.removeAttribute('target');
-                        action.removeAttribute('rel');
-                    }
-                    note.hidden = false;
-                    trigger.setAttribute('aria-expanded', 'true');
-                });
-            });
-
-            document.getElementById('story-note-close').addEventListener('click', closeNote);
-        })();
 
         // Dark/Light mode toggle functionality
         (function () {

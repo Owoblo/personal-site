@@ -633,7 +633,7 @@ p {
 }
 
 .bio-extended.expanded {
-    max-height: 1000px;
+    max-height: none;
     opacity: 1;
 }
 
