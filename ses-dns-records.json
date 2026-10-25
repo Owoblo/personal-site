@@ -1,0 +1,48 @@
+{
+  "domain": "johnowolabi.com",
+  "region": "us-east-2",
+  "verified": true,
+  "records": [
+    {
+      "type": "CNAME",
+      "name": "xdjcvkrrwqysp62q5oysehznz7yhpau2._domainkey.johnowolabi.com",
+      "content": "xdjcvkrrwqysp62q5oysehznz7yhpau2.dkim.amazonses.com",
+      "proxied": false,
+      "ttl": 3600
+    },
+    {
+      "type": "CNAME",
+      "name": "oywatmazr364jj4ny2nsveqses5sbif4._domainkey.johnowolabi.com",
+      "content": "oywatmazr364jj4ny2nsveqses5sbif4.dkim.amazonses.com",
+      "proxied": false,
+      "ttl": 3600
+    },
+    {
+      "type": "CNAME",
+      "name": "fl35lpt2rwkpjao4avi2vyxfcqqo55ha._domainkey.johnowolabi.com",
+      "content": "fl35lpt2rwkpjao4avi2vyxfcqqo55ha.dkim.amazonses.com",
+      "proxied": false,
+      "ttl": 3600
+    },
+    {
+      "type": "MX",
+      "name": "bounce.johnowolabi.com",
+      "content": "feedback-smtp.us-east-2.amazonses.com",
+      "priority": 10,
+      "ttl": 3600
+    },
+    {
+      "type": "TXT",
+      "name": "bounce.johnowolabi.com",
+      "content": "v=spf1 include:amazonses.com ~all",
+      "ttl": 3600
+    },
+    {
+      "type": "TXT",
+      "name": "_dmarc.johnowolabi.com",
+      "content": "v=DMARC1; p=none; adkim=r; aspf=r",
+      "ttl": 3600
+    }
+  ],
+  "mailFromVerified": true
+}

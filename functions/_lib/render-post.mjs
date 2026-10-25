@@ -171,9 +171,9 @@ export function renderPostPage(post, allPosts, { ogImageUrl } = {}) {
                 <!-- Email Subscription -->
                 <div class="email-subscription" style="margin-top: 50px; padding: 30px 0; border-top: 1px solid var(--colors--divider); border-bottom: 1px solid var(--colors--divider);">
                     <p style="margin-bottom: 15px; font-size: 1em;">Get new posts in your inbox</p>
-                    <form action="https://buttondown.com/api/emails/embed-subscribe/johnowolabi" method="post" class="newsletter-form-group">
-                        <input type="hidden" name="embed" value="1">
-                        <input type="email" name="email" placeholder="Your email address" required aria-label="Email address">
+                    <form action="/api/subscribe" method="post" class="newsletter-form-group">
+                        <input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" hidden>
+                        <input type="email" name="email" maxlength="254" placeholder="Your email address" required aria-label="Email address">
                         <button type="submit">Subscribe</button>
                     </form>
                     <p class="subscription-note">Confirm in your inbox. Unsubscribe whenever you like.</p>

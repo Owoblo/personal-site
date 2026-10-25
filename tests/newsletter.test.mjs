@@ -48,7 +48,7 @@ function store(t,{failOnce=false}={}) {
   if(options.method==='PUT'){posts=JSON.parse(Buffer.from(JSON.parse(options.body).content,'base64').toString('utf8')).posts;return Response.json({commit:{sha:'test'}})}
   return Response.json({sha:'test',content:Buffer.from(JSON.stringify({posts})).toString('base64')});
  });
- return {env:{GITHUB_TOKEN:'test',GITHUB_REPO:'test/site',BUTTONDOWN_API_KEY:'test'},get posts(){return posts},get sends(){return sends},keys};
+ return {env:{GITHUB_TOKEN:'test',GITHUB_REPO:'test/site',BUTTONDOWN_API_KEY:'test',NEWSLETTER_SENDING_ENABLED:'true'},get posts(){return posts},get sends(){return sends},keys};
 }
 
 test('queueing records provider reference and repeated queue requests do not create another email', async(t)=>{
@@ -59,6 +59,11 @@ test('queueing records provider reference and repeated queue requests do not cre
 test('failed notification remains retryable with the original idempotency key', async(t)=>{
  const data=store(t,{failOnce:true});const first=await queuePostEmail(data.env,40);assert.equal(first.state.status,'failed');
  const second=await queuePostEmail(data.env,40);assert.equal(second.state.status,'queued');assert.equal(data.keys[0],data.keys[1]);
+});
+
+test('sending pause prevents provider calls even when an announcement is waiting', async(t)=>{
+ t.mock.method(globalThis,'fetch',async()=>{throw Error('No provider or source request should run while paused')});
+ await assert.rejects(queuePostEmail({},40),/paused until your branded sender is ready/);
 });
 
 test('anonymous visitors cannot retry owner email notifications',async()=>{
@@ -76,7 +81,7 @@ test('cron dry run excludes drafts, completed emails, and exhausted or backed-of
  const {onRequestPost}=await import('../functions/api/newsletter-cron.js');
  const state=planPostEmail(post,[]);
  const posts=[{...post,_newsletter:state},{...post,id:41,status:'draft',_newsletter:state},{...post,id:42,_newsletter:{...state,status:'queued'}},{...post,id:43,_newsletter:{...state,status:'failed',attempts:8}},{...post,id:44,_newsletter:{...state,status:'failed',nextAttemptAt:'2099-01-01T00:00:00Z'}}];
- const response=await onRequestPost({request:new Request('https://example.test/api/newsletter-cron?dry_run=1',{method:'POST',headers:{Authorization:'Bearer '+'a'.repeat(64)}}),env:{NEWSLETTER_CRON_SECRET:'a'.repeat(64),ASSETS:{fetch:async()=>Response.json({posts})}}});
+ const response=await onRequestPost({request:new Request('https://example.test/api/newsletter-cron?dry_run=1',{method:'POST',headers:{Authorization:'Bearer '+'a'.repeat(64)}}),env:{NEWSLETTER_SENDING_ENABLED:'true',NEWSLETTER_CRON_SECRET:'a'.repeat(64),ASSETS:{fetch:async()=>Response.json({posts})}}});
  assert.deepEqual(await response.json(),{pending:1,queued:0,scheduled:0,failed:0});
 });
 

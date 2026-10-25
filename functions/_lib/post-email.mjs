@@ -1,3 +1,4 @@
+import { createSesCampaign } from './ses-outbox.mjs';
 const NEWSLETTER_ID = 'news_1t11ckchjs9r2ram5x54qfhnxg';
 const escape = (text) => String(text || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
@@ -48,11 +49,17 @@ async function recordState(env, postId, requestId, state) {
 }
 
 export async function queuePostEmail(env, postId) {
+    if (env.NEWSLETTER_SENDING_ENABLED !== 'true') throw new Error('Subscriber emails are paused until your branded sender is ready.');
     const latest = await readSource(env);
     const post = latest.posts.find((item) => item.id === postId);
     if (!post || post.status !== 'published' || !post._newsletter) throw new Error('This post has no publication email to send.');
     const state = post._newsletter;
     if (!['pending', 'failed'].includes(state.status)) return { state, posts: latest.posts };
+    if (env.NEWSLETTER_PROVIDER === 'ses') {
+        const next = await createSesCampaign(env, post);
+        delete next.error; delete next.nextAttemptAt;
+        return { state: next, posts: await recordState(env, post.id, state.requestId, next) };
+    }
     if (!env.BUTTONDOWN_API_KEY) throw new Error('Buttondown is not connected.');
     try {
         const response = await fetch('https://api.buttondown.com/v1/emails', {

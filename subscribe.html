@@ -21,6 +21,7 @@
         <main>
             <h2 id="subscription-heading">One more step — check your inbox.</h2>
             <p id="subscription-message">Open the confirmation email and follow the link to join. If it hasn’t arrived, check your spam or promotions folder.</p>
+            <p class="section-intro" id="already-subscribed">Already subscribed? You’re all set.</p>
             <p class="section-intro">I’ll send a short note when I publish a new thought. You can unsubscribe whenever you like.</p>
             <p><a href="/thoughts">Read the latest thoughts →</a></p>
         </main>
@@ -30,6 +31,7 @@
         if (new URLSearchParams(location.search).get('status') === 'confirmed') {
             document.getElementById('subscription-heading').textContent = 'You’re on the list. Glad you’re here.';
             document.getElementById('subscription-message').textContent = 'Your subscription is confirmed. New thoughts will arrive in your inbox when I publish them.';
+            document.getElementById('already-subscribed').hidden = true;
         }
     </script>
 </body>

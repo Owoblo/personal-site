@@ -7,4 +7,4 @@ workers_dev = false
 NEWSLETTER_ENDPOINT = "https://johnowolabi.com/api/newsletter-cron"
 
 [triggers]
-crons = ["*/15 * * * *"]
+crons = ["*/5 * * * *"]

@@ -152,7 +152,8 @@
                 <small id="content-view-hint">HTML source — preview shows exactly how the article will read.</small>
             </div>
             <div id="publication-email" class="publication-email" hidden>
-                <label for="notify-subscribers"><input type="checkbox" id="notify-subscribers" checked> Email readers when this goes live</label>
+                <label for="notify-subscribers"><input type="checkbox" id="notify-subscribers" disabled> Email readers when this goes live</label>
+                <p class="status" id="email-sending-status">Subscriber emails are paused while your branded sender is being configured.</p>
                 <p class="status">A short note with the title, excerpt, and article link. Uncheck this for a quiet publication. Announcements are spaced at least a day apart.</p>
             </div>
             <div class="save-state" id="save-state" role="status" aria-live="polite"></div>
@@ -201,7 +202,6 @@
                 <div id="newsletter-status" role="status" aria-live="polite"><p class="status">Open this tab to check the connection.</p></div>
                 <p class="subscription-note">Only confirmed subscribers receive new-post emails. Saved drafts never enter the publication feed.</p>
                 <div class="actions">
-                    <a class="btn" href="https://buttondown.com/" target="_blank" rel="noopener">Open Buttondown</a>
                     <a class="btn" href="/feed.xml" target="_blank" rel="noopener">View publication feed</a>
                     <button class="btn" onclick="loadNewsletter()">Refresh</button>
                 </div>
@@ -287,17 +287,19 @@
                 const data = await response.json();
                 if (!response.ok) throw new Error(data.error || 'Could not check the email list.');
                 if (!data.configured) {
-                    container.innerHTML = '<p>Buttondown needs to be connected before sending can be checked.</p>';
+                    container.innerHTML = '<p>Email sending isn’t connected yet.</p>';
                     return;
                 }
-                const mode = data.notificationMode === 'publishing' ? 'Connected to publishing' : 'Not active';
+                const mode = data.canSend ? 'Connected to publishing' : 'Sending paused';
                 const counts = [['Confirmed readers', data.confirmed], ['Awaiting confirmation', data.pending], ['Undeliverable', data.undeliverable]];
                 container.innerHTML = `<dl class="newsletter-counts">${counts.map(([label, count]) => `<div><dt>${label}</dt><dd>${count ?? '—'}</dd></div>`).join('')}</dl>
                     <p><strong>${escapeHtml(mode)}</strong></p>
-                    <p class="status">New posts can email confirmed readers when you publish. Drafts and routine edits do not send announcements.</p><p class="status">${data.automaticRetry ? 'A scheduled check retries waiting notifications every 15 minutes.' : 'Retry any failed notification here.'}</p>
+                    <p class="status">${data.canSend ? 'New posts can email confirmed readers when you publish. Drafts and routine edits do not send announcements.' : 'Subscriber emails are paused while your branded sender is being configured. You can continue saving drafts and publishing on the website.'}</p><p class="status">${data.canSend && data.automaticRetry ? 'A scheduled check sends waiting notifications every 5 minutes.' : ''}</p>
                     ${data.feed?.error ? `<p class="auth-error">${escapeHtml(String(data.feed.error))}</p>` : ''}
                     ${data.incomplete ? '<p class="status">Some account details could not be loaded. Check API permissions in Buttondown.</p>' : ''}
                     ${(data.pendingNotifications || []).map((item) => `<div class="notification-item"><p>${escapeHtml(item.title)}</p><p class="status">${escapeHtml(item.error || 'Email notification is waiting to be queued.')}</p><button class="btn btn-small" onclick="retryNotification(${item.id}, this)">Retry notification</button></div>`).join('')}
+                    ${(data.failedCampaigns || []).map((item) => `<div class="notification-item"><p>${escapeHtml(item.title)}</p><button class="btn btn-small" onclick="retryCampaign('${escapeHtml(item.id)}', this)">Retry failed deliveries</button></div>`).join('')}
+                    ${(data.deliveryChecks || []).map((item) => `<p class="auth-error">${escapeHtml(item.title)}: a delivery acknowledgement needs checking in the mail service. It won’t be resent automatically.</p>`).join('')}
                     ${data.emails.length ? '<h3>Recent subscriber emails</h3><ul class="email-history">' + data.emails.map((email) => `<li>${escapeHtml(email.subject || 'Untitled email draft')} <span class="status">${escapeHtml(email.status)}</span></li>`).join('') + '</ul>' : ''}`;
             } catch (error) {
                 container.textContent = error.message;
@@ -316,6 +318,16 @@
                 showAlert(error.message, 'warning');
                 button.disabled = false;
             }
+        }
+
+        async function retryCampaign(campaignId, button) {
+            button.disabled = true;
+            try {
+                const response = await fetch('/api/newsletter', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'retry-campaign', campaignId }) });
+                const data = await response.json();
+                if (!response.ok) throw new Error(data.error || 'Could not queue the retry.');
+                await loadNewsletter();
+            } catch (error) { showAlert(error.message, 'warning'); button.disabled = false; }
         }
 
         let lastHtml = null;
@@ -1245,7 +1257,7 @@
                 const response = await fetch('/api/save-post', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ posts: nextPosts, changedPostId: currentPostId, expectedPost: isEditing ? posts.find((post) => post.id === currentPostId) : null, notifySubscribers: !document.getElementById('publication-email').hidden && document.getElementById('notify-subscribers').checked })
+                    body: JSON.stringify({ posts: nextPosts, changedPostId: currentPostId, expectedPost: isEditing ? posts.find((post) => post.id === currentPostId) : null, notifySubscribers: !document.getElementById('publication-email').hidden && !document.getElementById('notify-subscribers').disabled && document.getElementById('notify-subscribers').checked })
                 });
 
                 if (!response.ok) {
@@ -1262,6 +1274,7 @@
                 const notificationMessage = saved.notification?.status === 'scheduled'
                     ? ' Email scheduled for ' + new Date(saved.notification.scheduledFor).toLocaleString() + '.'
                     : saved.notification?.status === 'queued' ? ' Reader email queued.'
+                    : saved.notification?.status === 'paused' ? ' Subscriber emails are paused while the sender is being configured.'
                     : saved.notification?.status === 'failed' ? ' The email needs attention; open Email list to retry.' : '';
                 showAlert(successMessage + notificationMessage, saved.notification?.status === 'failed' ? 'warning' : 'success');
 
@@ -1435,6 +1448,15 @@
         });
 
         // Authenticate before loading any administrative data.
+        async function loadEmailCapabilities() {
+            try {
+                const response = await fetch('/api/newsletter?capabilities=1');
+                const data = await response.json();
+                document.getElementById('notify-subscribers').disabled = !response.ok || !data.canSend;
+                document.getElementById('email-sending-status').hidden = response.ok && data.canSend;
+            } catch (_) { document.getElementById('notify-subscribers').disabled = true; }
+        }
+
         async function initializeAdmin() {
             try {
                 const response = await fetch('/api/verify-password', { credentials: 'same-origin' });
@@ -1443,6 +1465,7 @@
                     document.getElementById('auth-gate').hidden = true;
                     document.querySelector('.create-container').inert = false;
                     await loadPosts();
+                    await loadEmailCapabilities();
                     restoreWorkingDraft();
                 }
             } catch (error) {
@@ -1470,6 +1493,7 @@
                 document.querySelector('.create-container').inert = false;
                 document.getElementById('admin-password').value = '';
                 await loadPosts();
+                await loadEmailCapabilities();
                 restoreWorkingDraft();
             } catch (authError) {
                 error.textContent = authError.message;

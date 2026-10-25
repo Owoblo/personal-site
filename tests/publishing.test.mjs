@@ -103,6 +103,17 @@ async function saveRequest(body, authenticated = true) {
   return context('/api/save-post', { remote: true, authenticated, method: 'POST', body });
 }
 
+test('publishing while sending is paused keeps the article live without creating an announcement', async (t) => {
+  const store = mockGitHub(t, [draft]);
+  const published = { ...draft, status: 'published' };
+  const response = await save(await saveRequest({ posts: [published], changedPostId: 2, expectedPost: draft, notifySubscribers: true }));
+  assert.equal(response.status, 200);
+  assert.equal((await response.json()).notification.status, 'paused');
+  assert.equal(store.posts[0].status, 'published');
+  assert.equal(store.posts[0]._newsletter, undefined);
+  assert.equal(store.writes, 1);
+});
+
 test('first publication can announce once, while draft saves and published edits stay silent', async (t) => {
   let posts = [structuredClone(draft)];
   let announcements = 0;
@@ -120,6 +131,7 @@ test('first publication can announce once, while draft saves and published edits
   async function update(changed) {
     const ctx = await saveRequest({ posts: [changed], changedPostId: 2, expectedPost: structuredClone(posts[0]), notifySubscribers: true });
     ctx.env.BUTTONDOWN_API_KEY = 'test-only-key';
+    ctx.env.NEWSLETTER_SENDING_ENABLED = 'true';
     const response = await save(ctx);
     assert.equal(response.status, 200);
     return response.json();

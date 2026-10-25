@@ -1,63 +1,62 @@
-# Cloudflare Pages Deployment
+# Cloudflare Pages deployment
 
-This repo deploys to Cloudflare Pages, with static site assets and Pages Functions for writing, the post feed, and live articles.
+This site uses static assets and Pages Functions for writing, current articles, RSS, and its own newsletter. Production is a direct-upload Pages project: pushing Git alone does not deploy the site.
 
-## Cloudflare Pages settings
+## Deployment
 
 - Production branch: `main`
-- Framework preset: `None`
-- Build command: `npm run build`
-- Build output directory: `dist`
+- Build: `npm run build`
+- Output: `dist`
+- Deploy: `npx wrangler pages deploy dist --project-name personal-site --branch main`
+- Newsletter schema: `npx wrangler d1 execute johnowolabi-newsletter --remote --file migrations/0001_newsletter.sql`
+- Retry worker: `npx wrangler deploy --config workers/newsletter-cron/wrangler.toml`
 
-## Required Pages secrets
+The root `wrangler.toml` binds the private `NEWSLETTER_DB` database and selects the SES provider. Keep sending disabled during a new setup until the domain, credentials, subscription flow, and owner-only delivery test have been verified.
 
-- `OPENAI_API_KEY`
-- `ADMIN_PASSWORD`
-- `GITHUB_TOKEN`
-- `GITHUB_REPO`
+## Pages secrets
 
-## Optional Pages secrets
+Writing: `ADMIN_PASSWORD`, `GITHUB_TOKEN`, `GITHUB_REPO`, and `OPENAI_API_KEY`.
 
-- `INSTAGRAM_ACCESS_TOKEN`
-- `INSTAGRAM_BUSINESS_ID`
-- `CLOUDFLARE_DEPLOY_HOOK_URL` for an optional refresh of static pages, sitemap, and generated social images after saving
-- `BUTTONDOWN_API_KEY` for publication announcements and the authenticated Email list tab
-- `NEWSLETTER_CRON_SECRET` for the protected retry endpoint; use the same secret in the retry worker
+Newsletter: `AWS_SES_ACCESS_KEY_ID`, `AWS_SES_SECRET_ACCESS_KEY`, `AWS_SES_REGION`, `NEWSLETTER_UNSUBSCRIBE_SECRET`, and `NEWSLETTER_CRON_SECRET`. Retain `BUTTONDOWN_API_KEY` for checking consent changes on migrated contacts; new signup and email sending use this site and SES. The unsubscribe signing secret must remain stable so old preference links continue working.
 
-## Important notes
+Optional integrations: `INSTAGRAM_ACCESS_TOKEN`, `INSTAGRAM_BUSINESS_ID`, and `CLOUDFLARE_DEPLOY_HOOK_URL`. No Instagram credentials are currently configured.
 
-- `_routes.json` enables Functions for `/api/*`, `/posts.json`, `/feed.xml`, and `/post/*`.
-- The feed and live articles read the latest GitHub-backed post data. Publishing and editing an article do not depend on a deployment hook. Static article pages remain an availability fallback.
-- Public feed requests return published posts. The authenticated writer can see drafts and archived posts. Draft article URLs return 404; archived posts remain accessible by direct URL.
-- `functions/_lib/render-post.mjs` is the shared template used by static builds and live article requests. The writer's preview and public articles share `.post-body` styles.
-- The editor ships Markdown and HTML conversion libraries locally, preserving semantic formatting across Writing and HTML source views.
-- Save Draft persists to GitHub and can be reopened on another device. Local recovery separately protects unsaved work on the current device. Saves merge only the edited post and reject stale edits instead of overwriting another session's changes.
-- Existing posts retain generated social images; new posts use the site's portrait until the next static build generates their image.
-- The build script copies only publishable static assets into `dist/`, which prevents `node_modules` from being deployed during Git-based Pages builds.
-- `analytics.js` no longer posts page views into GitHub. Use Cloudflare Web Analytics from the Pages dashboard.
-- `analytics.html` now acts as a legacy snapshot view for `analytics.json`, not live traffic reporting.
+The retry worker holds only `NEWSLETTER_CRON_SECRET`, matching Pages. It calls the protected site endpoint and has no public Worker URL or subscriber database binding.
 
-## Local development
+## Writing and publication
 
-1. Copy `.dev.vars.example` to `.dev.vars`
-2. Fill in the secrets
-3. Run `npm run build`
-4. Run `npx wrangler pages dev dist`
+`/posts.json` and `/post/*` read the latest saved GitHub source. Publishing does not require a deployment hook. Static articles remain an availability fallback. Public feeds exclude drafts and internal email metadata; authenticated writers can reopen drafts. Draft URLs return 404 and archived articles remain accessible directly.
 
-Run `npm test` for the publishing, draft visibility, and concurrent editing regression checks.
+The shared article template and `.post-body` styles keep preview and live formatting aligned. Markdown/HTML libraries ship locally. Save Draft persists across devices; local recovery separately protects unsaved writing on the current device. Saves merge only the edited post and reject stale edits.
 
-## Publication emails
+Existing articles retain generated social images. New articles use the portrait until the next static build generates their image. `_routes.json` enables Functions for `/api/*`, `/posts.json`, `/post/*`, and `/feed.xml`. Build output includes only publishable static assets.
 
-The existing Buttondown list remains the subscriber source. Native signup forms preserve its confirmation, CAPTCHA, error, and unsubscribe flows. Only confirmed subscribers receive announcements; setup does not reactivate pending addresses or send old articles.
+## Branded email
 
-When a draft first becomes published, the writer can select **Email readers when this goes live**. The site saves the article first, then creates a short Buttondown announcement linking to it. Saving drafts and editing previously published articles do not send email. Multiple new announcements are spaced at least 24 hours apart. The authenticated **Email list** tab shows subscriber counts, recent email status, and failed announcements with a retry action.
+SES sends as **John Owolabi <hello@johnowolabi.com>**, with replies to the same address. The SES identity and custom return path `bounce.johnowolabi.com` are verified in `us-east-2`. Public authentication records are documented in `ses-dns-records.json`. Cloudflare Email Routing forwards `hello@johnowolabi.com` to the owner's verified Gmail inbox. Composing as this address within Gmail requires its separate Send mail as configuration.
 
-An outbox entry is stored with the source article. Provider requests reuse a stable idempotency key so a retry after a timeout does not deliberately create another announcement. Failed attempts back off, with up to eight automatic attempts; the writer can retry manually afterward. Queued/scheduled means Buttondown accepted the request, not that every reader received it. Internal outbox metadata is excluded from the public posts endpoint.
+The site owns the signup, confirmation, and unsubscribe flows. New addresses stay pending until they follow the confirmation link. Tokens expire after 24 hours, are stored as hashes, and are cleared when used. Repeated confirmation requests are throttled by address and a short-lived hashed IP bucket. There is no third-party branding in the email templates or reader preference pages.
 
-Deploy `workers/newsletter-cron/wrangler.toml` separately with Wrangler, then set its `NEWSLETTER_CRON_SECRET`. This worker checks the protected Pages endpoint every 15 minutes. It has no public worker URL and does not hold the Buttondown or GitHub keys. Deploy Pages with both production secrets before enabling the retry worker.
+Unsubscribe links use an HMAC-signed contact ID. GET shows a confirmation page without changing consent, preventing link scanners from unsubscribing people. POST supports one-click unsubscribe without login. Consent is checked again before each publication email. SES's dedicated newsletter configuration set uses bounce and complaint suppression; suppressed addresses are skipped before sending.
 
-The public `/feed.xml` is a reader RSS feed, separate from email sending. This setup does not enable Buttondown's paid RSS, tagging, or automation add-ons. Default provider confirmation messages remain in place; custom transactional messages require a different Buttondown plan.
+The initial migration preserved 12 confirmed, 42 pending, and 2 undeliverable contacts. It sent no messages. Old-provider consent changes are still respected for migrated contacts; pending contacts are activated only after an actual confirmation. A new confirmation on this site becomes the contact's current consent source. No source writing or existing posts were changed by migration.
 
-The optional signup redirect URLs are `https://johnowolabi.com/subscribe?status=pending` and `https://johnowolabi.com/subscribe?status=confirmed`. The site's confirmation page is informational; Buttondown verifies each address through its own confirmation link.
+## Publication announcements
 
-Run `npm test` for RSS filtering, outbox retries, cron authentication, and publishing/draft regression checks. Delivery can be checked using Buttondown's send-draft API with an explicit owner-only recipient, without broadcasting to subscribers.
+A first publication can request **Email readers when this goes live**. Draft saves and later edits never request another announcement. Multiple announcements are spaced at least 24 hours apart. The site saves the article first, then creates a durable campaign in D1. Current confirmed readers are snapshotted when a due campaign begins. New subscribers do not receive old campaigns.
+
+A cron check runs every five minutes and processes up to five recipients per check. Each recipient has separate state and a send lease. Completed recipients are not resent. Definite failures back off and receive up to eight automatic attempts; the Email list tab provides retries for failed deliveries. A timeout or interrupted acknowledgement is held as uncertain and requires a delivery check before any retry, because SES SendEmail is not idempotent. The backend reports submitted messages, not guaranteed inbox delivery. Unpublished or replaced source articles cancel remaining campaign delivery.
+
+The authenticated Email list tab shows subscriber counts, campaign progress, failed deliveries, and uncertain deliveries. All list data and per-recipient delivery records stay in D1, outside public assets and GitHub. The public RSS feed is separate from email delivery. No paid RSS, automation, branding, or tagging add-on was enabled.
+
+## Analytics and social tools
+
+`analytics.js` has legacy GitHub tracking disabled. `analytics.html` shows an old snapshot; current Cloudflare Web Analytics and reading-depth instrumentation have not been enabled. The existing carousel exporter provides editable slides and downloads. Broader repurposing, platform connections, and the new reader analytics dashboard remain planned work.
+
+## Development and verification
+
+Copy `.dev.vars.example` to `.dev.vars`, fill in credentials, build, and use `npx wrangler pages dev dist`. Keep local email sending disabled unless deliberately testing against controlled addresses and a separate database.
+
+Run `npm test` on Node 22.13 or newer for the publishing, draft, consent, template, and delivery-queue checks. Tests use an in-memory SQLite database and mocked external providers. Generate a non-sending email design preview with `node scripts/preview-newsletter.mjs`.
+
+Live verification covered an owner-only branded confirmation, confirmation then unsubscribe, an email sent to hello@johnowolabi.com and forwarded into Gmail, and authenticated cron access. No existing subscriber received a setup broadcast.

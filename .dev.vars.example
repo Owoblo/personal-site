@@ -6,3 +6,10 @@ INSTAGRAM_ACCESS_TOKEN=your-instagram-access-token-here
 INSTAGRAM_BUSINESS_ID=your-instagram-business-id-here
 BUTTONDOWN_API_KEY=your-buttondown-api-key-here
 NEWSLETTER_CRON_SECRET=your-random-shared-cron-secret-here
+# Leave disabled until the sending domain and unbranded template are verified.
+NEWSLETTER_SENDING_ENABLED=false
+NEWSLETTER_PROVIDER=ses
+AWS_SES_ACCESS_KEY_ID=your-ses-access-key-here
+AWS_SES_SECRET_ACCESS_KEY=your-ses-secret-key-here
+AWS_SES_REGION=us-east-2
+NEWSLETTER_UNSUBSCRIBE_SECRET=your-long-random-preference-signing-secret-here

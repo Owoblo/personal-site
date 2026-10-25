@@ -68,6 +68,7 @@ export async function onRequestPost(context) {
 
     let savedPosts = posts;
     let notificationPostId = null;
+    let notificationPaused = false;
     const targetId = deletedPostId ?? changedPostId;
     if (targetId !== undefined) {
       if (!Number.isSafeInteger(targetId) || !Array.isArray(latestPosts)) {
@@ -94,7 +95,8 @@ export async function onRequestPost(context) {
         changed = { ...fields, ...(existing?._newsletter ? { _newsletter: existing._newsletter } : {}) };
         const firstPublication = changed.status === 'published' && !['published', 'archived'].includes(previousStatus) && !existing?.firstPublishedAt;
         if (firstPublication && notifySubscribers === true) {
-          changed = { ...changed, _newsletter: planPostEmail(changed, latestPosts) };
+          if (context.env.NEWSLETTER_SENDING_ENABLED === 'true') changed = { ...changed, _newsletter: planPostEmail(changed, latestPosts) };
+          else notificationPaused = true;
         }
         if (expectedPost) {
           savedPosts = latestPosts.map((post) => post.id === targetId ? changed : post);
@@ -142,7 +144,7 @@ export async function onRequestPost(context) {
     }
 
     const result = await updateResponse.json();
-    let notification = null;
+    let notification = notificationPaused ? { status: 'paused', error: 'Subscriber emails are paused until your branded sender is ready.' } : null;
     if (notificationPostId !== null) {
       try {
         const queued = await queuePostEmail(context.env, notificationPostId);
