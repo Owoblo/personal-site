@@ -205,6 +205,7 @@
    CSS Custom Properties (CSS Variables)
    ============================================ */
 :root {
+    --section-heading-size: 24px;
     --colors--background: #F0EEE6;
     --colors--text: #2c2c2c;
     --colors--link: #3d3d3d;
@@ -410,7 +411,7 @@ h1 {
 }
 
 h2 {
-    font-size: 24px;
+    font-size: var(--section-heading-size);
     font-weight: 700;
     margin-top: 60px;
     margin-bottom: 20px;
@@ -493,7 +494,7 @@ p {
 .bio p {
     margin-bottom: 20px;
     font-weight: 400;
-    font-size: 18px;
+    font-size: var(--section-heading-size);
 }
 
 .eyebrow {
@@ -506,7 +507,6 @@ p {
 }
 
 .bio-lede {
-    font-size: clamp(20px, 3.2vw, 25px) !important;
     line-height: 1.65 !important;
     letter-spacing: -.018em;
 }
@@ -640,14 +640,12 @@ p {
 /* Expanded bio paragraphs match the intro lede size so the
    expansion doesn't read like a rendering bug. */
 .bio-extended p {
-    font-size: clamp(20px, 3.2vw, 25px);
     line-height: 1.65;
     letter-spacing: -.018em;
 }
 
-/* Keep the pull-quote's own scale. */
+/* Keep the closing statement's spacing. */
 .bio-extended .key-statement {
-    font-size: 19px;
     line-height: 1.75;
     letter-spacing: normal;
 }
@@ -1077,6 +1075,10 @@ dialog.modal::backdrop {
 }
 
 @media screen and (max-width: 768px) {
+    :root {
+        --section-heading-size: 1.35em;
+    }
+
     body {
         font-size: 16px;
         padding: 16px;
@@ -1088,12 +1090,10 @@ dialog.modal::backdrop {
     }
 
     .bio-lede {
-        font-size: 20px !important;
         line-height: 1.65 !important;
     }
 
     .bio-extended p {
-        font-size: 20px;
         line-height: 1.65;
     }
 
@@ -1145,7 +1145,6 @@ dialog.modal::backdrop {
     }
 
     h2 {
-        font-size: 1.35em;
         font-weight: 700;
         margin-top: 40px;
         margin-bottom: 12px;
@@ -1205,6 +1204,10 @@ dialog.modal::backdrop {
 }
 
 @media screen and (max-width: 480px) {
+    :root {
+        --section-heading-size: 1.3em;
+    }
+
     body {
         padding: 14px;
     }
@@ -1231,7 +1234,6 @@ dialog.modal::backdrop {
     }
 
     h2 {
-        font-size: 1.3em;
         font-weight: 700;
         margin-top: 35px;
         margin-bottom: 10px;
@@ -1254,10 +1256,6 @@ dialog.modal::backdrop {
 
     .bio+section h2 {
         margin-top: 30px;
-    }
-
-    .bio p {
-        font-size: 17px;
     }
 
     .newsletter-form-group {
