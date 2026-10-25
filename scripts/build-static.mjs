@@ -44,7 +44,7 @@ const topLevelFiles = [
   "jo-avatar.png",
 ];
 
-const topLevelDirectories = ["fonts", "images", "posts"];
+const topLevelDirectories = ["fonts", "images", "posts", "brand"];
 
 // ---------------------------------------------------------------- helpers
 

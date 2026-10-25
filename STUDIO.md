@@ -52,7 +52,9 @@ A separate one-time confirmation reminder is available for pending subscriptions
 - Instagram/Facebook, X, LinkedIn, and TikTok require their own account authorization and supported publishing/insight permissions before automatic posting or metric collection. No social posts have been sent by this implementation. DM aggregation also depends on each platform's API access.
 - Search Console data requires access to the verified search property. The current reader dashboard contains the site's own measurements.
 - Gmail Send mail as uses the already-verified SES SMTP settings in the owner's private local file, outside this repository. Reply from the same address and the alias reply-to should both be configured. Google has announced third-party Send as retirement for January 2027.
-- The JO image is included in email bodies and available as a profile asset. Gmail's inbox avatar is controlled separately. Google's BIMI route requires eligible domain/logo certification and enforcing DMARC; no certificate was purchased or inbox-avatar activation claimed.
+- The JO image is included in email bodies and available as a profile asset. The outlined sender-logo SVG is hosted under `/brand/jo-bimi.svg`. Gmail's inbox avatar still requires certificate issuance and DMARC enforcement; see BIMI_SETUP.md. No certificate was purchased or inbox-avatar activation claimed.
+
+Detailed account requirements and provider restrictions are recorded in SOCIAL_CONNECTIONS.md. Two additional, editable carousel test drafts for “You Don't Lose Everyone at Once” compare a light eight-slide journal with a shorter dark six-slide sequence. Photo starters require the owner's own uploaded photograph; the design-reference screenshot is not a content photograph.
 
 ## Operations
 
