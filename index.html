@@ -24,7 +24,7 @@
     <meta name="twitter:image" content="https://johnowolabi.com/11.png">
 
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
-    <link rel="stylesheet" href="styles.css?v=20261025-6">
+    <link rel="stylesheet" href="styles.css?v=20261025-7">
 
     <link rel="alternate" type="application/rss+xml" title="John Owolabi — Thoughts" href="https://johnowolabi.com/feed.xml">
 
@@ -134,6 +134,7 @@
             <a href="https://starmovers.ca" target="_blank" rel="noopener">Company</a>
             <a href="#building">Products</a>
             <a href="thoughts.html">Writing</a>
+            <a href="#subscribe">Subscribe</a>
         </nav>
 
         <section class="thoughts-preview">
@@ -144,6 +145,20 @@
                 <li class="loading-state">Loading posts...</li>
             </ul>
             <p class="section-intro"><a href="thoughts.html">View all</a></p>
+        </section>
+
+        <section data-subscribe-box class="subscription-box">
+            <h2 id="subscribe">Keep thinking with me.</h2>
+            <p class="subscription-copy">
+                New thoughts on building things, studying people, and questioning assumptions — sent when I publish.
+            </p>
+            <form action="/api/subscribe" method="post"
+                class="newsletter-form-group" id="home-subscribe">
+                <input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" hidden>
+                <input type="email" name="email" maxlength="254" placeholder="Your email address" autocomplete="email" inputmode="email" autocapitalize="none" spellcheck="false" required aria-label="Email address" />
+                <button type="submit">Subscribe</button>
+            </form>
+            <label class="archive-choice"><input type="checkbox" name="archive" value="1" checked form="home-subscribe"> Include earlier thoughts, at most one a day.</label><p class="subscription-note">Confirm in your inbox. Unsubscribe whenever you like.</p>
         </section>
 
         <section class="projects-section" id="building">
@@ -161,19 +176,7 @@
             </ul>
         </section>
 
-        <section>
-            <h2 id="subscribe">Subscribe</h2>
-            <p class="subscription-copy">
-                New thoughts on building things, studying people, and questioning assumptions — sent when I publish.
-            </p>
-            <form action="/api/subscribe" method="post"
-                class="newsletter-form-group" id="home-subscribe">
-                <input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" hidden>
-                <input type="email" name="email" maxlength="254" placeholder="Your email address" required aria-label="Email address" />
-                <button type="submit">Subscribe</button>
-            </form>
-            <label class="archive-choice"><input type="checkbox" name="archive" value="1" checked form="home-subscribe"> Include earlier thoughts, at most one a day.</label><p class="subscription-note">Confirm in your inbox. Unsubscribe whenever you like.</p>
-        </section>
+
         </main>
 
         <section>
@@ -189,7 +192,7 @@
     </div>
 
     <!-- Blog Posts Loader -->
-    <script src="blog.js?v=20261025-1"></script>
+    <script src="blog.js?v=20261025-2"></script>
 
     <!-- Analytics Tracker -->
     <script src="analytics.js"></script>
@@ -253,6 +256,6 @@
             });
         })();
     </script>
-<script>fetch("/api/featured").then(r=>r.json()).then(data=>{if(!data.posts?.length)return;for(const post of data.posts){const li=document.createElement("li"),a=document.createElement("a");a.href="/post/"+encodeURIComponent(post.slug)+"/";a.textContent=post.title;li.append(a);document.getElementById("featured-list").append(li)}document.getElementById("featured-thoughts").hidden=false}).catch(()=>{});</script><script src="/reader-metrics.js?v=1" defer></script></body>
+<script>fetch("/api/featured").then(r=>r.json()).then(data=>{if(!data.posts?.length)return;for(const post of data.posts){const li=document.createElement("li"),a=document.createElement("a");a.href="/post/"+encodeURIComponent(post.slug)+"/";a.textContent=post.title;li.append(a);document.getElementById("featured-list").append(li)}document.getElementById("featured-thoughts").hidden=false}).catch(()=>{});</script><script src="/reader-metrics.js?v=1" defer></script><script src="/subscription.js?v=1" defer></script></body>
 
 </html>

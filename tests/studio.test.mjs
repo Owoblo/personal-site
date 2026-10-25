@@ -112,11 +112,32 @@ test("adaptations preserve the original and reject stale saves and stale approva
     postId: 1,
     id: asset.id,
     revision: 1,
-    data: { ...asset.data, title: "A different angle" },
-    state: "draft",
+    data: {
+      ...asset.data,
+      title: "A different angle",
+      template: "reading",
+      theme: "mixed",
+      slides: [
+        {
+          heading: "A fuller passage",
+          body: Array(80).fill("thought").join(" "),
+        },
+      ],
+    },
+    state: "approved",
     format: "carousel",
   };
   assert.equal((await studio(s.context("/api/studio", save))).status, 200);
+  const storedData = JSON.parse(
+    (
+      await s.db
+        .prepare("SELECT data FROM studio_assets WHERE id=?")
+        .bind(asset.id)
+        .first()
+    ).data,
+  );
+  assert.equal(storedData.template, "reading");
+  assert.equal(storedData.theme, "mixed");
   assert.equal((await studio(s.context("/api/studio", save))).status, 409);
   assert.equal(JSON.stringify(s.posts), before);
   assert.equal(

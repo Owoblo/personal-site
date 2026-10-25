@@ -35,7 +35,7 @@ test('static and live article template preserves semantic content and escapes ti
   assert.ok(html.includes(base.content));
   assert.match(html, /A thought &amp; an observation/);
   assert.match(html, /class="post-body"/);
-  assert.match(html, /styles.css\?v=20261025-6/);
+  assert.match(html, /styles.css\?v=20261025-7/);
 });
 
 test('newly saved published articles are live without a static file or rebuild', async () => {

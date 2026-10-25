@@ -135,7 +135,7 @@ export function renderPostPage(post, allPosts, { ogImageUrl } = {}) {
     <meta name="twitter:image" content="${escapeHtml(ogImage)}">
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-    <link rel="stylesheet" href="/styles.css?v=20261025-6">
+    <link rel="stylesheet" href="/styles.css?v=20261025-7">
 
     <link rel="alternate" type="application/rss+xml" title="John Owolabi — Thoughts" href="https://johnowolabi.com/feed.xml">
     <link rel="canonical" href="${escapeHtml(canonical)}">
@@ -170,15 +170,17 @@ export function renderPostPage(post, allPosts, { ogImageUrl } = {}) {
                 </div>
 
                 <!-- Email Subscription -->
-                <div class="email-subscription" style="margin-top: 50px; padding: 30px 0; border-top: 1px solid var(--colors--divider); border-bottom: 1px solid var(--colors--divider);">
-                    <p style="margin-bottom: 15px; font-size: 1em;">Get new posts in your inbox</p>
+                <section class="email-subscription subscription-box" data-subscribe-box id="subscribe">
+                    <h2>Keep thinking with me.</h2>
+                    <p class="subscription-copy">If this stayed with you, get my next thought in your inbox. You can also receive earlier writing at a gentle daily pace.</p>
                     <form action="/api/subscribe" method="post" id="post-subscribe" class="newsletter-form-group">
                         <input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" hidden>
-                        <input type="email" name="email" maxlength="254" placeholder="Your email address" required aria-label="Email address">
+                        <input type="email" name="email" maxlength="254" placeholder="Your email address" autocomplete="email" inputmode="email" autocapitalize="none" spellcheck="false" required aria-label="Email address">
                         <button type="submit">Subscribe</button>
                     </form>
-                    <label class="archive-choice"><input type="checkbox" name="archive" value="1" checked form="post-subscribe"> Include earlier thoughts, at most one a day.</label><p class="subscription-note">Confirm in your inbox. Unsubscribe whenever you like.</p>
-                </div>
+                    <label class="archive-choice"><input type="checkbox" name="archive" value="1" checked form="post-subscribe"> Include earlier thoughts, at most one a day.</label>
+                    <p class="subscription-note">Confirm in your inbox. Unsubscribe whenever you like.</p>
+                </section>
 
                 <!-- Share buttons -->
                 <div class="share-buttons" style="margin-top: 30px; opacity: 0.6; display: flex; gap: 15px; align-items: center; font-size: 0.9em;">
@@ -199,8 +201,9 @@ export function renderPostPage(post, allPosts, { ogImageUrl } = {}) {
 
     </div>
 
+    <script src="/subscription.js?v=1" defer></script>
     <!-- Blog Posts Loader -->
-    <script src="/blog.js?v=20261025-1"></script>
+    <script src="/blog.js?v=20261025-2"></script>
     <script src="/reader-metrics.js?v=1" defer></script>
 
     <!-- Table of contents sidebar (article pages, wide screens) -->

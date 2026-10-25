@@ -293,7 +293,11 @@ export async function onRequestPost(context) {
       if (
         body.state === "approved" &&
         original.format === "carousel" &&
-        data.slides.some((s) => (s.body.match(/\S+/g) || []).length > 70)
+        data.slides.some(
+          (s) =>
+            (s.body.match(/\S+/g) || []).length >
+            (data.template === "reading" ? 200 : 70),
+        )
       )
         throw Error("Split the long slide before approving the carousel.");
       const saved = await db

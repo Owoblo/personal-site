@@ -66,12 +66,57 @@ export async function renderSlide(canvas, data, index) {
   c.fillStyle = bg;
   c.fillRect(0, 0, 1080, 1350);
   c.textBaseline = "top";
+  if (data.template === "reading") {
+    c.font = "bold 54px Georgia,serif";
+    const heading = slide.heading ? lines(c, slide.heading, 904) : [];
+    c.font = "42px Georgia,serif";
+    const paragraphs = slide.body
+      .split(/\n\s*\n/)
+      .filter(Boolean)
+      .map((p) => lines(c, p, 904));
+    const height =
+      heading.length * 67 +
+      (heading.length && paragraphs.length ? 34 : 0) +
+      paragraphs.reduce((n, p) => n + p.length * 61, 0) +
+      Math.max(0, paragraphs.length - 1) * 20;
+    let y = Math.max(270, Math.round((1350 - height) / 2));
+    c.fillStyle = ink;
+    c.font = "italic 40px Georgia,serif";
+    c.fillText("John Owolabi", 88, 110);
+    c.font = "bold 54px Georgia,serif";
+    for (const line of heading) {
+      c.fillText(line, 88, y);
+      y += 67;
+    }
+    if (heading.length && paragraphs.length) y += 34;
+    c.font = "42px Georgia,serif";
+    for (let p = 0; p < paragraphs.length; p++) {
+      for (const line of paragraphs[p]) {
+        c.fillText(line, 88, y);
+        y += 61;
+      }
+      if (p < paragraphs.length - 1) y += 20;
+    }
+    const words = (slide.body.match(/\S+/g) || []).length;
+    const fits = y <= 1115 && words <= 200;
+    c.fillStyle = muted;
+    c.font = "28px Georgia,serif";
+    c.textAlign = "center";
+    c.fillText(`${index + 1} / ${data.slides.length}`, 540, 1215);
+    c.textAlign = "left";
+    c.font = "23px Georgia,serif";
+    c.fillText("johnowolabi.com", 88, 1260);
+    return {
+      fits,
+      words,
+      message: fits
+        ? `${words} body words · reading card ${index + 1} of ${data.slides.length}`
+        : "This reading card needs more room. Split it before export.",
+    };
+  }
   c.fillStyle = muted;
   c.font = "28px Georgia,serif";
   c.fillText("JO", 84, 74);
-  c.textAlign = "right";
-  c.fillText("A thought by John Owolabi", 996, 74);
-  c.textAlign = "left";
   let y = index === 0 ? 250 : 190;
   const photo =
     data.template === "photo" &&

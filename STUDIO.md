@@ -59,3 +59,11 @@ Detailed account requirements and provider restrictions are recorded in SOCIAL_C
 ## Operations
 
 Apply `migrations/0002_studio.sql` before deploying these Functions. It contains only additive `CREATE TABLE IF NOT EXISTS` statements. The existing private `NEWSLETTER_DB` binding is reused. `npm test` includes isolated SQLite tests for permissions, source preservation, stale saves, attribution, consent, and paced delivery. Browser verification covers desktop/mobile, both themes, actual PNG/ZIP downloads, and reopening saved work.
+
+## Reading cards and signup invitations
+
+The Reading card layout centres fuller passages vertically, with a small name at the top and a page count below. It supports light, dark and alternating palettes. Reading cards aim for 60–100 body words; measured height still gates export and approval in the editor. Other layouts retain shorter slide pacing. The redundant “A thought by” header has been removed from all layouts.
+
+The public signup box appears after Thoughts on the homepage, at the end of each article, and on the writing index. Native form submission still works without JavaScript. The enhanced form keeps readers on the page, supports email autofill, retains the address on errors, and explains inbox confirmation without disclosing an address’s existing subscription status. The old article loader now uses the owned signup endpoint too.
+
+A small reading invitation can appear after 30 seconds of visible, focused reading and meaningful progress. It does not open a modal or take focus. Dismissal suppresses it for seven days on that browser, as does a recent signup request. A confirmed subscription is recognised by a first-party, non-identifying UI cookie set after actual confirmation; unsubscribe clears it. This does not identify an existing subscriber on every device. No email address is stored in browser storage. The signup form remains available to readers who disable JavaScript.

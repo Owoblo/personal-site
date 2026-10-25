@@ -221,13 +221,17 @@
                 </div>
 
                 <!-- Email Subscription -->
-                <div class="email-subscription" style="margin-top: 50px; padding: 30px 0; border-top: 1px solid var(--colors--text); border-bottom: 1px solid var(--colors--text);">
-                    <p style="margin-bottom: 15px; font-size: 1em;">Get new posts in your inbox</p>
-                    <form action="https://buttondown.email/api/emails/embed-subscribe/johnowolabi" method="post" target="popupwindow" onsubmit="window.open('https://buttondown.email/johnowolabi', 'popupwindow')" style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center;">
-                        <input type="email" name="email" placeholder="your@email.com" required style="flex: 1; min-width: 200px; padding: 10px 12px; border: 1px solid var(--colors--text); background-color: var(--colors--background); color: var(--colors--text); font-family: inherit; font-size: 0.95em;">
-                        <button type="submit" style="padding: 10px 20px; border: 1px solid var(--colors--text); background-color: var(--colors--text); color: var(--colors--background); cursor: pointer; font-family: inherit; font-size: 0.95em; transition: opacity 0.2s ease;">Subscribe</button>
+                <section class="email-subscription subscription-box" data-subscribe-box id="subscribe">
+                    <h2>Keep thinking with me.</h2>
+                    <p class="subscription-copy">If this stayed with you, get my next thought in your inbox. You can also receive earlier writing at a gentle daily pace.</p>
+                    <form action="/api/subscribe" method="post" id="post-subscribe" class="newsletter-form-group">
+                        <input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" hidden>
+                        <input type="email" name="email" maxlength="254" placeholder="Your email address" autocomplete="email" inputmode="email" autocapitalize="none" spellcheck="false" required aria-label="Email address">
+                        <button type="submit">Subscribe</button>
                     </form>
-                </div>
+                    <label class="archive-choice"><input type="checkbox" name="archive" value="1" checked form="post-subscribe"> Include earlier thoughts, at most one a day.</label>
+                    <p class="subscription-note">Confirm in your inbox. Unsubscribe whenever you like.</p>
+                </section>
 
                 <!-- Share buttons -->
                 <div class="share-buttons" style="margin-top: 30px; opacity: 0.6; display: flex; gap: 15px; align-items: center; font-size: 0.9em;">

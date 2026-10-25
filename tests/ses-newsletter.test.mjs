@@ -94,3 +94,15 @@ test('publishing through the writer creates one SES campaign; later edits create
  assert.equal((await db.prepare('SELECT COUNT(*) AS count FROM newsletter_campaigns').first()).count,1);
  assert.equal(posts[0].status,'published');assert.equal(messages.length,0);
 });
+
+test('inline signup keeps confirmation private, saves archive choice, and provides recoverable JSON errors',async(t)=>{
+ const {env,db,messages}=setup(t);
+ const make=(email,archive='1')=>new Request('https://johnowolabi.com/api/subscribe',{method:'POST',headers:{Accept:'application/json',Origin:'https://johnowolabi.com','CF-Connecting-IP':'192.0.2.55'},body:new URLSearchParams({email,archive})});
+ const response=await subscribe({request:make('inline@example.com'),env});
+ assert.equal(response.status,200);const accepted=await response.json();assert.equal(accepted.success,true);assert.equal(accepted.status,'pending');assert.equal(messages.length,1);
+ const c=await db.prepare('SELECT * FROM newsletter_contacts').first();assert.equal(c.status,'pending');assert.equal((await db.prepare('SELECT archive_enabled FROM newsletter_preferences WHERE contact_id=?').bind(c.id).first()).archive_enabled,1);
+ const invalid=await subscribe({request:make('invalid'),env});assert.equal(invalid.status,400);assert.equal((await invalid.json()).success,false);
+ const url=messages[0].Content.Simple.Body.Html.Data.match(/href="(https:\/\/johnowolabi.com\/api\/confirm-subscription\?token=[^"]+)/)[1];const confirmed=await confirm({request:new Request(url),env});assert.match(confirmed.headers.get('Set-Cookie'),/john_newsletter=confirmed/);
+ const repeat=await subscribe({request:make('inline@example.com'),env});assert.deepEqual(await repeat.json(),accepted);assert.equal(messages.length,1);
+ const link=await unsubscribeUrl(env,c.id),left=await unsubscribePost({request:new Request(link,{method:'POST'}),env});assert.match(left.headers.get('Set-Cookie'),/Max-Age=0/);
+});

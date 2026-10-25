@@ -18,6 +18,15 @@ async function contact(context) {
     .bind(id)
     .first();
 }
+function unsubscribed(title, body) {
+  const response = preferencePage(title, body);
+  response.headers.set(
+    "Set-Cookie",
+    "john_newsletter=; Path=/; Max-Age=0; Secure; SameSite=Lax",
+  );
+  response.headers.set("Cache-Control", "no-store");
+  return response;
+}
 export async function onRequestGet(context) {
   const subscriber = await contact(context);
   if (!subscriber)
@@ -27,7 +36,7 @@ export async function onRequestGet(context) {
       400,
     );
   if (subscriber.status === "unsubscribed")
-    return preferencePage(
+    return unsubscribed(
       "You’re already unsubscribed",
       '<p>You won’t receive any more thoughts by email.</p><p><a href="/#subscribe">Subscribe again</a></p>',
     );
@@ -74,7 +83,7 @@ export async function onRequestPost(context) {
   )
     .bind(nowISO(), subscriber.id)
     .run();
-  return preferencePage(
+  return unsubscribed(
     "You’re unsubscribed",
     '<p>You won’t receive any more thoughts by email. Thanks for reading.</p><p><a href="/#subscribe">Subscribe again</a></p>',
   );

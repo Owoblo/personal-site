@@ -42,6 +42,7 @@ const topLevelFiles = [
   "reader-metrics.js",
   "jo-email.png",
   "jo-avatar.png",
+  "subscription.js",
 ];
 
 const topLevelDirectories = ["fonts", "images", "posts", "brand"];

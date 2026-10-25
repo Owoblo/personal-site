@@ -824,6 +824,22 @@ section:last-child {
 .subscription-note { margin-top: 12px; color: var(--colors--secondary); font-size: 13px; }
 .subscription-page { color-scheme: inherit; }
 
+.subscription-box { scroll-margin-top: 30px; }
+.email-subscription { margin-top: 50px; padding: 28px 0; border-block: 1px solid var(--colors--divider); }
+.subscription-box h2 { font-size: 18px; margin-bottom: 12px; }
+.subscription-copy { color: var(--colors--secondary); }
+.subscription-status { margin-top: 14px; font-size: 15px; line-height: 1.65; }
+.subscription-reset { background: none; border: 0; padding: 0; font: inherit; color: var(--colors--text); text-decoration: underline; cursor: pointer; }
+.newsletter-form-group[hidden], .subscription-prompt[hidden], .archive-choice[hidden], .subscription-note[hidden] { display: none; }
+.newsletter-form-group button:disabled { opacity: .65; cursor: wait; }
+.subscription-prompt { position: fixed; z-index: 20; bottom: max(16px, env(safe-area-inset-bottom)); left: 50%; transform: translateX(-50%); width: min(640px, calc(100% - 40px)); display: flex; align-items: center; gap: 18px; padding: 16px 18px; border: 1px solid var(--colors--divider); background: var(--colors--background); color: var(--colors--text); font: 14px/1.5 Georgia, serif; }
+.subscription-prompt span { flex: 1; }
+.subscription-prompt a { white-space: nowrap; }
+.subscription-prompt button { background: none; color: inherit; border: 0; cursor: pointer; padding: 8px; font: 22px/1 Georgia, serif; }
+@media (max-width: 480px) {
+    .subscription-prompt { gap: 10px; padding: 12px; font-size: 13px; }
+}
+
 .newsletter-form-group:focus-within {
     border-bottom-width: 2px;
 }

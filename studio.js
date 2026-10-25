@@ -1,4 +1,4 @@
-import { renderSlide, splitBody, zipFiles } from "./studio-render.mjs?v=2";
+import { renderSlide, splitBody, zipFiles } from "./studio-render.mjs?v=3";
 const $ = (id) => document.getElementById(id),
   escape = (s) =>
     String(s ?? "").replace(
@@ -210,7 +210,10 @@ function renderSlides() {
         return;
       }
       if (action === "split") {
-        const chunks = splitBody(s.body);
+        const chunks = splitBody(
+          s.body,
+          asset.data.template === "reading" ? 110 : 45,
+        );
         if (chunks.length < 2) {
           status("This slide is already short. You can edit it directly.");
           return;
