@@ -440,12 +440,29 @@ async function load() {
     o.textContent = p.title + (p.status === "draft" ? " · private draft" : "");
     $("thought-select").append(o);
   }
-  const requested = new URLSearchParams(location.search).get("post");
-  if (state.posts.some((p) => p.id === Number(requested)))
-    $("thought-select").value = requested;
-  const requestedAsset = state.assets.find(
-    (a) => a.id === new URLSearchParams(location.search).get("asset"),
-  );
+  const params = new URLSearchParams(location.search),
+    requested = params.get("post"),
+    requestedPost = state.posts.find((p) =>
+      requested ? p.id === Number(requested) : p.slug === params.get("slug"),
+    ),
+    wantsCarousel = params.get("format") === "carousel";
+  if (requestedPost) $("thought-select").value = requestedPost.id;
+  let requestedAsset = state.assets.find((a) => a.id === params.get("asset"));
+  if (!requestedAsset && requestedPost && wantsCarousel) {
+    requestedAsset = state.assets
+      .filter(
+        (a) =>
+          a.thought_id === requestedPost.thoughtId && a.format === "carousel",
+      )
+      .sort(
+        (a, b) =>
+          Number(a.stale) - Number(b.stale) ||
+          Number((b.angle || "").startsWith("Reading cards")) -
+            Number((a.angle || "").startsWith("Reading cards")) ||
+          Date.parse(b.updated_at) - Date.parse(a.updated_at),
+      )[0];
+    $("format-select").value = "carousel";
+  }
   const assetPost =
     requestedAsset &&
     state.posts.find((p) => p.thoughtId === requestedAsset.thought_id);
@@ -463,10 +480,15 @@ async function load() {
   $("generate-adaptation").disabled = !state.aiConfigured;
   status("Your original writing and adaptations are stored separately.");
   switchView(
-    new URLSearchParams(location.search).get("view") ||
-      (requested || requestedAsset ? "work" : "library"),
+    params.get("view") ||
+      (requestedPost || requestedAsset ? "work" : "library"),
   );
   if (requestedAsset) await openAsset(requestedAsset);
+  else if (wantsCarousel && !requestedPost)
+    status(
+      "This thought could not be found. Choose it from your thought library.",
+      true,
+    );
 }
 $("studio-login").addEventListener("submit", async (e) => {
   e.preventDefault();

@@ -88,6 +88,10 @@ Thread posts preserve paragraph breaks inside each post. In the editor, a line c
 
 ## Thought library, video and ready queue
 
+Writer's room Manage Posts searches titles, excerpts, full visible writing, slugs, dates and post IDs. Search is case/accent/punctuation insensitive, matches all entered words in any order, and combines with the source status filter. Clear or Escape resets only the search. Searches run locally over the authenticated post list and never modify source writing.
+
+Manage Posts → Carousel now opens `/studio?post=<id>&format=carousel`, selecting the current reading-card adaptation when one exists. Old `/carousel?slug=...` and `/carousel.html?slug=...` links carry the selected thought into the same authenticated studio. The obsolete editor, its textures and direct Instagram-post button are retired. The old editor did not persist carousel drafts; existing studio adaptations remain unchanged. Missing/unknown thoughts produce a library message rather than generating or overwriting a draft.
+
 The current Instagram workflow is manual finishing and scheduling in Instagram. Carousel adaptations have a saved optional music note, a separate Copy caption action, and a Download posting pack action. The ZIP contains numerically ordered 2160 × 2700 PNG masters, the exact caption, and a short posting guide with the music note, source/adaptation identity and revision. The pack is rendered from one snapshot so editing during export cannot mix slide versions. No publishing, scheduling or email send is triggered by this download. The existing reviewed queue remains a planning record for future connections.
 
 The studio opens on a searchable library grouped by source thought. It displays prepared formats and missing ones, with each saved adaptation's review/stale status. Private source drafts stay labelled. Saved metadata is no longer silently limited to 150 adaptations. Direct post/adaptation links still open the editor.

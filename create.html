@@ -8,7 +8,7 @@
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <script src="writer-theme.js?v=20261025-1"></script>
     <link rel="stylesheet" href="styles.css?v=20261025-6">
-    <link rel="stylesheet" href="writer.css?v=20261025-2">
+    <link rel="stylesheet" href="writer.css?v=20261025-3">
 </head>
 <body class="writer-room">
     <div class="auth-gate" id="auth-gate">
@@ -182,15 +182,25 @@
         <div id="manage-tab" class="tab-content">
             <div class="section">
                 <h2>Your posts</h2>
-                <div class="form-group post-filters">
-                    <label for="manage-status">Show</label>
-                    <select id="manage-status" onchange="renderPostsList()">
-                        <option value="all">All posts</option>
-                        <option value="draft">Drafts</option>
-                        <option value="published">Published</option>
-                        <option value="archived">Archived</option>
-                    </select>
+                <div class="post-filters">
+                    <div class="form-group post-search">
+                        <label for="manage-search">Search posts</label>
+                        <div class="post-search-field">
+                            <input id="manage-search" type="search" placeholder="Search any words from a thought…" autocomplete="off" aria-controls="posts-list" oninput="renderPostsList()" onkeydown="if (event.key === 'Escape') clearPostSearch()">
+                            <button class="btn post-search-clear" id="manage-search-clear" type="button" onclick="clearPostSearch()" hidden>Clear</button>
+                        </div>
+                    </div>
+                    <div class="form-group post-status-filter">
+                        <label for="manage-status">Show</label>
+                        <select id="manage-status" onchange="renderPostsList()">
+                            <option value="all">All posts</option>
+                            <option value="draft">Drafts</option>
+                            <option value="published">Published</option>
+                            <option value="archived">Archived</option>
+                        </select>
+                    </div>
                 </div>
+                <p id="manage-results" class="status post-results-count" role="status" aria-live="polite" aria-atomic="true"></p>
                 <div id="posts-list">
                     <p class="status">Loading posts...</p>
                 </div>
@@ -862,11 +872,36 @@
             }
         }
 
+        function normalizePostSearch(value) {
+            return String(value || '').normalize('NFKD').replace(/\p{M}/gu, '')
+                .toLowerCase().replace(/['’‘]/g, '').replace(/[^\p{L}\p{N}]+/gu, ' ').trim();
+        }
+
+        function clearPostSearch() {
+            document.getElementById('manage-search').value = '';
+            renderPostsList();
+            document.getElementById('manage-search').focus();
+        }
+
+        // Match visible writing, not HTML tags, link destinations or image attributes.
+        function postSearchText(post) {
+            const html = String(post.content || '').replace(/<br\b[^>]*>|<\/(?:p|h[1-6]|li|blockquote|div)>/gi, ' ');
+            const doc = new DOMParser().parseFromString(html, 'text/html');
+            doc.querySelectorAll('script, style, template').forEach(node => node.remove());
+            return normalizePostSearch([post.title, post.excerpt, post.slug, post.id, post.date, doc.body.textContent].join(' '));
+        }
+
         // Render posts list in manage tab
         function renderPostsList() {
             const container = document.getElementById('posts-list');
+            const query = document.getElementById('manage-search').value;
+            const normalizedQuery = normalizePostSearch(query);
+            const words = normalizedQuery.split(/\s+/).filter(Boolean);
+            const count = document.getElementById('manage-results');
+            document.getElementById('manage-search-clear').hidden = !query;
 
             if (posts.length === 0) {
+                count.textContent = '0 posts';
                 container.innerHTML = '<p class="status">No posts yet. Create your first post!</p>';
                 return;
             }
@@ -874,9 +909,15 @@
             // Sort by date, newest first
             const filter = document.getElementById('manage-status').value;
             const sortedPosts = posts.filter((post) => filter === 'all' || (post.status || 'published') === filter)
-                .sort((a, b) => new Date(b.date) - new Date(a.date));
+                .filter(post => {
+                    if (!words.length) return true;
+                    const text = postSearchText(post);
+                    return words.every(word => text.includes(word));
+                })
+                .sort((a, b) => (words.length ? Number(normalizePostSearch(b.title).includes(normalizedQuery)) - Number(normalizePostSearch(a.title).includes(normalizedQuery)) : 0) || new Date(b.date) - new Date(a.date));
+            count.textContent = `${sortedPosts.length} of ${posts.length} ${posts.length === 1 ? 'post' : 'posts'}`;
             if (!sortedPosts.length) {
-                container.innerHTML = '<p class="status">No posts in this view yet.</p>';
+                container.innerHTML = '<p class="status">' + (words.length ? 'No matching posts. Try fewer words or change the status filter.' : 'No posts in this view yet.') + '</p>';
                 return;
             }
 
@@ -899,7 +940,7 @@
                     <p>${escapeHtml(post.excerpt)}</p>
                     <div class="post-actions">
                         <button class="btn btn-small" onclick="editPost(${post.id})">Edit</button>
-                        <button class="btn btn-small" onclick="openCarousel('${post.slug}')">Carousel</button>
+                        <a class="btn btn-small" href="/studio?post=${post.id}&format=carousel">Carousel</a>
                         <a class="btn btn-small" href="/studio?post=${post.id}">Repurpose</a>
                         <button class="btn btn-small btn-danger" onclick="deletePost(${post.id})">Delete</button>
                     </div>
@@ -1511,12 +1552,6 @@
         // Add event listener for word count updates
         document.getElementById('post-content').addEventListener('input', updateWordCount);
 
-        // ============================================
-        // Carousel Function
-        // ============================================
-        function openCarousel(slug) {
-            window.open(`carousel.html?slug=${encodeURIComponent(slug)}`, '_blank');
-        }
     </script>
 </body>
 </html>

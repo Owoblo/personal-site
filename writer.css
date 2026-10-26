@@ -131,9 +131,15 @@
 .post-item p { margin-bottom: 12px; }
 .post-meta { margin-bottom: 12px; overflow-wrap: anywhere; }
 .post-status { color: var(--colors--secondary); font-size: 13px; flex-shrink: 0; }
-.post-filters { display: flex; align-items: center; gap: 12px; margin-bottom: 28px; }
-.post-filters label { margin: 0; }
+.post-filters { display: flex; align-items: flex-end; flex-wrap: wrap; gap: 16px; margin-bottom: 28px; }
+.post-filters .form-group { margin-bottom: 0; }
+.post-search { flex: 1 1 280px; min-width: 0; }
+.post-search-field { display: flex; align-items: center; gap: 8px; }
+.post-search-field input { flex: 1; }
+.post-search-clear[hidden] { display: none; }
+.post-status-filter { flex: 0 1 auto; }
 .post-filters select { width: auto; max-width: 100%; }
+.post-results-count { margin: -12px 0 24px; }
 
 .editor-toolbar {
     display: flex;
