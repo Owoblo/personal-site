@@ -88,6 +88,8 @@ Thread posts preserve paragraph breaks inside each post. In the editor, a line c
 
 ## Thought library, video and ready queue
 
+The current Instagram workflow is manual finishing and scheduling in Instagram. Carousel adaptations have a saved optional music note, a separate Copy caption action, and a Download posting pack action. The ZIP contains numerically ordered 2160 × 2700 PNG masters, the exact caption, and a short posting guide with the music note, source/adaptation identity and revision. The pack is rendered from one snapshot so editing during export cannot mix slide versions. No publishing, scheduling or email send is triggered by this download. The existing reviewed queue remains a planning record for future connections.
+
 The studio opens on a searchable library grouped by source thought. It displays prepared formats and missing ones, with each saved adaptation's review/stale status. Private source drafts stay labelled. Saved metadata is no longer silently limited to 150 adaptations. Direct post/adaptation links still open the editor.
 
 Video directions offers six reusable approaches: a calm conversation, everyday footage with voiceover, a single observation, a small story, two perspectives, and a workbench observation. Nine source-grounded recording briefs cover the three initial X essays. Briefs contain an opening, spoken beats, framing/shot ideas, on-screen wording, delivery notes, a rough word-based duration, and a caption. They are scripts to record, not finished video files.

@@ -220,7 +220,7 @@
                     ><button class="btn" id="download-slide">
                       Download PNG</button
                     ><button class="btn" id="download-all">
-                      Export all slides
+                      Download posting pack
                     </button>
                   </div>
                   <p class="status">
@@ -254,6 +254,24 @@
             <div class="form-group">
               <label for="asset-caption">Caption / reading invitation</label
               ><textarea id="asset-caption" rows="4"></textarea>
+              <button class="btn" id="copy-caption">Copy caption</button>
+            </div>
+            <div class="form-group" id="music-control" hidden>
+              <label for="asset-music">Music note (optional)</label>
+              <textarea
+                id="asset-music"
+                rows="2"
+                maxlength="1000"
+                placeholder="A calm instrumental, or a song and passage you have in mind"
+              ></textarea>
+              <small
+                >Saved with this adaptation and included in your posting pack.
+                Choose the track in Instagram when you post or schedule.</small
+              >
+              <p class="status">
+                Download the pack, save the numbered images to your phone, copy
+                the caption, then add music and schedule in Instagram.
+              </p>
             </div>
             <div class="actions">
               <button class="btn btn-primary" id="save-adaptation">
@@ -269,7 +287,9 @@
             <section class="studio-subsection" id="queue-controls">
               <h3>Prepare for distribution</h3>
               <p class="status">
-                Approve the saved version first. Account connections come next.
+                Keep reviewed versions here for later. Post and schedule in the
+                app when you’re ready; adding a planned date here does not
+                publish.
               </p>
               <div class="studio-controls">
                 <div class="form-group">
@@ -477,6 +497,6 @@
         </section>
       </div>
     </main>
-    <script type="module" src="/studio.js?v=10"></script>
+    <script type="module" src="/studio.js?v=11"></script>
   </body>
 </html>

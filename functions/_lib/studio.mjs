@@ -135,6 +135,11 @@ export function cleanAsset(data) {
     )
   )
     throw Error("This draft contains invalid or oversized text.");
+  if (
+    data.music != null &&
+    (typeof data.music !== "string" || data.music.length > 1000)
+  )
+    throw Error("Keep the music note under 1,000 characters.");
   const photo = data.photo || "";
   if (
     photo.length > 400000 ||
@@ -150,6 +155,7 @@ export function cleanAsset(data) {
     title: data.title,
     text: data.text,
     caption: data.caption,
+    music: data.music || "",
     slides: data.slides.map((s) => ({ heading: s.heading, body: s.body })),
     parts: data.parts,
     template: ["journal", "photo", "reading"].includes(data.template)

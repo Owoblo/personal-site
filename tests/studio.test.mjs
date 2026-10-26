@@ -117,6 +117,7 @@ test("adaptations preserve the original and reject stale saves and stale approva
       title: "A different angle",
       template: "reading",
       theme: "mixed",
+      music: "Heartland — Tony Anderson; a gentle passage if available in the app.",
       slides: [
         {
           heading: "A fuller passage",
@@ -138,6 +139,7 @@ test("adaptations preserve the original and reject stale saves and stale approva
   );
   assert.equal(storedData.template, "reading");
   assert.equal(storedData.theme, "mixed");
+  assert.equal(storedData.music, save.data.music);
   assert.equal((await studio(s.context("/api/studio", save))).status, 409);
   assert.equal(JSON.stringify(s.posts), before);
   assert.equal(

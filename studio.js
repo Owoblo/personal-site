@@ -107,6 +107,7 @@ function readData() {
     text: $("asset-text").value,
     parts: readParts(),
     caption: $("asset-caption").value,
+    music: $("asset-music").value,
     template: $("carousel-template").value,
     theme: $("carousel-theme").value,
   };
@@ -168,6 +169,8 @@ async function openAsset(a) {
   $("asset-text").value = asset.data.text;
   $("asset-parts").value = asset.data.parts.join("\n\n---\n\n");
   $("asset-caption").value = asset.data.caption;
+  $("asset-music").value = asset.data.music || "";
+  $("music-control").hidden = asset.format !== "carousel";
   $("carousel-template").value = asset.data.template;
   $("carousel-theme").value = asset.data.theme;
   $("asset-heading").textContent = `${asset.format} adaptation`;
@@ -328,10 +331,10 @@ function download(blob, name) {
   a.click();
   setTimeout(() => URL.revokeObjectURL(url), 1500);
 }
-async function png(index) {
-  if (dirty) await save();
+async function png(index, snapshot) {
+  if (!snapshot && dirty) await save();
   const canvas = document.createElement("canvas"),
-    result = await renderSlide(canvas, readData(), index);
+    result = await renderSlide(canvas, snapshot || readData(), index);
   if (!result.fits) throw Error(`Slide ${index + 1}: ${result.message}`);
   return new Uint8Array(
     await (
@@ -496,7 +499,13 @@ $("thought-select").addEventListener("change", () => {
   $("asset-editor").hidden = true;
   renderSaved();
 });
-for (const id of ["asset-title", "asset-text", "asset-parts", "asset-caption"])
+for (const id of [
+  "asset-title",
+  "asset-text",
+  "asset-parts",
+  "asset-caption",
+  "asset-music",
+])
   $(id).addEventListener("input", () => {
     announceSaved();
     updateCounts();
@@ -595,17 +604,57 @@ bind("download-slide", async () =>
   ),
 );
 bind("download-all", async () => {
+  if (dirty) await save();
+  const data = structuredClone(readData()),
+    post = currentPost(),
+    id = asset.id,
+    revision = asset.revision;
   const files = [];
-  for (let i = 0; i < asset.data.slides.length; i++)
+  for (let i = 0; i < data.slides.length; i++)
     files.push({
-      name: `${String(i + 1).padStart(2, "0")}.png`,
-      bytes: await png(i),
+      name: `slide-${String(i + 1).padStart(2, "0")}.png`,
+      bytes: await png(i, data),
     });
   files.push({
     name: "caption.txt",
-    bytes: new TextEncoder().encode(readData().caption),
+    bytes: new TextEncoder().encode(data.caption),
   });
-  download(zipFiles(files), `${asset.id}-carousel.zip`);
+  const guide = [
+    data.title,
+    "",
+    `${data.slides.length} numbered images · PNG masters at 2160 × 2700 · 4:5`,
+    `Thought: ${post.thoughtId} · Adaptation: ${id} · Revision: ${revision}`,
+    `Source: https://johnowolabi.com/post/${encodeURIComponent(post.slug)}/`,
+    (post.status || "published") !== "published"
+      ? "PRIVATE SOURCE DRAFT — review before publishing."
+      : "",
+    "",
+    "Music note",
+    data.music.trim() ||
+      "Choose a calm instrumental or ambient piano passage that suits the thought. Check the tracks available in your account.",
+    "",
+    "Post or schedule in Instagram",
+    "1. Extract this ZIP and save the numbered images to your phone.",
+    "2. Open Instagram as @johnowolabi_ and create a photo carousel.",
+    "3. Select slide-01.png onward in numeric order. Keep the 4:5 portrait framing and check every slide.",
+    "4. Paste caption.txt, then choose the music and passage in the app.",
+    "5. Review the carousel, then post or use Instagram scheduling if it is available in your account.",
+    "",
+    "These are your original export files. Instagram processes uploaded media; check text sharpness in the app.",
+    "Downloading this pack does not publish or schedule anything.",
+  ].join("\n");
+  files.push({
+    name: "posting-guide.txt",
+    bytes: new TextEncoder().encode(guide),
+  });
+  download(zipFiles(files), `${post.slug}-posting-pack.zip`);
+  status(
+    "Posting pack downloaded: ordered images, caption and music note. Finish and schedule in Instagram.",
+  );
+});
+bind("copy-caption", async () => {
+  await navigator.clipboard.writeText($("asset-caption").value);
+  status("Caption copied. Paste it into your post.");
 });
 bind("copy-adaptation", async () => {
   const d = readData();
