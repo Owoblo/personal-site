@@ -11,6 +11,7 @@ This site uses static assets and Pages Functions for writing, current articles, 
 - Newsletter schema: `npx wrangler d1 execute johnowolabi-newsletter --remote --file migrations/0001_newsletter.sql`
 - Studio schema: `npx wrangler d1 execute johnowolabi-newsletter --remote --file migrations/0002_studio.sql`
 - Content queue schema: `npx wrangler d1 execute johnowolabi-newsletter --remote --file migrations/0003_content_queue.sql`
+- Instagram publication records: `npx wrangler d1 execute johnowolabi-newsletter --remote --file migrations/0004_social_publications.sql`
 - Retry worker: `npx wrangler deploy --config workers/newsletter-cron/wrangler.toml`
 
 The root `wrangler.toml` binds the private `NEWSLETTER_DB` database and selects the SES provider. Keep sending disabled during a new setup until the domain, credentials, subscription flow, and owner-only delivery test have been verified.

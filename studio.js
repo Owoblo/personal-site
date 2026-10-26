@@ -197,8 +197,21 @@ async function openAsset(a) {
   $("text-editor").hidden = ["carousel", "thread"].includes(asset.format);
   $("parts-editor").hidden = !["thread", "video"].includes(asset.format);
   $("tracked-link").value = "";
+  $("platform-url").value =
+    asset.publications?.[0]?.permalink || asset.socialStats?.platform_url || "";
+  for (const name of ["views", "likes", "saves", "shares", "comments"])
+    $("stat-" + name).value = asset.socialStats?.[name] ?? "";
+  renderPublications();
   renderSlides();
   updateCounts();
+}
+function renderPublications() {
+  $("publication-records").innerHTML = (asset?.publications || [])
+    .map(
+      (p) =>
+        `<p><a href="${escape(p.permalink)}" target="_blank" rel="noopener">Open Instagram post ↗</a> · revision ${p.revision}<br>${p.verification === "verified" ? "Verified through Instagram" : "Post link saved · awaiting Instagram verification"}</p>`,
+    )
+    .join("");
 }
 function renderSlides() {
   if (!asset) return;
@@ -307,7 +320,12 @@ async function save(approved = false) {
     state: approved ? "approved" : "draft",
     format: asset.format,
   });
-  asset = { ...result.asset, stale: asset.stale };
+  asset = {
+    ...result.asset,
+    stale: asset.stale,
+    publications: asset.publications,
+    socialStats: asset.socialStats,
+  };
   state.assets = state.assets.map((a) => (a.id === asset.id ? asset : a));
   dirty = false;
   try {
@@ -406,6 +424,18 @@ async function loadInsights() {
     total = sum("views");
   $("insights-results").innerHTML =
     `<div class="metric-grid"><div><strong>${total}</strong><span>Article visits</span></div><div><strong>${sum("engaged")}</strong><span>15+ visible seconds</span></div><div><strong>${sum("depth75")}</strong><span>Reached 75%</span></div><div><strong>${data.links.reduce((n, l) => n + l.clicks, 0)}</strong><span>Tracked link requests</span></div></div>${!total ? "<p>No reading data yet. New measurements will appear as people read.</p>" : ""}<h3>Article depth</h3>${[25, 50, 75, 100].map((q) => `<div class="depth-row"><span>${q}%</span><div class="depth-bar"><span style="width:${total ? Math.round(((data.depths["q" + q] || 0) / total) * 100) : 0}%"></span></div><span>${data.depths["q" + q] || 0}</span></div>`).join("")}<h3>Email signals · since tracking began</h3><p>${data.email.opens || 0} reported opens · ${data.email.clicks || 0} emails had a link request.</p><p class="status">Opens are estimates: mail apps can preload or block images. Link requests can include security scanners; reading time provides another signal.</p><h3>Your thoughts</h3>${data.readings.map((r) => `<article class="insight-row"><h3><a href="/post/${encodeURIComponent(r.slug)}/" target="_blank">${escape(r.title)}</a></h3><p class="insight-meta">${r.views} visits · ${r.engaged || 0} engaged · ${r.average_seconds || 0}s average visible reading · ${r.depth75 || 0} reached 75%</p><button class="btn" data-featured="${r.post_id}" data-enabled="${r.featured ? 0 : 1}">${r.featured ? "Remove from featured" : "Feature this thought"}</button></article>`).join("")}<h3>Links and subscriptions</h3><div class="table-scroll"><table><thead><tr><th>Channel</th><th>Adaptation</th><th>Link requests</th><th>Confirmed signups</th></tr></thead><tbody>${data.links.map((l) => `<tr><td>${escape(l.channel)}</td><td>${escape(l.asset_title || l.thought_title || l.thought_id)}<details><summary>Tracking ID</summary><code>${escape(l.asset_id || l.thought_id)}</code></details></td><td>${l.clicks}</td><td>${l.signups}</td></tr>`).join("")}</tbody></table></div><h3>Platform measurements</h3><p class="status">${data.social.length ? "Manually recorded results; social APIs are not connected." : "Record platform results on an adaptation until account connections are configured."}</p>${data.social.map((s) => `<p>${escape(s.format)} · ${s.views} views · ${s.saves} saves · ${s.shares} shares</p>`).join("")}`;
+  if (data.publications?.length) {
+    const section = document.createElement("section");
+    section.innerHTML =
+      "<h3>Published on Instagram</h3>" +
+      data.publications
+        .map(
+          (p) =>
+            `<article class="insight-row"><h3>${escape(p.title)}</h3><p><a href="${escape(p.permalink)}" target="_blank" rel="noopener">Open Instagram post ↗</a> · revision ${p.revision}</p><p class="status">${p.verification === "verified" ? "Verified through Instagram" : "Post link saved; Instagram metrics are not connected."}</p></article>`,
+        )
+        .join("");
+    $("insights-results").append(section);
+  }
   $("insights-results")
     .querySelectorAll("[data-featured]")
     .forEach((b) =>
@@ -770,10 +800,35 @@ bind("save-inspiration", async () => {
 for (const name of ["views", "likes", "saves", "shares", "comments"]) {
   const div = document.createElement("div");
   div.className = "form-group";
-  div.innerHTML = `<label for="stat-${name}">${name[0].toUpperCase() + name.slice(1)}</label><input id="stat-${name}" type="number" min="0" value="0">`;
+  div.innerHTML = `<label for="stat-${name}">${name[0].toUpperCase() + name.slice(1)}</label><input id="stat-${name}" type="number" min="0" placeholder="Not recorded">`;
   $("social-stat-fields").append(div);
 }
+bind("save-publication", async () => {
+  const result = await api("/api/studio", {
+    action: "publication",
+    id: asset.id,
+    revision: asset.revision,
+    url: $("platform-url").value,
+  });
+  asset.publications = [
+    result.publication,
+    ...(asset.publications || []).filter((p) => p.id !== result.publication.id),
+  ];
+  $("platform-url").value = result.publication.permalink;
+  renderPublications();
+  status(
+    "Instagram post link saved. Metrics stay unrecorded until actual counts are available.",
+  );
+});
 bind("save-social-stats", async () => {
+  if (
+    ["views", "likes", "saves", "shares", "comments"].some(
+      (k) => !$("stat-" + k).value.trim(),
+    )
+  )
+    throw Error(
+      "Enter the actual counts before saving measurements. Save just the post link if counts are not available yet.",
+    );
   await api("/api/studio", {
     action: "social-stats",
     id: asset.id,

@@ -88,6 +88,8 @@ Thread posts preserve paragraph breaks inside each post. In the editor, a line c
 
 ## Thought library, video and ready queue
 
+Apply `migrations/0004_social_publications.sql` before deploying publication-link tracking. Instagram post links can be saved independently of metrics: `studio_publications` pins the adaptation revision and source hash, canonicalizes the permalink and records it as owner-reported until independently verified. Duplicate links are idempotent; attaching an existing permalink to a different adaptation or saving from a stale revision is rejected. Missing platform counts remain unrecorded, rather than being stored as zero. Saved publications appear on the adaptation and in Reader insights. This does not enable an Instagram API connection or recurring metrics collection.
+
 Writer's room Manage Posts searches titles, excerpts, full visible writing, slugs, dates and post IDs. Search is case/accent/punctuation insensitive, matches all entered words in any order, and combines with the source status filter. Clear or Escape resets only the search. Searches run locally over the authenticated post list and never modify source writing.
 
 Manage Posts → Carousel now opens `/studio?post=<id>&format=carousel`, selecting the current reading-card adaptation when one exists. Old `/carousel?slug=...` and `/carousel.html?slug=...` links carry the selected thought into the same authenticated studio. The obsolete editor, its textures and direct Instagram-post button are retired. The old editor did not persist carousel drafts; existing studio adaptations remain unchanged. Missing/unknown thoughts produce a library message rather than generating or overwriting a draft.

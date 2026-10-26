@@ -122,6 +122,11 @@ export async function onRequestGet(context) {
       "SELECT s.*,a.thought_id,a.format FROM studio_social_stats s JOIN studio_assets a ON a.id=s.asset_id ORDER BY s.recorded_at DESC LIMIT 40",
     )
     .all();
+  const publications = await db
+    .prepare(
+      "SELECT p.*,a.thought_id,json_extract(a.data,'$.title') AS title FROM studio_publications p JOIN studio_assets a ON a.id=p.asset_id ORDER BY p.recorded_at DESC LIMIT 100",
+    )
+    .all();
   return Response.json(
     {
       days,
@@ -131,6 +136,7 @@ export async function onRequestGet(context) {
       email,
       sources: sources.results,
       social: social.results,
+      publications: publications.results,
     },
     { headers },
   );

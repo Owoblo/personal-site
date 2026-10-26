@@ -1,5 +1,6 @@
 import { requireAdmin } from "../_lib/auth.js";
 import { readPosts } from "../_lib/read-posts.mjs";
+import { recordPublication } from "../_lib/publications.mjs";
 import {
   thoughtId,
   sourceHash,
@@ -33,12 +34,24 @@ export async function onRequestGet(context) {
         { status: 404, headers },
       );
     const post = posts.find((p) => thoughtId(p) === a.thought_id);
+    const publications = await db
+      .prepare(
+        "SELECT * FROM studio_publications WHERE asset_id=? ORDER BY recorded_at DESC",
+      )
+      .bind(a.id)
+      .all();
+    const socialStats = await db
+      .prepare("SELECT * FROM studio_social_stats WHERE asset_id=?")
+      .bind(a.id)
+      .first();
     return Response.json(
       {
         asset: {
           ...a,
           data: JSON.parse(a.data),
           stale: !post || a.source_hash !== (await sourceHash(post)),
+          publications: publications.results,
+          socialStats,
         },
       },
       { headers },
@@ -170,6 +183,17 @@ export async function onRequestPost(context) {
         .bind(String(body.id))
         .run();
       return Response.json({ success: true }, { headers });
+    }
+    if (body.action === "publication") {
+      const result = await recordPublication(db, {
+        assetId: body.id,
+        revision: body.revision,
+        url: body.url,
+      });
+      return Response.json(
+        result.conflict ? { error: result.conflict } : result,
+        { status: result.conflict ? 409 : 200, headers },
+      );
     }
     if (body.action === "social-stats") {
       const asset = await db

@@ -92,6 +92,103 @@ test("studio content, voice, generation, and insights require owner authenticati
       401,
     );
 });
+test("Instagram publication links are private, canonical, idempotent and separate from unknown metrics", async (t) => {
+  const s = await setup(t);
+  const asset = (
+    await (
+      await studio(
+        s.context("/api/studio", {
+          action: "start",
+          postId: 1,
+          format: "carousel",
+        }),
+      )
+    ).json()
+  ).asset;
+  const request = {
+    action: "publication",
+    id: asset.id,
+    revision: asset.revision,
+    url: "https://www.instagram.com/p/De8YfvHDeA1/?img_index=1",
+  };
+  assert.equal(
+    (await studio(s.context("/api/studio", request, false))).status,
+    401,
+  );
+  const response = await studio(s.context("/api/studio", request));
+  assert.equal(response.status, 200);
+  const { publication } = await response.json();
+  assert.equal(
+    publication.permalink,
+    "https://www.instagram.com/p/De8YfvHDeA1/",
+  );
+  assert.equal(publication.verification, "reported");
+  assert.equal(
+    (
+      await studio(
+        s.context("/api/studio", { ...request, url: publication.permalink }),
+      )
+    ).status,
+    200,
+  );
+  assert.equal(
+    (
+      await s.db
+        .prepare("SELECT COUNT(*) AS n FROM studio_publications")
+        .first()
+    ).n,
+    1,
+  );
+  assert.equal(
+    (
+      await s.db
+        .prepare("SELECT COUNT(*) AS n FROM studio_social_stats")
+        .first()
+    ).n,
+    0,
+  );
+  const reopened = await (
+    await getStudio(s.context("/api/studio?asset=" + asset.id))
+  ).json();
+  assert.equal(reopened.asset.publications[0].id, publication.id);
+  assert.equal(reopened.asset.socialStats, null);
+  assert.equal(
+    (await (await insights(s.context("/api/insights"))).json()).publications[0]
+      .permalink,
+    publication.permalink,
+  );
+  for (const url of [
+    "https://instagram.com.evil.test/p/De8YfvHDeA1/",
+    "https://example.com/p/De8YfvHDeA1/",
+    "http://www.instagram.com/p/De8YfvHDeA1/",
+    "https://www.instagram.com/johnowolabi_/",
+  ])
+    assert.equal(
+      (await studio(s.context("/api/studio", { ...request, url }))).status,
+      400,
+    );
+  const other = (
+    await (
+      await studio(
+        s.context("/api/studio", {
+          action: "start",
+          postId: 1,
+          format: "carousel",
+        }),
+      )
+    ).json()
+  ).asset;
+  assert.equal(
+    (await studio(s.context("/api/studio", { ...request, id: other.id })))
+      .status,
+    409,
+  );
+  assert.equal(
+    (await studio(s.context("/api/studio", { ...request, revision: 99 })))
+      .status,
+    409,
+  );
+});
 test("adaptations preserve the original and reject stale saves and stale approval", async (t) => {
   const s = await setup(t),
     before = JSON.stringify(s.posts);
@@ -117,7 +214,8 @@ test("adaptations preserve the original and reject stale saves and stale approva
       title: "A different angle",
       template: "reading",
       theme: "mixed",
-      music: "Heartland — Tony Anderson; a gentle passage if available in the app.",
+      music:
+        "Heartland — Tony Anderson; a gentle passage if available in the app.",
       slides: [
         {
           heading: "A fuller passage",
