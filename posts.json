@@ -363,13 +363,16 @@
       "firstPublishedAt": "2026-11-03T06:11:12.555Z",
       "thoughtId": "abec15c2-bbf7-4f04-b1ad-dfeeae6e5904",
       "_newsletter": {
-        "status": "pending",
+        "status": "queued",
         "mode": "send",
         "requestId": "a07ca9ed-808c-4722-8753-d3c5cdb54052",
         "requestedAt": "2026-11-03T06:11:12.555Z",
-        "attempts": 0,
+        "attempts": 1,
         "subject": "You Don't Need to Be a Writer to Write",
-        "body": "<!-- buttondown-editor-mode: fancy --><p>I’ve published a new thought.</p><h2>You Don't Need to Be a Writer to Write</h2><p>Discover how paying attention to life can transform your writing and help you find your unique voice in the process.</p><p><a href=\"https://johnowolabi.com/post/you-dont-need-to-be-a-writer-to-write/\">Read the thought →</a></p><p>— John</p>"
+        "body": "<!-- buttondown-editor-mode: fancy --><p>I’ve published a new thought.</p><h2>You Don't Need to Be a Writer to Write</h2><p>Discover how paying attention to life can transform your writing and help you find your unique voice in the process.</p><p><a href=\"https://johnowolabi.com/post/you-dont-need-to-be-a-writer-to-write/\">Read the thought →</a></p><p>— John</p>",
+        "provider": "ses",
+        "emailId": "a07ca9ed-808c-4722-8753-d3c5cdb54052",
+        "queuedAt": "2026-11-03T06:11:13.800Z"
       }
     }
   ]
