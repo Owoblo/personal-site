@@ -9,7 +9,7 @@ import { createSesCampaign, processSesOutbox } from '../functions/_lib/ses-outbo
 import { onRequestPost as save } from '../functions/api/save-post.js';
 import { createSessionCookie } from '../functions/_lib/auth.js';
 
-function setup(t, { uncertain = false, legacyActive = [] } = {}) {
+function setup(t, { uncertain = false, legacyActive = [], checkSuppression = () => Response.json({}, {status:404}) } = {}) {
  const db=testDatabase();t.after(()=>db.close());
  const env={NEWSLETTER_DB:db,NEWSLETTER_SENDING_ENABLED:'true',NEWSLETTER_PROVIDER:'ses',AWS_SES_ACCESS_KEY_ID:'test-id',AWS_SES_SECRET_ACCESS_KEY:'test-secret',NEWSLETTER_UNSUBSCRIBE_SECRET:'test-preferences-secret-'.repeat(3),BUTTONDOWN_API_KEY:'test-legacy'};
  const messages=[];
@@ -17,8 +17,11 @@ function setup(t, { uncertain = false, legacyActive = [] } = {}) {
   const request=input instanceof Request?input:new Request(input,options),url=new URL(request.url);
   if(url.hostname==='api.buttondown.com')return Response.json({results:legacyActive.map(id=>({id})),next:null});
   assert.equal(url.hostname,'email.us-east-2.amazonaws.com');
-  if(url.pathname.includes('/suppression/addresses/'))return Response.json({}, {status:404});
   assert.match(request.headers.get('Authorization'),/^AWS4-HMAC-SHA256/);
+  if(url.pathname.startsWith('/v2/email/suppression/addresses/')) {
+   assert.equal(request.method,'GET');
+   return checkSuppression(decodeURIComponent(url.pathname.split('/').at(-1)));
+  }
   const body=await request.json();messages.push(body);
   if(uncertain)throw new TypeError('Network acknowledgement lost');
   return Response.json({MessageId:'message-'+messages.length});
@@ -51,6 +54,46 @@ test('repeated requests are throttled without sending more confirmation emails',
  const {env,messages}=setup(t);
  for(let i=0;i<7;i++){const response=await subscribe({request:request('reader@example.com'),env});assert.equal(response.status,i===6?429:303)}
  assert.equal(messages.length,1);
+});
+
+test('signup skips suppressed addresses without exposing suppression or changing existing contacts', async (t) => {
+ const {env, db, messages} = setup(t, {
+  checkSuppression(email) {
+   const reason = {'bounce@example.com': 'BOUNCE', 'complaint@example.com': 'COMPLAINT'}[email];
+   return reason
+    ? Response.json({SuppressedDestination: {Reason: reason}})
+    : Response.json({}, {status: 404});
+  },
+ });
+ await contact(db, 'bounce@example.com', 'pending');
+ const before = await db.prepare('SELECT * FROM newsletter_contacts').first();
+ const normal = await subscribe({request: request('reader@example.com'), env});
+
+ for (const email of [' Bounce@Example.com ', 'complaint@example.com']) {
+  const response = await subscribe({request: request(email), env});
+  assert.equal(response.status, normal.status);
+  assert.equal(response.headers.get('Location'), normal.headers.get('Location'));
+ }
+
+ assert.deepEqual(messages.map(message => message.Destination.ToAddresses), [['reader@example.com']]);
+ assert.deepEqual(await db.prepare('SELECT * FROM newsletter_contacts WHERE email=?').bind('bounce@example.com').first(), before);
+ assert.equal(await db.prepare('SELECT * FROM newsletter_contacts WHERE email=?').bind('complaint@example.com').first(), null);
+});
+
+test('a failed suppression lookup leaves signup retryable without sending an email', async (t) => {
+ let lookupStatus = 503;
+ const {env, db, messages} = setup(t, {
+  checkSuppression: () => Response.json({}, {status: lookupStatus}),
+ });
+ const response = await subscribe({request: request('reader@example.com'), env});
+ assert.equal(response.status, 503);
+ assert.equal(await db.prepare('SELECT * FROM newsletter_contacts').first(), null);
+ assert.equal(messages.length, 0);
+
+ lookupStatus = 404;
+ const retry = await subscribe({request: request('reader@example.com'), env});
+ assert.equal(retry.status, 303);
+ assert.equal(messages.length, 1);
 });
 
 test('publication snapshots confirmed readers only, submits in batches, and never repeats completed recipients',async(t)=>{

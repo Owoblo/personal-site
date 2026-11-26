@@ -1,4 +1,4 @@
-import { sendEmail, sesReady } from "../_lib/ses.mjs";
+import { sendEmail, sesReady, suppressionReason } from "../_lib/ses.mjs";
 import { renderConfirmationEmail } from "../_lib/branded-email.mjs";
 import {
   SITE,
@@ -86,6 +86,10 @@ export async function onRequestPost(context) {
         Date.parse(existing.confirmation_sent_at) > Date.now() - 15 * 60000)
     )
       return accepted(request);
+
+    // SES can accept a send to a suppressed address and generate a bounce notice.
+    if (await suppressionReason(env, email)) return accepted(request);
+
     const token = randomToken(),
       hash = await tokenHash(token),
       id = existing?.id || crypto.randomUUID(),
