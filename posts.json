@@ -387,13 +387,16 @@
       "firstPublishedAt": "2026-11-28T05:19:29.993Z",
       "thoughtId": "365db1e5-9859-4daa-96fe-31ce7aaf4243",
       "_newsletter": {
-        "status": "pending",
+        "status": "queued",
         "mode": "send",
         "requestId": "abd7ecc1-cc07-47db-bf95-67cfe0137126",
         "requestedAt": "2026-11-28T05:19:29.993Z",
-        "attempts": 0,
+        "attempts": 1,
         "subject": "i like people that like me.",
-        "body": "<!-- buttondown-editor-mode: fancy --><p>I’ve published a new thought.</p><h2>i like people that like me.</h2><p>i like people that like me.</p><p><a href=\"https://johnowolabi.com/post/i-like-people/\">Read the thought →</a></p><p>— John</p>"
+        "body": "<!-- buttondown-editor-mode: fancy --><p>I’ve published a new thought.</p><h2>i like people that like me.</h2><p>i like people that like me.</p><p><a href=\"https://johnowolabi.com/post/i-like-people/\">Read the thought →</a></p><p>— John</p>",
+        "provider": "ses",
+        "emailId": "abd7ecc1-cc07-47db-bf95-67cfe0137126",
+        "queuedAt": "2026-11-28T05:19:31.326Z"
       }
     }
   ]
