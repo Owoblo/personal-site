@@ -411,14 +411,17 @@
       "firstPublishedAt": "2026-11-28T05:31:40.840Z",
       "thoughtId": "8cdc1198-1231-483a-b661-b35f24dd5971",
       "_newsletter": {
-        "status": "pending",
+        "status": "scheduled",
         "mode": "send",
         "requestId": "3f306a74-dcc1-4c60-87b2-0f40245fc841",
         "requestedAt": "2026-11-28T05:31:40.840Z",
-        "attempts": 0,
+        "attempts": 1,
         "scheduledFor": "2026-11-29T05:19:29.993Z",
         "subject": "Satisfaction Isn't a Finite Game",
-        "body": "<!-- buttondown-editor-mode: fancy --><p>I’ve published a new thought.</p><h2>Satisfaction Isn't a Finite Game</h2><p>Exploring the paradox of desire and satisfaction in a world full of choices and possibilities.</p><p><a href=\"https://johnowolabi.com/post/satisfaction-isnt-a-finite-game/\">Read the thought →</a></p><p>— John</p>"
+        "body": "<!-- buttondown-editor-mode: fancy --><p>I’ve published a new thought.</p><h2>Satisfaction Isn't a Finite Game</h2><p>Exploring the paradox of desire and satisfaction in a world full of choices and possibilities.</p><p><a href=\"https://johnowolabi.com/post/satisfaction-isnt-a-finite-game/\">Read the thought →</a></p><p>— John</p>",
+        "provider": "ses",
+        "emailId": "3f306a74-dcc1-4c60-87b2-0f40245fc841",
+        "queuedAt": "2026-11-28T05:31:42.048Z"
       }
     }
   ]
