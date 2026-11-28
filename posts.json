@@ -374,6 +374,27 @@
         "emailId": "a07ca9ed-808c-4722-8753-d3c5cdb54052",
         "queuedAt": "2026-11-03T06:11:13.800Z"
       }
+    },
+    {
+      "id": 42,
+      "title": "i like people that like me.",
+      "slug": "i-like-people",
+      "date": "2026-11-28",
+      "excerpt": "i like people that like me.",
+      "content": "<p>i get asked, every now and then, what i look for in a <strong>partner</strong>. what my ideal <strong>partner</strong> looks like, what qualities i find desirable in a <strong>person</strong>, etc.</p>\n<p>at the risk of sounding deliberately unconventional, my answer is usually the same: <strong>i like people who like me.</strong></p>\n<p>i suspect this warrants some explanation, given that the order in which most people seem to operate is to identify someone they like and subsequently attempt to get that person to like them.</p>\n<p>i do occasionally walk up to <strong>people i find attractive</strong> and make conversation. sometimes, the entire point of the interaction is to establish that i still can. but that's a separate matter.</p>\n<p>to illustrate my point, assume a population of 100 people, 10 of whom have expressed some interest in me. as far as i'm concerned, my dating pool consists of those 10 people.</p>\n<p>this is not to suggest that i will necessarily find any of the 10 desirable. what i can say with considerably more certainty, however, is that i have very little interest in pursuing the <strong>other 90</strong>.</p>\n<p>someone liking me is not a sufficient condition for me liking them, but it is a necessary one for pursuing anything with them.</p>\n<p>one of the more <strong>amusing observations</strong> i've made about human beings is that there appears to be a market for practically everybody.</p>\n<p>there's a market for street boys, pastors, intellectuals, fashion niggas, and people whose personalities i personally find insufferable. the very attributes that make a person undesirable to me might constitute the entirety of their appeal to someone else.</p>\n<p>when you account for the various intersections of culture, values, <strong>physical attributes</strong>, interests, temperament and whatever else informs human attraction, it becomes increasingly difficult to justify the amount of effort people expend trying to appeal to specific individuals who have demonstrated little to no interest in them.</p>\n<p>i don't particularly need to adopt a <strong>hypermasculine persona</strong>. apparently, there are people who find some appeal in a man who spends an unreasonable amount of time thinking about things and occasionally puts those <strong>thoughts into words</strong>. i happen to be one of those men.</p>\n<p>it would seem rather <strong>counterproductive</strong> to expend considerable effort becoming less of myself in the hope of appealing to someone else.</p>\n<p>of course, after sufficient <strong>interactions</strong> with people, certain patterns become apparent. i could probably describe, with some degree of accuracy, the demographic and personality traits of the people who tend to find me attractive.</p>\n<p>but these are <strong>observations</strong>, not selection criteria. that a particular kind of person has historically taken an interest in me does not mean i now go about looking for that kind of person.</p>\n<p>the distinction is <strong>important.</strong></p>\n<p>i suspect a fair amount of the frustration people experience in their interpersonal relationships comes from their insistence on <strong>obtaining affection</strong> from very specific people, despite the availability of affection elsewhere.</p>\n<p>and before someone misconstrues this as an aversion to putting effort into relationships, there is a <strong>distinction</strong> between the effort required to sustain a relationship and the effort required to convince someone that there ought to be one in the first place.</p>\n<p>i'm quite amenable to the former.</p>\n<p>as for the latter, i struggle to see the appeal.</p>\n<p><strong>i like people who like me</strong>.</p>\n",
+      "status": "published",
+      "updatedAt": "2026-11-28T05:19:29.229Z",
+      "firstPublishedAt": "2026-11-28T05:19:29.993Z",
+      "thoughtId": "365db1e5-9859-4daa-96fe-31ce7aaf4243",
+      "_newsletter": {
+        "status": "pending",
+        "mode": "send",
+        "requestId": "abd7ecc1-cc07-47db-bf95-67cfe0137126",
+        "requestedAt": "2026-11-28T05:19:29.993Z",
+        "attempts": 0,
+        "subject": "i like people that like me.",
+        "body": "<!-- buttondown-editor-mode: fancy --><p>I’ve published a new thought.</p><h2>i like people that like me.</h2><p>i like people that like me.</p><p><a href=\"https://johnowolabi.com/post/i-like-people/\">Read the thought →</a></p><p>— John</p>"
+      }
     }
   ]
 }
